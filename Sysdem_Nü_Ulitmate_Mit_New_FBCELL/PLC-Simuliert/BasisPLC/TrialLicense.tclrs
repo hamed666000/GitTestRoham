@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<TcLicenseInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2011/11/TcLicenseInfo">
+	<LicenseInfo>
+		<SystemId>{9FAE3B87-4187-90A2-6907-364B4AE7DB87}</SystemId>
+		<IssueTime>2020-02-21T22:39:00</IssueTime>
+		<ExpireTime>2020-02-29T00:00:00</ExpireTime>
+		<LicenseKey>4e1da291f3a291c045ef41601df3b85c753e2edfb4db3d705c577df4e424d6984256171fd31704ba02f2e14c6e116c19a1255ca0d01e48951f56263641517ae71746a4b3eb3540b868cfd55ad397304891432954e45c4265bbcb19b89e461b26090e04b76b23e72ab126131c9fce13bc10eb6bd0951fd2782b7749dc28333f5942cf7739b0dc4e24df54291eafebbdc632fa68b0c484675701b3d84b2bbf53a60784f2df5328c986ac0c6b9790a1feb0c77ef5c484a53f20a98b3db68c44c8305a1d5650c96dc6e85ff7357ad93c83b595599c44383e1e2e16a502cdc809a12d0adc0419d4cc69c3b13948008ba056a3118cd3c6812935c09d4a227426f7787e</LicenseKey>
+		<License>
+			<LicenseId>{96A86C49-B64B-4050-8FAD-AD85A9435528}</LicenseId>
+			<Name>TC3 IoT Data Agent Gates</Name>
+			<Instances>344</Instances>
+		</License>
+		<License>
+			<LicenseId>{9B75F165-D5BA-422F-A750-06BAC761E063}</LicenseId>
+			<Name>TC3 IoT Data Agent</Name>
+			<OrderNo>TF6720</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{BF40BB30-6318-4AD6-A811-54CC91DDA1B2}</LicenseId>
+			<Name>TC3 IoT Data Agent Gate Pack 256</Name>
+			<OrderNo>TF6724</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{4989A799-AEEA-4FEE-88EF-666B99EEFB45}</LicenseId>
+			<Name>TC3 Scope View Professional</Name>
+			<OrderNo>TE1300</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{50E513D1-8A01-4858-850E-FA89F7A12AFB}</LicenseId>
+			<Name>TC3 IoT Data Agent Gate Pack 4</Name>
+			<OrderNo>TF6721</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{ACBFB8AA-FBCB-462F-ACD0-4E6FBC225384}</LicenseId>
+			<Name>TC3 DBC-Import</Name>
+			<OrderNo>TF6650</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{0ABFD2B0-EAE1-4DC7-AABE-03093B0786B7}</LicenseId>
+			<Name>TC3 IoT Communication (MQTT)</Name>
+			<OrderNo>TF6701</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{63AADC1C-99A9-4C65-953F-C877CAFE9DF1}</LicenseId>
+			<Name>TC3 IoT Data Agent Gate Pack 64</Name>
+			<OrderNo>TF6723</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{09A4FC78-6C69-4C47-8C8B-D1115130828F}</LicenseId>
+			<Name>TC3 IoT Data Agent Gate Pack 16</Name>
+			<OrderNo>TF6722</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{DF0BE04C-8046-438C-ACE8-E14C5E082104}</LicenseId>
+			<Name>TC3 IoT Communication (I/O)</Name>
+			<OrderNo>TF6705</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{2149932B-0B77-4004-B43F-E85CEEFF347D}</LicenseId>
+			<Name>TC3 IoT Functions</Name>
+			<OrderNo>TF6710</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{973BA0B1-AADD-41C1-B518-302802473922}</LicenseId>
+			<Name>TC3 IoT MQTT Protocol</Name>
+		</License>
+		<License>
+			<LicenseId>{4C256767-E6E6-4AF5-BD68-9F7ABAD0C200}</LicenseId>
+			<Name>TC3 ADS</Name>
+			<OrderNo>TC1000</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{B86A5E22-F738-4626-A9AA-59E7FA9884B3}</LicenseId>
+			<Name>TC3 IoT Communicator</Name>
+			<OrderNo>TF6730</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{66689887-CCBD-452C-AC9A-039D997C6E66}</LicenseId>
+			<Name>TC3 PLC</Name>
+			<OrderNo>TC1200</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{3FF18E97-7754-401B-93FB-70544DE28A13}</LicenseId>
+			<Name>TC3 IO</Name>
+			<OrderNo>TC1100</OrderNo>
+		</License>
+	</LicenseInfo>
+</TcLicenseInfo>

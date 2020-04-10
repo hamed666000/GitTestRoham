@@ -1,0 +1,12 @@
+﻿{
+  "Mode": "TwinGet",
+  "cutSFolder": "C:\\Users\\Nübel\\Desktop\\Sysdem_Nü_Ulitmate\\CUTS",
+  "Source": "Z:\\vwzwilling\\3_Virtuelle_Zwillinge",
+  "Target": "X:\\",
+  "Node": "Befundung",
+  "File": "Referenzblade.stl",
+  "Debug": "false",
+  "bReturnValue": "true",
+  "ReturnValueVariable": "",
+  "GetMetaData": "true"
+}

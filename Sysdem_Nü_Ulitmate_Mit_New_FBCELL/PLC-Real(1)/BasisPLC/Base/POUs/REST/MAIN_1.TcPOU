@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="MAIN_1" Id="{8a4442c4-294e-495c-aa76-75ff5f556fbf}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN_1
+VAR
+	// trigger command execution for Postman-Echo samples
+	
+	
+	fbMHS :  FB_MHS ;
+	
+	
+	
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbMHS();
+ 
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN_1">
+      <LineId Id="310" Count="0" />
+      <LineId Id="313" Count="0" />
+      <LineId Id="37" Count="1" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

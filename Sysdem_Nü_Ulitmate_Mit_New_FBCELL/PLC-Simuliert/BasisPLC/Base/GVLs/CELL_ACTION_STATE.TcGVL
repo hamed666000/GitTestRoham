@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <GVL Name="CELL_ACTION_STATE" Id="{127dfb80-345e-434b-bee7-09c93d2c7510}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+			
+TYPE 
+	CELL_ACTION_STATE: (e_ToStandby, e_Standby, e_ToLoadPos, e_LoadPos, e_ToStartabel, e_Startabel, e_ToRunning , e_Running, 
+				e_ToUnLoadPos, e_UnLoadPos,e_Finished, e_ToEmergencyStop, e_EmergencyStop, e_ToEmergencyOff, e_EmergencyOff , e_ErrorNum);
+	
+	
+				
+END_TYPE
+
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

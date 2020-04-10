@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <GVL Name="CELL_STATE" Id="{e0f2e40e-de8b-488a-a104-23a5486990d0}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	
+
+			
+TYPE 
+	CELL_STATE: (e_IDEL, e_WORKING, e_MHS_ACTION, e_ERROR );			
+END_TYPE
+
+
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

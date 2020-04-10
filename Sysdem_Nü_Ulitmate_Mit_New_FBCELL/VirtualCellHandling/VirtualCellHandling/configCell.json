@@ -1,0 +1,14 @@
+[
+  {
+    "Name": "V1",
+    "AppType": "exe",
+    "AppPath": "C:\\Program Files (x86)\\Arduino\\arduino.exe"
+  },
+  {
+    "Name": "V2",
+    "AppType": "Matlab",
+    "AppPath": "C:\\temp\\mFile.m"
+  }
+]
+
+  

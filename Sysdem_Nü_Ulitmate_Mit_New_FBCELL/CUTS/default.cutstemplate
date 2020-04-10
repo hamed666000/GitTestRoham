@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<Project>
+  <SimulationSettings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <_SecondColor />
+    <TargetCycleTime>0.1</TargetCycleTime>
+    <UseCPUForMatRemCalc>true</UseCPUForMatRemCalc>
+    <MatRemOnKinChange>false</MatRemOnKinChange>
+    <KeinAbtragImEilgang>true</KeinAbtragImEilgang>
+    <StopSimAutomatically>true</StopSimAutomatically>
+    <UseAxisinterpolationForSweepMatrices>true</UseAxisinterpolationForSweepMatrices>
+    <RemoveMaterialDefault>true</RemoveMaterialDefault>
+    <DoApplyDefaultAccuracy>true</DoApplyDefaultAccuracy>
+    <RenderAccuracyDefault>1</RenderAccuracyDefault>
+    <RenderAccuracyViewChanging>1</RenderAccuracyViewChanging>
+    <SynchronizeView2AxisCtrl>true</SynchronizeView2AxisCtrl>
+    <SynchronizeView2MatremCylce>false</SynchronizeView2MatremCylce>
+    <DefaultAxisControllerTypeName />
+    <InterpolationMode>Constant</InterpolationMode>
+    <currentAssemblyVersion>2.3.6.2</currentAssemblyVersion>
+    <projectAssemblyVersion>2.3.6.2</projectAssemblyVersion>
+    <ForeGroundColorString>#5A5AD2</ForeGroundColorString>
+    <SecondColorString>#C8C8FF</SecondColorString>
+    <BG_Image_FileName />
+  </SimulationSettings>
+  <CutSKernel.Kinematic.MachineModel>
+    <Camera type="CutSKernel.Kinematic.CutSCamera">
+      <FOV>170</FOV>
+      <Near>10</Near>
+      <Far>2000</Far>
+      <EyePos>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>500</Z>
+      </EyePos>
+      <LookAt>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </LookAt>
+      <UpVector>
+        <X>0</X>
+        <Y>1</Y>
+        <Z>0</Z>
+      </UpVector>
+      <LocalX>
+        <X>1</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </LocalX>
+      <Clipping>False</Clipping>
+      <Autofokus>True</Autofokus>
+      <ViewMode>ORTHOGONAL</ViewMode>
+      <ZoomIncrement>20</ZoomIncrement>
+      <RotationSensibility>20</RotationSensibility>
+      <Children type="System.Collections.Generic.List`1[[CutSKernel.Kinematic.AKinBaseObject, CutSKernelCS, Version=2.3.6.2, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+      <Name>Standard Kamera</Name>
+      <Visible>False</Visible>
+      <ImportFile>
+      </ImportFile>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </Translation>
+      <Rotation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </Rotation>
+      <Scaling>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scaling>
+    </Camera>
+    <Children type="System.Collections.Generic.List`1[[CutSKernel.Kinematic.AKinBaseObject, CutSKernelCS, Version=2.3.6.2, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <Name>Modell</Name>
+    <Visible>True</Visible>
+    <ImportFile>
+    </ImportFile>
+    <Translation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Translation>
+    <Rotation>
+      <X>0</X>
+      <Y>0</Y>
+      <Z>0</Z>
+    </Rotation>
+    <Scaling>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Scaling>
+  </CutSKernel.Kinematic.MachineModel>
+  <Exporter>
+    <ActiveExporter type="System.Collections.ObjectModel.ObservableCollection`1[[CutSKernel.AExporter, CutSKernelCS, Version=2.3.6.2, Culture=neutral, PublicKeyToken=null]], System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  </Exporter>
+  <Plugins>
+    <Plugin PluginName="BasicAxisControlPlugin.BasicAxisControlPlugin">
+      <ProjectSettings>     
+        <PluginRelevance>Essential</PluginRelevance>
+      </ProjectSettings>
+    </Plugin>
+    <Plugin PluginName="DexelMatRemPlugin.DexelMatRemPlugin">
+      <ProjectSettings>
+        <PluginRelevance>Essential</PluginRelevance>
+      </ProjectSettings>
+    </Plugin>
+    <Plugin PluginName="VirtualTwin.VirtualTwinPlugin">
+      <ProjectSettings>
+	      <PluginRelevance>Essential</PluginRelevance>
+      </ProjectSettings>
+	    </Plugin>
+  </Plugins>
+</Project>

@@ -1,0 +1,631 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="JsonSaxHandler" Id="{fd22ba04-0d36-44e7-a81e-c59d3ac0f333}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'c++_compatible'}
+FUNCTION_BLOCK JsonSaxHandler IMPLEMENTS ITcJsonSaxHandler
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	(* Values from JSON - written by callback methods *)	 
+	sActionID 		: STRING(80); 
+	sWPID 			: STRING(80);
+	iWPPlace			: DINT;
+	sCell				: STRING;
+	iActionType			: DINT;
+	iActionState		: DINT;
+	
+	
+	(* State machine variables *)
+	eState				: E_JsonStates;
+	
+	(* Indicators if an expected property has been found in JSON *)
+	bStartObjectFound 	: BOOL;
+	bEndObjectFound		: BOOL;
+	bValuesFound 		: BOOL;
+	bActionIDFound 	: BOOL;
+	bActionIDValueFound: BOOL;
+	bWPIDFound 	: BOOL;
+	bWPIDValueFound: BOOL;
+	bWPPlaceFound 		: BOOL;
+	bWPPlaceValueFound	: BOOL;
+	bCellFound 		: BOOL;
+	bCellValueFound	: BOOL;
+	bActionTypeFound 		: BOOL;
+	bActionTypeValueFound	: BOOL;
+	bActionStateFound 		: BOOL;
+	bActionStateValueFound	: BOOL;
+	
+	(* Error indicators *)
+	bError				: BOOL;
+	sErrorMsg			: STRING(255);
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bError THEN
+	sErrorMsg := 'JSON message does not equal expected format';
+END_IF
+]]></ST>
+    </Implementation>
+    <Method Name="GetActionID" Id="{210ef36d-b300-4f08-a161-05cdcac2e56b}">
+      <Declaration><![CDATA[METHOD GetActionID : STRING(80)
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetActionID := sActionID;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetActionState" Id="{335ac79d-abf8-457e-8bf1-ac6868d52513}">
+      <Declaration><![CDATA[METHOD GetActionState : HRESULT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetActionState := iActionState; ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetActionType" Id="{4c4ac728-0091-49ec-b448-b8a2a1ca22be}">
+      <Declaration><![CDATA[METHOD GetActionType : DINT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetActionType := iActionType;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetCell" Id="{2c0d59be-459a-44e6-b8cb-ffe5338f2c38}">
+      <Declaration><![CDATA[METHOD GetCell : STRING
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetCell := sCell;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetWPID" Id="{be33c128-8bc8-48d5-9221-71d7ead970e8}">
+      <Declaration><![CDATA[METHOD GetWPID : STRING(80)
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetWPID:=sWPID;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetWPPlace" Id="{0e02727b-900a-4b6d-bad0-e17a91eedfb8}">
+      <Declaration><![CDATA[METHOD GetWPPlace : DINT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetWPPlace := iWPPlace;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsFinished" Id="{2ce5a283-de87-403a-9f33-695cd9d8bddb}">
+      <Declaration><![CDATA[METHOD IsFinished : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsFinished := (eState = E_JsonStates.JSON_STATE_FINISH);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnBool" Id="{13455f88-e234-4d6f-b163-c3ace2d01de9}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnBool : HRESULT
+VAR_INPUT
+	value	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnDint" Id="{24238a66-3ba2-41ea-bb1d-dec022507274}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnDint : HRESULT
+VAR_INPUT
+	value	: DINT;
+END_VAR
+
+VAR
+
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnEndArray" Id="{1739a2d6-6bf1-4ae8-9382-66870451d46e}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnEndArray : HRESULT
+VAR_INPUT
+	elementCount	: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnEndObject" Id="{885811d0-5c76-4031-96ce-48dd447f7032}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnEndObject : HRESULT
+VAR_INPUT
+	memberCount	: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (eState = 1100) THEN
+	bEndObjectFound := TRUE;
+	eState := 1200;  
+	ELSE
+
+			bError := TRUE;  
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnKey" Id="{0166f13e-7ed0-43f7-a777-b23d02f1dd47}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnKey : HRESULT
+VAR_IN_OUT CONSTANT
+	key	: STRING;
+END_VAR
+VAR_INPUT
+	len	: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF ((eState = 11)AND(key = 'm_sActionID')) THEN
+	bActionIDFound := TRUE;
+	eState := 12;
+ELSE
+ 
+	IF ((eState = 20)AND(key = 'm_sWPID')) THEN
+		bWPIDFound := TRUE;
+		eState := 40;
+	ELSE
+		IF ((eState = 50)AND(key = 'm_iWPPlace')) THEN
+		  bWPPlaceFound := TRUE;
+		  eState := 60;
+		ELSE
+			IF ((eState = 70)AND(key = 'm_sCell')) THEN
+				bCellFound := TRUE;
+				eState := 80;
+			ELSE
+				IF ((eState = 90)AND(key = 'm_eActionType')) THEN
+					bActionTypeFound := TRUE;
+					eState := 100;
+				ELSE
+					IF((eState = 110)AND(key = 'm_iActionState')) THEN
+					bActionStateFound := TRUE;
+					eState := 120;
+					ELSE
+
+						bError := TRUE;
+						Onkey := S_FALSE;
+						
+					END_IF
+
+				END_IF				  
+			END_IF	  
+	  	END_IF
+	END_IF
+END_IF
+
+
+
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnLint" Id="{729de20b-2d3e-4125-9187-e0252a19c186}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnLint : HRESULT
+VAR_INPUT
+	value	: LINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnLreal" Id="{e458c372-d873-4613-adb7-f607191d076c}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnLreal : HRESULT
+VAR_INPUT
+	value	: LREAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnNull" Id="{65642340-6997-4108-83d9-c8813a05825e}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnNull : HRESULT
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnRawNumber" Id="{f9737890-9bac-4333-b9b2-37d74169c053}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnRawNumber : HRESULT
+VAR_IN_OUT CONSTANT
+	value	: STRING;
+END_VAR
+VAR_INPUT
+	len	: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnStartArray" Id="{655fbaa9-4596-43be-8c13-3d5daaf75b5e}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnStartArray : HRESULT
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnStartObject" Id="{9da87a42-4b27-47bf-b4fc-3d1a5b5e45be}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnStartObject : HRESULT
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (eState = 10) THEN
+	bStartObjectFound := TRUE;
+	eState := 11;  
+ELSE
+
+	bError := TRUE;  
+			
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnString" Id="{1c13bada-871d-4b30-bee1-08ea70607c6f}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnString : HRESULT
+VAR_IN_OUT CONSTANT
+	value	: STRING;
+END_VAR
+VAR_INPUT
+	len	: UDINT;
+END_VAR
+
+VAR
+	bTimestampValueFound: BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (eState = 12)THEN
+		bActionIDValueFound := TRUE;
+		sActionID := value;	
+		eState := 20;
+ELSE
+	IF (eState = 40) THEN
+		bWPIDValueFound := TRUE;
+		sWPID := value;
+		eState := 50;
+	ELSE
+			IF (eState = 80) THEN
+				bCellValueFound := TRUE;
+				sCell :=  value ;
+				eState := 90;
+			ELSE
+		bError := TRUE;
+		OnString := S_FALSE;
+		END_IF	
+	END_IF
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnUdint" Id="{296ac94a-f1f7-4890-a4b8-5d9fd3b55ce6}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnUdint : HRESULT
+VAR_INPUT
+	value	: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (eState = 60) THEN
+	bWPPlaceValueFound := TRUE;
+	iWPPlace := UDINT_TO_DINT( value );
+	eState := 70;
+ELSE
+
+		IF (eState = 100) THEN
+			bActionTypeValueFound := TRUE;
+			iActionType := UDINT_TO_DINT( value );
+			eState := 110;
+		ELSE
+			IF (eState = 120) THEN
+				bActionStateValueFound := TRUE;
+				iActionState := UDINT_TO_DINT( value);
+				eState := 1100;
+			ELSE
+				bError := TRUE;
+				//OnUdint := S_FALSE;
+			END_IF				
+		END_IF
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnUlint" Id="{3d01b1c5-c02d-481b-a604-269325783bc9}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnUlint : HRESULT
+VAR_INPUT
+	value	: ULINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Reset" Id="{414584c9-263a-4c59-8038-c96015a118e6}">
+      <Declaration><![CDATA[METHOD Reset : HRESULT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[	(* State machine variables *)
+	eState				:= 10;
+	
+	(* Indicators if an expected property has been found in JSON *)
+	bStartObjectFound 	:= FALSE;
+	bEndObjectFound		:= FALSE;
+	bValuesFound 		:= FALSE;
+	bActionIDFound 		:= FALSE;
+	bActionIDValueFound	:= FALSE;
+	bWPIDFound 			:= FALSE;
+	bWPIDValueFound		:= FALSE;
+	bWPPlaceFound 		:= FALSE;
+	bWPPlaceValueFound	:= FALSE;
+	bCellFound 			:= FALSE;
+	bCellValueFound		:= FALSE;
+	bActionTypeFound 		:= FALSE;
+	bActionTypeValueFound	:= FALSE;
+	bActionStateFound 		:= FALSE;
+	bActionStateValueFound	:= FALSE;
+	
+	(* Error indicators *)
+	bError				:= FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="TcAddRef" Id="{ed9db009-45ee-459b-bd3c-e6eebd2276ca}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD TcAddRef : UDINT
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="TcQueryInterface" Id="{bf125ab6-3d6a-4df3-b162-942f3b1feb6f}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD TcQueryInterface : HRESULT
+VAR_INPUT
+	iid	: REFERENCE TO IID;
+	pipItf	: POINTER TO PVOID;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="TcRelease" Id="{f07919cf-792d-4887-afc7-1c9d1066ed11}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD TcRelease : UDINT
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="JsonSaxHandler">
+      <LineId Id="127" Count="0" />
+      <LineId Id="129" Count="1" />
+      <LineId Id="28" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.GetActionID">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.GetActionState">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.GetActionType">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.GetCell">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.GetWPID">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.GetWPPlace">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.IsFinished">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnBool">
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnDint">
+      <LineId Id="33" Count="0" />
+      <LineId Id="21" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnEndArray">
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnEndObject">
+      <LineId Id="29" Count="3" />
+      <LineId Id="36" Count="1" />
+      <LineId Id="25" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnKey">
+      <LineId Id="98" Count="0" />
+      <LineId Id="101" Count="1" />
+      <LineId Id="99" Count="1" />
+      <LineId Id="27" Count="1" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="44" Count="1" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="48" Count="1" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="52" Count="1" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="73" Count="1" />
+      <LineId Id="76" Count="1" />
+      <LineId Id="83" Count="2" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="42" Count="1" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="37" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnLint">
+      <LineId Id="21" Count="0" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnLreal">
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnNull">
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnRawNumber">
+      <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnStartArray">
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnStartObject">
+      <LineId Id="8" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="21" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnString">
+      <LineId Id="64" Count="1" />
+      <LineId Id="67" Count="1" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="27" Count="1" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="85" Count="3" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="89" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnUdint">
+      <LineId Id="21" Count="4" />
+      <LineId Id="30" Count="14" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnUlint">
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.Reset">
+      <LineId Id="6" Count="20" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.TcAddRef">
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.TcQueryInterface">
+      <LineId Id="12" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.TcRelease">
+      <LineId Id="8" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

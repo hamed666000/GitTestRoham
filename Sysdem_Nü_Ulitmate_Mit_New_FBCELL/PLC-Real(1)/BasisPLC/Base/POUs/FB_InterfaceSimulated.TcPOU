@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="FB_InterfaceSimulated" Id="{711cd097-7162-4d64-9799-f252f00dfb4a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_InterfaceSimulated IMPLEMENTS ITF_Cell
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	 iTimer : INT;
+	 iWaitingTime : INT := 500;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="GetEmergencyOff" Id="{a3778c58-2539-4411-a535-afc39b7e64b7}">
+      <Declaration><![CDATA[METHOD GetEmergencyOff : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+iTimer := iTimer +1;
+
+IF iTimer > iWaitingTime THEN
+	GetEmergencyOff := TRUE;
+	iTimer := 0;	
+END_IF
+
+
+
+
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetEmergencyStop" Id="{4793d486-231e-46c0-b742-f27fe9a2dd46}">
+      <Declaration><![CDATA[METHOD GetEmergencyStop : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+iTimer := iTimer +1;
+
+IF iTimer > iWaitingTime THEN
+	GetEmergencyStop := TRUE;
+	iTimer := 0;	
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetFinished" Id="{f0419497-82dc-4b93-90c9-165e09b123a2}">
+      <Declaration><![CDATA[METHOD GetFinished : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+iTimer := iTimer +1;
+
+IF iTimer > iWaitingTime THEN
+	GetFinished := TRUE;
+	iTimer := 0;	
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetIsRunning" Id="{bd6844ff-30fb-40e6-83ea-047247412c2d}">
+      <Declaration><![CDATA[METHOD GetIsRunning : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+
+iTimer := iTimer +1;
+
+IF iTimer > iWaitingTime THEN
+	GetIsRunning := TRUE;
+	iTimer := 0;	
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetLoadPos" Id="{a0995c13-d139-4bda-b1de-ab26cea30734}">
+      <Declaration><![CDATA[METHOD GetLoadPos : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+
+iTimer := iTimer +1;
+
+IF iTimer > iWaitingTime THEN
+	GetLoadPos := TRUE;
+	iTimer := 0;	
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetStandby" Id="{d367178f-773e-4c12-8872-80e0b22f7231}">
+      <Declaration><![CDATA[METHOD GetStandby : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+
+iTimer := iTimer +1;
+
+IF iTimer > iWaitingTime THEN
+	GetStandby := TRUE;
+	iTimer := 0;	
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetStartable" Id="{169a33e6-e097-4907-96ae-30e4eb031517}">
+      <Declaration><![CDATA[METHOD GetStartable : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+
+
+iTimer := iTimer +1;
+
+IF iTimer > iWaitingTime THEN
+	GetStartable := TRUE;
+	iTimer := 0;	
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetUnloadPos" Id="{74d2db1f-c459-4bcd-885c-d3a0b624af62}">
+      <Declaration><![CDATA[METHOD GetUnloadPos : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+
+iTimer := iTimer +1;
+
+IF iTimer > iWaitingTime THEN
+	GetUnloadPos := TRUE;
+	iTimer := 0;	
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetEmergencyOff" Id="{8e2e35d5-0985-4e0f-a33a-a1596c074c59}">
+      <Declaration><![CDATA[METHOD SetEmergencyOff : BOOL
+VAR_INPUT
+	b:BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetEmergencyStop" Id="{05c98e4a-4181-4ae9-addd-e5c1df4fbdfc}">
+      <Declaration><![CDATA[METHOD SetEmergencyStop : BOOL
+VAR_INPUT
+	b:BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetLoadPlace" Id="{f8bb8249-33db-4809-806d-7bfd2982bb05}">
+      <Declaration><![CDATA[METHOD SetLoadPlace : BOOL
+VAR_INPUT
+	b :BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetMoveToLoad" Id="{1606b5b0-686a-4313-8554-4dea48b0e96f}">
+      <Declaration><![CDATA[METHOD SetMoveToLoad : BOOL
+VAR_INPUT
+	b:BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetMoveToUnload" Id="{87d7cc4c-8fa4-4a8c-a25b-fb7ca321ee18}">
+      <Declaration><![CDATA[METHOD SetMoveToUnload : BOOL
+VAR_INPUT
+	b:BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetStandby" Id="{11266cf8-a5b9-46b4-8609-c4a888f97fc6}">
+      <Declaration><![CDATA[METHOD SetStandby : BOOL
+VAR_INPUT
+	b:BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetStart" Id="{fb60e8a8-7fb5-4c12-881d-e417cce4b90d}">
+      <Declaration><![CDATA[METHOD SetStart : BOOL
+VAR_INPUT
+	b:BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_InterfaceSimulated">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InterfaceSimulated.GetEmergencyOff">
+      <LineId Id="11" Count="1" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InterfaceSimulated.GetEmergencyStop">
+      <LineId Id="10" Count="5" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InterfaceSimulated.GetFinished">
+      <LineId Id="10" Count="5" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InterfaceSimulated.GetIsRunning">
+      <LineId Id="10" Count="6" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InterfaceSimulated.GetLoadPos">
+      <LineId Id="10" Count="6" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InterfaceSimulated.GetStandby">
+      <LineId Id="10" Count="6" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InterfaceSimulated.GetStartable">
+      <LineId Id="10" Count="7" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InterfaceSimulated.GetUnloadPos">
+      <LineId Id="11" Count="6" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InterfaceSimulated.SetEmergencyOff">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InterfaceSimulated.SetEmergencyStop">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InterfaceSimulated.SetLoadPlace">
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InterfaceSimulated.SetMoveToLoad">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InterfaceSimulated.SetMoveToUnload">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InterfaceSimulated.SetStandby">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InterfaceSimulated.SetStart">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

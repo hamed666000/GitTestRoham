@@ -1,0 +1,10 @@
+﻿{
+  "Source": "C:\\temp\\vwzwilling",
+  "Target": "C:\\temp\\vwzwilling",
+  "File": "GCode.MPF",
+  "Node": "GCode",
+  "Mode": "TwinPut",
+  "Debug": "true",
+  "cutSFolder": "C:\\temp\\Debug"
+
+}

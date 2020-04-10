@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <GVL Name="DATA_SERVICE_STATE" Id="{5247fec8-51b6-43a1-ad84-393f7195ca74}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+TYPE
+	DATA_SERVICE_STATE: (e_IDLE, e_BUSY, e_FINISHED, e_ERROR);	
+END_TYPE
+	
+END_VAR
+]]></Declaration>
+  </GVL>
+</TcPlcObject>

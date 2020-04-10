@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4023.119">
+	<Project ProjectGUID="{42B33907-16FF-489E-9CEE-12FCB353F7F1}" Target64Bit="true" Utf8Encoding="true" ShowHideConfigurations="#x306">
+		<System>
+			<Settings MaxCpus="4" NonWinCpus="3">
+				<Cpu RtLimit="20"/>
+			</Settings>
+			<Licenses>
+				<Target>
+					<ManualSelect>{BF40BB30-6318-4AD6-A811-54CC91DDA1B2}</ManualSelect>
+					<ManualSelect>{4989A799-AEEA-4FEE-88EF-666B99EEFB45}</ManualSelect>
+					<ManualSelect>{50E513D1-8A01-4858-850E-FA89F7A12AFB}</ManualSelect>
+					<ManualSelect>{ACBFB8AA-FBCB-462F-ACD0-4E6FBC225384}</ManualSelect>
+					<ManualSelect>{0ABFD2B0-EAE1-4DC7-AABE-03093B0786B7}</ManualSelect>
+					<ManualSelect>{63AADC1C-99A9-4C65-953F-C877CAFE9DF1}</ManualSelect>
+					<ManualSelect>{09A4FC78-6C69-4C47-8C8B-D1115130828F}</ManualSelect>
+					<ManualSelect>{DF0BE04C-8046-438C-ACE8-E14C5E082104}</ManualSelect>
+					<ManualSelect>{2149932B-0B77-4004-B43F-E85CEEFF347D}</ManualSelect>
+				</Target>
+			</Licenses>
+			<Tasks>
+				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
+					<Name>PlcTask</Name>
+				</Task>
+			</Tasks>
+		</System>
+		<Plc>
+			<Project GUID="{F1439F20-90D1-4925-A445-50B45055465D}" Name="Base" PrjFilePath="Base\Base.plcproj" TmcFilePath="Base\Base.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Base\Base.tmc">
+					<Name>Base Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<TaskPouOids>
+						<TaskPouOid Prio="20" OTCID="#x08502001"/>
+					</TaskPouOids>
+				</Instance>
+			</Project>
+		</Plc>
+	</Project>
+</TcSmProject>

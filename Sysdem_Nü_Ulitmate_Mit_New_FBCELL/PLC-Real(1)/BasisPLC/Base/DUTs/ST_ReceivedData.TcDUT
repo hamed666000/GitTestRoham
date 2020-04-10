@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <DUT Name="ST_ReceivedData" Id="{142a6d09-4e63-40d3-a899-c4fbb5d9d0c7}">
+    <Declaration><![CDATA[TYPE ST_ReceivedData :
+STRUCT
+	userId:	DINT;
+	id:		DINT;
+	title:	STRING(255);
+	body:	STRING(255);
+END_STRUCT
+END_TYPE
+
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

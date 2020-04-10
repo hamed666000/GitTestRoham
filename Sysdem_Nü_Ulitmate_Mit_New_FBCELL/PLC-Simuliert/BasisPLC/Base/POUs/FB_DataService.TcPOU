@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="FB_DataService" Id="{7e8c7b75-930e-47cc-9741-8b2e8f213749}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_DataService
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	fbStartProcess : NT_StartProcess;
+
+	m_sCommandLine : STRING;
+	m_sNetIP : STRING;
+	m_sWorkingdirektory : STRING;
+	m_sPathOfApplication : STRING;
+	m_bStart : BOOL;
+	m_eState : DATA_SERVICE_STATE;
+	m_sErrCode : STRING;
+	m_iReturnValue : DINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbStartProcess.NETID 		:= m_sNetIP; // IP Adresse des Rechners auf dem die Zwillinge liegen
+fbStartProcess.COMNDLINE 	:= m_sCommandLine; // Hier muss die ZwillingsID/ ProjektID übertragen werden
+fbStartProcess.DIRNAME 		:= m_sWorkingdirektory; // Dieser Verzeichnis ist  vermutlich immer c:\TEMP
+fbStartProcess.PATHSTR 		:= m_sPathOfApplication; // Pfad direkt zur DataService.exe wobei sich diese aus dem Zell-Namen ergibt 
+
+
+IF fbStartProcess.ERR THEN // Fehlerabrage bereits vor der Zustandsmaschine 
+	m_eState := DATA_SERVICE_STATE.e_ERROR;
+END_IF 
+
+
+CASE m_eState OF 
+	DATA_SERVICE_STATE.e_IDLE:
+	
+		IF  m_bStart = TRUE THEN
+			fbStartProcess.START := TRUE;
+			m_bStart := FALSE; //Nurpositive Flanke übergeben		
+		END_IF
+	
+		IF fbStartProcess.BUSY = TRUE THEN // Wenn der Funktionsblock selber Busy meldet in den nächsten Zustand
+			m_eState := DATA_SERVICE_STATE.e_BUSY;
+			fbStartProcess.START := FALSE;  
+		END_IF
+		
+	DATA_SERVICE_STATE.e_BUSY:
+	
+ 		IF fbStartProcess.BUSY = FALSE THEN
+			IF m_iReturnValue = 1 THEN // Übergabewert der DataService.exe
+				m_iReturnValue := 0; // Zurücksetzen für den nächsten Durchlauf
+				m_eState := DATA_SERVICE_STATE.e_FINISHED;
+			END_IF
+			IF m_iReturnValue = 2 THEN
+				m_eState := DATA_SERVICE_STATE.e_ERROR; 					
+			END_IF		
+		END_IF 
+		
+	DATA_SERVICE_STATE.e_FINISHED: // Zustand erforderlich da somit ein Zyklus lang abgefragt werden kann ob der Ablauf erfolgreich war
+			
+ 		
+		
+	DATA_SERVICE_STATE.e_ERROR:
+	
+		m_sErrCode := UDINT_TO_STRING (fbStartProcess.ERRID); // Der Fehler wird als ganzzahl in den String geschrieben 
+	
+ELSE // Sicherheit bei falschem Wert
+		m_eState := DATA_SERVICE_STATE.e_ERROR;
+		m_sErrCode := 'Falscher Wert DataService-Status nicht vorhanden';
+		
+END_CASE
+
+// Aufruf des Funktionblocks NT_StartProcess
+fbStartProcess();
+
+
+
+
+]]></ST>
+    </Implementation>
+    <Method Name="GetErrorCode" Id="{32dcc857-6da7-41b4-a061-ae1c26dd0071}">
+      <Declaration><![CDATA[METHOD GetErrorCode : STRING
+VAR_INPUT
+END_VAR
+
+VAR
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetErrorCode :=m_sErrCode;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsBusy" Id="{2393e7c9-8adc-4e42-9d3d-a62314aeb5e4}">
+      <Declaration><![CDATA[METHOD IsBusy : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF m_eState = DATA_SERVICE_STATE.e_BUSY THEN
+	IsBusy := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsError" Id="{db3fc9e9-0319-4d61-b839-13587aa67717}">
+      <Declaration><![CDATA[METHOD IsError : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF m_eState = DATA_SERVICE_STATE.e_ERROR THEN
+	IsError := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsFinished" Id="{4289dd15-334f-4299-8d4c-4094b8c5462f}">
+      <Declaration><![CDATA[METHOD IsFinished : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF m_eState = DATA_SERVICE_STATE.e_FINISHED THEN
+	IsFinished := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsIdle" Id="{eb877cda-8ffc-48c4-81aa-406ee9d08783}">
+      <Declaration><![CDATA[METHOD IsIdle : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF m_eState = DATA_SERVICE_STATE.e_IDLE THEN
+	IsIdle := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetCommandLine" Id="{135f20ab-ff9a-44a5-888e-47e704a05b38}">
+      <Declaration><![CDATA[METHOD SetCommandLine : BOOL
+VAR_INPUT
+	sCommandLine : STRING;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_sCommandLine := sCommandLine;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetIdle" Id="{71e274e4-7e13-4f34-94ae-c2c0ef0ff3df}">
+      <Declaration><![CDATA[METHOD SetIdle : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_eState := DATA_SERVICE_STATE.e_IDLE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetNetIP" Id="{ba7870e6-98f7-434a-80b3-5691cb675d7f}">
+      <Declaration><![CDATA[METHOD SetNetIP : BOOL
+VAR_INPUT
+	sNetIP : STRING;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_sNetIP := sNetIP;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetPathOfApplication" Id="{cc576291-56f3-42b3-bdb1-334ae77c0e1c}">
+      <Declaration><![CDATA[METHOD SetPathOfApplication : BOOL
+VAR_INPUT
+	sPathOfApplication :STRING;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ m_sPathOfApplication := sPathOfApplication;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetWorkingDirectory" Id="{2d36a123-4b31-42ed-abad-b3e4e179b4ac}">
+      <Declaration><![CDATA[METHOD SetWorkingDirectory : BOOL
+VAR_INPUT
+	sWorkingdirektory : STRING;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_sWorkingdirektory := sWorkingdirektory;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StartDataService" Id="{d2b001dd-860d-45df-89b6-51388711609b}">
+      <Declaration><![CDATA[METHOD StartDataService : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_bStart := TRUE;
+StartDataService := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_DataService">
+      <LineId Id="12" Count="2" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="29" Count="1" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="100" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="118" Count="0" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="82" Count="0" />
+      <LineId Id="77" Count="1" />
+      <LineId Id="81" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="18" Count="1" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="26" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_DataService.GetErrorCode">
+      <LineId Id="5" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_DataService.IsBusy">
+      <LineId Id="5" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_DataService.IsError">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_DataService.IsFinished">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_DataService.IsIdle">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_DataService.SetCommandLine">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_DataService.SetIdle">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_DataService.SetNetIP">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_DataService.SetPathOfApplication">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_DataService.SetWorkingDirectory">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_DataService.StartDataService">
+      <LineId Id="5" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

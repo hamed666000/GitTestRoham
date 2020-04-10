@@ -1,0 +1,545 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="MAIN" Id="{ebd070c2-a49d-4985-825a-88d3b79d850d}" SpecialFunc="None">
+    <Declaration><![CDATA[
+PROGRAM MAIN
+	
+VAR
+
+
+
+// Allg. nitwendige Variablen
+m_bInit : BOOL;
+I : DINT;
+sString : STRING;
+diDint : DINT;
+bBOOL:BOOL;
+m_iCellUpdateIter : INT := 0; // Iterationsvariable für die Json Strings der Zelle
+
+// Zellen //NN
+fbCellA2 : FB_Cell;
+fbCellA5 : FB_Cell; 
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+fbCellL1 : FB_Cell;   //*Hami*  Deklaration ein neues FB_Cell für LaserTec
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+fbCellD1 : FB_Cell_Simu;  //Ist eine andere Zelle, kann mann einzeln ändern
+fbCellV1 : FB_VirtualCell;
+//fbCellV2 : FB_VirtualCell;
+
+//An die Anzahl der Zellen anpassen
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//*Hami* Anzahl von Zellen auf 5 einstellen + LaserTec
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+aCellList : ARRAY [1..5] OF I_CELL; // Liste der Zellen //NN
+m_iNumberOfCells : DINT := 4; // Bei hinzufügen/löschen einer Zelle ist hier die Anzahl anzupassen  //NN
+
+// MHS 
+fbMHS : FB_MHS;
+//fb_put : FB_TestHTTP_HeaderAuth ; 
+
+// Kommunikations-Variabeln für Aktionen von der GUI
+
+
+m_bTrigger : BOOL;// Trigger zum zyklischen Aktualisieren der Anwendung
+m_iTriggerTimer : INT; // Zähler zum Trigger 
+m_sJsonTrigger : STRING(80);
+
+m_sActionID : STRING(80);
+m_sWPID : STRING(80);
+m_iWPRequest : DINT;
+m_sCellRequest : STRING;
+m_iActionRequest : DINT;
+m_iActionState : DINT;
+
+
+m_sActionIDLast : STRING(80);
+m_sWPIDLast : STRING(80);
+m_iWPRequestLast : DINT;
+m_iCellRequestLast : DINT;
+m_iActionRequestLast : DINT;
+m_iActionStateLast : DINT;
+m_iCellRequest : DINT;
+
+m_bAktionInProgress : BOOL; 
+
+//JSON-Variablen
+	//Writer
+	m_iJsonTimer 		: DINT;
+ 	dtTimestamp 		: DATE_AND_TIME := DT#2017-04-04-12:42:42;
+ 	fbJson      		: FB_JsonSaxWriter;
+ 	sJsonDocCells   	: STRING(3000);
+	//Reader
+ 	fbJsonReader    		: FB_JsonSaxReader;
+	pJsonParse 				: JsonSaxHandler;
+	sJsonDocAction			: STRING(255);
+	sJsonDocLastAction   : STRING(255);
+	
+	sJsonDocError 		 : STRING (255); 
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+//Initialisierung
+IF NOT m_bInit THEN
+	// Hier die FunktionsBlöcke der Maschinen in das Array Schreiben !!! //NN
+	aCellList[1] := fbCellA2;
+	aCellList[1].SetName('A2'); // Geometrieerfassung
+	aCellList[1].SetGetDataServiceEnable();
+
+	aCellList[2] := fbCellD1;
+	aCellList[2].SetName('D1'); // LaserSchweißen
+	//aCellList[2].SetGetDataServiceEnable();  //Liest in den Zwilling aus
+	//aCellList[2].SetPutDataServiceEnable();   //Schreibt in den Zwilling rein
+	
+	//Array an die Anzahl der Zellen anpassen
+	aCellList[3] := fbCellA5;
+	aCellList[3].SetName('A5'); // Demontage
+	
+	aCellList[4] := fbCellV1;
+	aCellList[4].SetName('V1'); 		// Virtuell
+	aCellList[4].SetVirtualCell();		//Ist eine Virtuelle zelle
+	
+///////////////////////////////////////////////////////////////////////////////////////////////////////	
+	aCellList[5] := fbCellL1;			//*Hami*  FB für LaserTec 
+	aCellList[5].SetName('L1');
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	// Intitialisiert setzen 
+	m_bInit := TRUE;
+
+END_IF
+
+
+
+IF m_bAktionInProgress = FALSE THEN 
+	// Abfrage ob neue Aktion angestoßen wurde
+	CheckForNewAction();
+		
+END_IF
+
+
+//Zustandmaschinen
+	// Zyklische aktualisierung der Zellen-Zustandsmaschinen
+	I := 1;
+	FOR I:=1 TO m_iNumberOfCells BY 1 DO
+    	aCellList[I].StateMachine();
+	END_FOR;
+///////////////////////////////////////////////////////////////////////////////////////////////////////	
+	//*Hami* Zyklische aktualisierung der Lasertec-Zustandsmaschinen mit Profibus
+	aCellList[5].StateMachineProfibus();
+///////////////////////////////////////////////////////////////////////////////////////////////////////	
+	// Zyklische aktualisierung der MHS-Zustandsmaschine
+	fbMHS();
+// Zustandsmaschinen durchgelaufen
+
+IF m_bAktionInProgress THEN// MHS muss den Zustand der involvierten Zelle kennen und eine Zustand von der Zelle anfordern können
+	
+	fbMHS.SetStateCurrentMachineForAction( aCellList[fbMHS.GetCurrentCellForAction()].GetState());// Aktualisieren des MHS Zustandes
+	IF fbMHS.NeededCellStatePending() THEN // Wenn das MHS einen Zellenzustand verlangt wird er folgend übergeben
+		aCellList[fbMHS.GetCurrentCellForAction()].RequestActionState(fbMHS.SendNeededToCell() );// Übergabe des geforderten Zellenzustandes an die Zelle
+	END_IF
+END_IF
+
+
+// Abfrage ob letzte Aktion Abgeschlossen wurde.... auf WIN abgefragen um neue Aktion zu senden 
+IF fbMHS.GetActionFinished() THEN
+	m_bAktionInProgress := FALSE; 
+	IF m_iActionRequestLast = 2 THEN // Bestuecken
+		aCellList[m_iCellRequestLast].SetWorkpiece(m_iWPRequestLast, m_sWPIDLast);// Werkstück an die Zelle übergeben
+		aCellList[m_iCellRequestLast].RequestWork(); // Starten der Bearbeitung in der Zelle		
+	ELSE
+		aCellList[m_iCellRequestLast].SetWorkpiece(0, 'Empty'); // Werkstück der Zelle nehmen
+	END_IF
+	m_iActionStateLast := 3;
+END_IF
+
+// Schreiben der JSON-Strings zur Kommunikation der Systemdemostrator-Anwendung
+WriteJsonStrings();]]></ST>
+    </Implementation>
+    <Method Name="CheckForNewAction" Id="{72455b31-9be2-4909-b6e8-ee8836d717e1}">
+      <Declaration><![CDATA[METHOD CheckForNewAction : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[	 ParseNewAction();
+	m_iCellRequest := NumberOfCellName(m_sCellRequest);
+	IF	 (NOT(m_sActionID = m_sActionIDLast)) AND (m_iCellRequest <= m_iNumberOfCells) AND (m_iCellRequest > 0) THEN // Neue Aktion und Zelle ist existent
+		IF NOT(aCellList[m_iCellRequest].IsVirtualCell())THEN
+			
+			IF aCellList[m_iCellRequest].IsIdle() THEN // Zelle frei
+				// Neue Aktion an das MHS übergeben 
+				WriteNewActionToMHS();
+				m_bAktionInProgress := TRUE;// Setzen des Flags 
+			END_IF
+		ELSE // Im Falle einer Aktion für eine virtuelle Zelle
+			IF aCellList[m_iCellRequest].IsIdle() THEN
+				aCellList[m_iCellRequest].SetWorkpiece(0, m_sWPID );
+				aCellList[m_iCellRequest].RequestWork();	
+				//m_iActionStateLast := 3; // Wird nur angestoßen ist direkt fertig mit der Aktion, so dass eine weitere beginnen kann.
+			END_IF
+		END_IF
+	
+	END_IF ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="NumberOfCellName" Id="{9a26f1ce-22d2-4a3f-a364-75a9b6bfddc6}">
+      <Declaration><![CDATA[METHOD NumberOfCellName : DINT
+VAR_INPUT
+	sNameOfCell : STRING;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FOR I:=1 TO m_iNumberOfCells BY 1 DO
+    IF sNameOfCell = aCellList[I].GetName() THEN
+		NumberOfCellName :=I;
+	END_IF
+END_FOR;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ParseNewAction" Id="{9a2f2921-5eb4-42a6-8992-a83f9bea8336}">
+      <Declaration><![CDATA[METHOD ParseNewAction : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+	// Aktion JSonDoc Lesen des Aktuellen Strings
+	fbJsonReader.Parse( sJson := sJsonDocAction, ipHdl := pJsonParse);
+	
+	IF pJsonParse.IsFinished() THEN
+		// Übergabe der geparsten Variablen
+		m_sActionID	:=	pJsonParse.GetActionID();
+		m_sWPID	:=	pJsonParse.GetWPID();
+		m_iWPRequest := pJsonParse.GetWPPlace(); 
+		m_sCellRequest := pJsonParse.GetCell(); 
+		m_iActionRequest:=pJsonParse.GetActionType();
+		
+		// Für den nächsten Durchlauf zurücksetzen 
+		pJsonParse.Reset();
+	ELSE
+		// Parsen des Json-Strings
+		fbJsonReader.Parse( sJson := sJsonDocAction, ipHdl := pJsonParse);
+	END_IF
+	]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="WriteJSonDocAction" Id="{14699d1b-9ca0-44ef-b161-0d1df32cdba0}">
+      <Declaration><![CDATA[METHOD WriteJSonDocAction : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+fbJson.ResetDocument();
+		//fbJson.StartArray();
+fbJson.StartObject();
+            fbJson.AddKey('m_sActionID');
+			fbJson.AddString(m_sActionIDLast);
+            fbJson.AddKey('m_sWPID');
+			sString := m_sWPIDLast;
+			fbJson.AddString(sString);
+            fbJson.AddKey('m_iWPPlace');
+			fbJson.AddDint(m_iWPRequestLast);
+            fbJson.AddKey('m_sCell');
+			IF m_iCellRequestLast > 0 THEN// Sonst würden das Zell Array außerhalb seines Bereiches angesproehcen werden
+				sString := aCellList[m_iCellRequestLast].GetName();
+			ELSE
+				sString := 'EmptyAction';				
+			END_IF
+			fbJson.AddString(sString);
+            fbJson.AddKey('m_eActionType');
+			fbJson.AddDint(m_iActionRequestLast);
+            fbJson.AddKey('m_iActionState');
+			fbJson.AddDint(m_iActionStateLast);	
+fbJson.EndObject();
+	sJsonDocLastAction := fbJson.GetDocument();
+
+WriteJSonDocAction := TRUE;
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="WriteJSonDocCells" Id="{cd2fa975-435c-4714-a42f-a974e2f3b310}">
+      <Declaration><![CDATA[METHOD WriteJSonDocCells : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Merken alle Zellen einzelnd Updaten, weil es nicht möglich ist die über 255 Zeichen langen Strings aller zu übertragen
+
+	fbJson.ResetDocument();
+	//fbJson.StartObject();
+	//fbJson.AddKey('Timestamp');
+	
+	//fbJson.AddDateTime(dtTimestamp);
+	m_iCellUpdateIter := m_iCellUpdateIter +1 ; 
+	IF m_iCellUpdateIter > m_iNumberOfCells THEN
+		m_iCellUpdateIter := 1;
+	END_IF
+		//fbJson.AddKey('Cell');
+		m_sActionIDLast := m_sActionID;
+		m_iWPRequestLast := m_iWPRequest; 		
+		m_iCellRequestLast := m_iCellRequest;
+		m_iActionRequestLast :=	m_iActionRequest;
+		fbJson.StartObject();
+		//fbJson.StartArray();
+		fbJson.AddKey('Name');
+		sString := aCellList[m_iCellUpdateIter].GetName();
+		fbJson.AddString(sString);
+		fbJson.AddKey('State');
+		fbJson.AddDint(aCellList[m_iCellUpdateIter].GetState());
+		fbJson.AddKeyBool('Idle',aCellList[m_iCellUpdateIter].IsIdle());
+		fbJson.AddKey('Workpiece');
+		fbJson.AddDint(aCellList[m_iCellUpdateIter].GetWorkpiece());
+		fbJson.AddKey('IsDisassemblyCell');
+		fbJson.AddBool(aCellList[m_iCellUpdateIter].IsDisassemblyCell());
+		fbJson.AddKey('IsVirtualCell');
+		fbJson.AddBool(aCellList[m_iCellUpdateIter].IsVirtualCell());
+		fbJson.EndObject();
+		
+		
+
+	
+	
+	//fbJson.EndObject();
+	sJsonDocCells := '';
+	sJsonDocCells := fbJson.GetDocument();
+	
+WriteJSonDocCells := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="WriteJSonError" Id="{e557977b-b42a-4ce7-aada-52cd4b257200}">
+      <Declaration><![CDATA[METHOD WriteJSonError : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[	fbJson.ResetDocument();
+
+
+	I := 1;
+	FOR I:=1 TO m_iNumberOfCells BY 1 DO
+		IF aCellList[I].IsError() THEN
+			fbJson.StartObject();
+			fbJson.AddKey('Name');
+			sString := aCellList[I].GetName();
+			fbJson.AddString(sString);	
+			fbJson.AddKey('Workpiece');
+			fbJson.AddDint(aCellList[I].GetWorkpiece());
+			fbJson.AddKey('Error');
+			sString := aCellList[I].GetErrorString();
+			fbJson.AddString(sString);
+			fbJson.EndObject();	
+			
+			sJsonDocError := '';
+			sJsonDocError := fbJson.GetDocument();
+
+		END_IF	
+	
+	END_FOR;
+	]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="WriteJsonStrings" Id="{954665ae-d234-4f49-8bb2-23a54af35eac}">
+      <Declaration><![CDATA[METHOD WriteJsonStrings : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+
+
+
+// Erstellen eines Json-Strings für die GUI alle 100 Durchläufe 0,1s
+m_iJsonTimer := m_iJsonTimer+1;
+IF m_iJsonTimer > 150 THEN
+	WriteJSonDocCells();
+	WriteJSonDocAction();
+	
+	m_iJsonTimer := 0;
+	
+END_IF
+// GUI Trigger um zyklische Aufrufe auch bei nicht veränderten JSON-Strings zu erzielen
+// Ohne den Trigger würde ine Prüfung des Regenerationspfades bei nicht mehr vorhanden Aktion im Pfad nicht fortgeführt werden
+IF m_iTriggerTimer > 2500 THEN
+	m_bTrigger :=  NOT(m_bTrigger);// Bool abwechselnd false und true
+	WriteJsonTrigger();
+	m_iTriggerTimer := 0; 
+END_IF
+	
+m_iTriggerTimer := m_iTriggerTimer + 1;  
+	
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="WriteJsonTrigger" Id="{92d7bf6a-3231-472c-b0fd-8cbe21dccf9e}">
+      <Declaration><![CDATA[METHOD WriteJsonTrigger : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fbJson.ResetDocument();
+		//fbJson.StartArray();
+fbJson.StartObject();
+            fbJson.AddKey('m_bTrigger');
+			fbJson.AddBool(m_bTrigger);
+fbJson.EndObject();
+	m_sJsonTrigger := fbJson.GetDocument();
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="WriteNewActionToMHS" Id="{b0df6bc5-6c31-419f-977d-98732914d6f7}">
+      <Declaration><![CDATA[METHOD WriteNewActionToMHS : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Übergaben der neuen Aktion an das MHS
+fbMHS.RequestAction(	iWorkpiece := m_iWPRequest, iCell := m_iCellRequest, bRequest := m_iActionRequest);
+// Speichern des Zustandes
+m_sActionIDLast := m_sActionID;
+m_sWPIDLast := m_sWPID; 
+m_iWPRequestLast := m_iWPRequest; 		
+m_iCellRequestLast := m_iCellRequest;
+m_iActionRequestLast :=	m_iActionRequest;
+
+m_iActionStateLast := 2;
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="MAIN">
+      <LineId Id="18" Count="1" />
+      <LineId Id="188" Count="0" />
+      <LineId Id="493" Count="0" />
+      <LineId Id="190" Count="0" />
+      <LineId Id="444" Count="0" />
+      <LineId Id="1012" Count="0" />
+      <LineId Id="1617" Count="0" />
+      <LineId Id="952" Count="0" />
+      <LineId Id="1539" Count="2" />
+      <LineId Id="1470" Count="0" />
+      <LineId Id="1620" Count="1" />
+      <LineId Id="1609" Count="1" />
+      <LineId Id="1251" Count="1" />
+      <LineId Id="1327" Count="0" />
+      <LineId Id="1396" Count="0" />
+      <LineId Id="1692" Count="2" />
+      <LineId Id="1397" Count="0" />
+      <LineId Id="447" Count="0" />
+      <LineId Id="194" Count="0" />
+      <LineId Id="192" Count="0" />
+      <LineId Id="1258" Count="0" />
+      <LineId Id="191" Count="0" />
+      <LineId Id="1255" Count="1" />
+      <LineId Id="509" Count="1" />
+      <LineId Id="773" Count="0" />
+      <LineId Id="521" Count="1" />
+      <LineId Id="508" Count="0" />
+      <LineId Id="504" Count="0" />
+      <LineId Id="492" Count="0" />
+      <LineId Id="203" Count="0" />
+      <LineId Id="189" Count="0" />
+      <LineId Id="201" Count="0" />
+      <LineId Id="198" Count="2" />
+      <LineId Id="1773" Count="0" />
+      <LineId Id="1695" Count="1" />
+      <LineId Id="1775" Count="0" />
+      <LineId Id="109" Count="0" />
+      <LineId Id="108" Count="0" />
+      <LineId Id="494" Count="0" />
+      <LineId Id="280" Count="0" />
+      <LineId Id="771" Count="1" />
+      <LineId Id="278" Count="0" />
+      <LineId Id="768" Count="0" />
+      <LineId Id="286" Count="0" />
+      <LineId Id="769" Count="0" />
+      <LineId Id="224" Count="0" />
+      <LineId Id="1233" Count="1" />
+      <LineId Id="1236" Count="9" />
+      <LineId Id="1235" Count="0" />
+      <LineId Id="223" Count="0" />
+      <LineId Id="204" Count="0" />
+      <LineId Id="1139" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.CheckForNewAction">
+      <LineId Id="6" Count="17" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.NumberOfCellName">
+      <LineId Id="6" Count="1" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.ParseNewAction">
+      <LineId Id="6" Count="17" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.WriteJSonDocAction">
+      <LineId Id="51" Count="0" />
+      <LineId Id="54" Count="10" />
+      <LineId Id="74" Count="3" />
+      <LineId Id="65" Count="8" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.WriteJSonDocCells">
+      <LineId Id="54" Count="1" />
+      <LineId Id="6" Count="6" />
+      <LineId Id="52" Count="1" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="33" Count="2" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="14" Count="6" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="21" Count="1" />
+      <LineId Id="47" Count="1" />
+      <LineId Id="60" Count="2" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="25" Count="4" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="30" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.WriteJSonError">
+      <LineId Id="6" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="44" Count="1" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="48" Count="1" />
+      <LineId Id="52" Count="2" />
+      <LineId Id="58" Count="2" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="42" Count="1" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.WriteJsonStrings">
+      <LineId Id="6" Count="1" />
+      <LineId Id="18" Count="11" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="30" Count="7" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.WriteJsonTrigger">
+      <LineId Id="6" Count="4" />
+      <LineId Id="22" Count="2" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.WriteNewActionToMHS">
+      <LineId Id="6" Count="9" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

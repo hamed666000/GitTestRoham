@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <Itf Name="I_CELL" Id="{96f88f47-a69d-40f2-9065-9e4bbc0a3bb6}">
+    <Declaration><![CDATA[INTERFACE I_CELL
+]]></Declaration>
+    <Method Name="GetErrorString" Id="{f48d2e09-2744-4e42-9fb4-6c14d7797d56}">
+      <Declaration><![CDATA[METHOD GetErrorString : STRING
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetName" Id="{c75aec6f-00a9-4de2-a013-8411441dd5c2}">
+      <Declaration><![CDATA[METHOD GetName : STRING
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetState" Id="{890821fa-8f60-4e92-b6c5-1ef776e087d7}">
+      <Declaration><![CDATA[METHOD GetState : INT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetWorkpiece" Id="{f6c75cd8-1200-4827-8ab7-e5805dd1efce}">
+      <Declaration><![CDATA[METHOD GetWorkpiece : DINT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="IsDisassemblyCell" Id="{8b190fca-3c9c-4844-8494-6337f6fb5121}">
+      <Declaration><![CDATA[METHOD IsDisassemblyCell : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="IsError" Id="{e2c99334-0217-4d12-8b64-e71100b91ae5}">
+      <Declaration><![CDATA[METHOD IsError : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="IsIdle" Id="{0ffbc268-a1c5-4902-a2ef-c9c0966c3846}">
+      <Declaration><![CDATA[METHOD IsIdle : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="IsVirtualCell" Id="{7756fb52-2812-4c32-b989-cc09212a5ea7}">
+      <Declaration><![CDATA[METHOD IsVirtualCell : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="RequestActionState" Id="{aae617c4-b838-41e5-b2f1-9c4e7eaeb01f}">
+      <Declaration><![CDATA[METHOD RequestActionState : BOOL
+VAR_INPUT
+	csStateRequest : CELL_ACTION_STATE;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="RequestWork" Id="{c1593d8c-bc07-4e8e-a656-52a4af97f19b}">
+      <Declaration><![CDATA[METHOD RequestWork : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="SetDisassemblyCell" Id="{04d49d9e-e345-43eb-ad0c-e19d123298f9}">
+      <Declaration><![CDATA[METHOD SetDisassemblyCell : BOOL
+VAR_INPUT
+	bIsDisassemblyCell : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="SetGetDataServiceEnable" Id="{cf7d5a0d-1a2e-4fac-bb6b-09dcaeb20cac}">
+      <Declaration><![CDATA[METHOD SetGetDataServiceEnable : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="SetName" Id="{b2193358-af95-4e90-b2c6-ed0d447e44e6}">
+      <Declaration><![CDATA[METHOD SetName : BOOL
+VAR_INPUT
+	sName :string ;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="SetPutDataServiceEnable" Id="{cdf91f8a-c3bb-40fd-8ccc-0b3545df1826}">
+      <Declaration><![CDATA[METHOD SetPutDataServiceEnable : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="SetVirtualCell" Id="{81f4e71f-05b6-4b22-85ab-f0f6ef7747df}">
+      <Declaration><![CDATA[METHOD SetVirtualCell : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="SetWorkpiece" Id="{98a86163-1e62-4d25-9854-5a071bc92f39}">
+      <Declaration><![CDATA[METHOD SetWorkpiece : BOOL
+VAR_INPUT
+	iWorkpiece : DINT;
+	sWorkpieceID : STRING;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="StateMachine" Id="{8dd29fa6-ee17-4029-b6f7-d7a7a5d1ca5c}">
+      <Declaration><![CDATA[METHOD StateMachine : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="StateMachineProfibus" Id="{e724d582-ce1f-4a78-ad2e-bdc4ddd3aca3}">
+      <Declaration><![CDATA[METHOD StateMachineProfibus : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

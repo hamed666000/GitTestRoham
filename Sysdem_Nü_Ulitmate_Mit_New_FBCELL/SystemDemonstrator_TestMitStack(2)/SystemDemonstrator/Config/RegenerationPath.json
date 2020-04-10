@@ -1,0 +1,40 @@
+[
+
+  {
+    "t": 7,
+    "cell": "A5",
+    "action": "put",
+    "workpiece": 1
+  },
+  {
+    "t": 8,
+    "cell": "A5",
+    "action": "pickup",
+    "workpiece": 1
+  },
+   {
+    "t": 9,
+    "cell": "A2",
+    "action": "put",
+    "workpiece": 1
+  },
+  {
+    "t": 10,
+    "cell": "A2",
+    "action": "pickup",
+    "workpiece": 1
+  },  
+  {
+    "t": 11,
+    "cell": "A5",
+    "action": "put",
+    "workpiece": 2
+  },
+  {
+    "t": 18,
+    "cell": "A5",
+    "action": "pickup",
+    "workpiece": 2
+  }
+
+]

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <GVL Name="CLAMP_STATE" Id="{7b75da27-6950-4b61-8247-fae8d6f4ad07}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+TYPE
+	CLAMP_STATE: (e_OPEN, e_CLOSED_FULL, e_CLOSED, e_ERROR);
+END_TYPE		
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

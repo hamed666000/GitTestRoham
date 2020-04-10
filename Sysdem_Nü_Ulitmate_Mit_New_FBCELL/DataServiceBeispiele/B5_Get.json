@@ -1,0 +1,13 @@
+﻿{
+  "Mode": "TwinGet",
+  "cutSFolder": "C:\\temp\\Debug",
+  "Source": "C:\\temp",
+  "Target": "C:\\Users\\felix_000\\Desktop\\Testen",
+  "Node": "TestCodeCode\\Felix",
+  "File": "TestA2.txt",
+  "Debug": "false",
+  "bReturnValue": "true",
+  "ReturnValueVariable": "",
+  "GetMetaData": "true"
+
+}

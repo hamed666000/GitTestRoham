@@ -1,0 +1,416 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="FB_VirtualCell" Id="{a90fa4e0-bbd6-44bf-a5e2-a23d2000e0c9}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_VirtualCell IMPLEMENTS I_CELL
+VAR_INPUT
+	
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	m_csStateRequest : CELL_ACTION_STATE;
+	m_csStateRequestOld : CELL_ACTION_STATE;
+	m_csState : CELL_ACTION_STATE;
+	m_csStateLastCycle : CELL_ACTION_STATE;
+	m_csStateLastAction : CELL_ACTION_STATE;
+	
+	
+	m_csSRWorkingState : CELL_WORKING_STATES := CELL_WORKING_STATES.e_FINISHED;
+	m_csSRWorkingStateLast : CELL_WORKING_STATES := CELL_WORKING_STATES.e_FINISHED;
+	// Eigenschaften
+	m_sName : STRING;
+	m_bIsDisassemblyCell : BOOL;
+	
+	m_iWorkpiece : DINT;
+	m_sWorkpieceID : STRING;
+	
+
+	m_csCellState : CELL_STATE;
+	m_csCellStateLast : CELL_STATE;
+
+
+	
+	m_sErrorString : STRING;
+	
+	// DataServices
+	
+
+	m_sConfigString : STRING;
+	m_sConfigStringEndGet : STRING  := '_Get.exe';
+	m_sConfigStringEndPut : STRING  := '_Put.exe';
+	
+	// Virtuelle Zellen Verbindung
+	fbVirtualCellIntWriter 	: FB_VirtualCellIntWriter;
+	fbJson      			: FB_JsonSaxWriter;
+	m_sJsonAction 			: STRING;
+	m_sActionPath 			: STRING;
+	m_sActionName			: STRING;
+	m_sActionPathDir 		: STRING   := 'C:\temp\Actions';
+	m_sAMSNetID 			: 	STRING 	:=	'192.168.178.24.1.1';
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+]]></ST>
+    </Implementation>
+    <Method Name="GetErrorString" Id="{ea72647d-72dd-4d26-9c74-65790023a393}">
+      <Declaration><![CDATA[METHOD GetErrorString : STRING
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetName" Id="{a4eeaf4b-9099-4090-b5f4-7acfdce5f3b2}">
+      <Declaration><![CDATA[METHOD GetName : STRING
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetName := m_sName;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetState" Id="{f76ec9cf-15e5-482f-89cc-03f1c18a1ae9}">
+      <Declaration><![CDATA[METHOD PUBLIC GetState : INT
+VAR_INPUT
+	
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetState := CELL_ACTION_STATE.e_Standby;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetWorkpiece" Id="{deb31da3-968c-468a-a708-ac8b80e8ce29}">
+      <Declaration><![CDATA[METHOD GetWorkpiece : DINT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetWorkpiece := m_iWorkpiece;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsDisassemblyCell" Id="{39df3b55-7f79-4c31-bfee-532f761be0d2}">
+      <Declaration><![CDATA[METHOD IsDisassemblyCell : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsDisassemblyCell := FALSE; // Kann keine sein ist virtuell]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsError" Id="{2533ada6-4a94-40bd-ad9f-0a03704fa7a8}">
+      <Declaration><![CDATA[METHOD IsError : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF m_csCellState = CELL_STATE.e_ERROR THEN
+	IsError := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsIdle" Id="{2db0ca70-7c53-4c40-a2de-4a0d1f0fff1a}">
+      <Declaration><![CDATA[METHOD IsIdle : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF m_csCellState = CELL_STATE.e_IDEL THEN
+	IsIdle := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsVirtualCell" Id="{048bcaad-14c6-4606-994f-088eba23898b}">
+      <Declaration><![CDATA[METHOD IsVirtualCell : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsVirtualCell :=TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RequestActionState" Id="{575fa3c9-47e2-467f-9657-4296d9f55c66}">
+      <Declaration><![CDATA[METHOD PUBLIC RequestActionState : BOOL
+VAR_INPUT
+	csStateRequest : CELL_ACTION_STATE;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_csStateRequest := csStateRequest;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RequestWork" Id="{c1b7ea6b-aaca-499e-b3a7-02c619a4dd58}">
+      <Declaration><![CDATA[METHOD RequestWork : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_csCellState := CELL_STATE.e_WORKING;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetDisassemblyCell" Id="{ada44e1a-3ad7-44fe-bb6d-8ddcef097431}">
+      <Declaration><![CDATA[METHOD SetDisassemblyCell : BOOL
+VAR_INPUT
+	bIsDisassemblyCell : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_bIsDisassemblyCell := bIsDisassemblyCell;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetGetDataServiceEnable" Id="{4e8389e7-2bbe-426f-8973-c3019ed534dc}">
+      <Declaration><![CDATA[METHOD SetGetDataServiceEnable : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+SetGetDataServiceEnable := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetName" Id="{27280be0-ca8d-47bb-857a-ad57bc307b63}">
+      <Declaration><![CDATA[METHOD SetName : BOOL
+VAR_INPUT
+	sName :string ;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_sName := sName;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetPutDataServiceEnable" Id="{d8340627-f10b-4b6e-9535-3d6fbb7ce993}">
+      <Declaration><![CDATA[METHOD SetPutDataServiceEnable : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+SetPutDataServiceEnable := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetVirtualCell" Id="{93f3f1cb-9ca0-4fe5-9a73-f6e60453fe12}">
+      <Declaration><![CDATA[METHOD SetVirtualCell : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetWorkpiece" Id="{26bddd69-3d02-467d-b3a6-1c2789da1adf}">
+      <Declaration><![CDATA[METHOD SetWorkpiece : BOOL
+VAR_INPUT
+	iWorkpiece : DINT;
+	sWorkpieceID : STRING;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_iWorkpiece := iWorkpiece;
+m_sWorkpieceID := sWorkpieceID;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StateMachine" Id="{75f6fb25-f1c3-49ed-8e42-270cddb5afde}">
+      <Declaration><![CDATA[METHOD PUBLIC StateMachine : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+//Zellen Zustandsmaschine
+
+CASE m_csCellState OF 
+	CELL_STATE.e_IDEL:
+			
+	
+		;
+ 	CELL_STATE.e_MHS_ACTION;
+		//SubRoutine für Aktion beim beladen aktuell leer da keine MHS für eine virtuelle Zelle verfügbar sind 
+		;
+	CELL_STATE.e_WORKING:
+		//SubRoutine zum Durchführen einer Bearbeitung
+			//Erstellen des Json-Strings für die Datei		
+			fbJson.ResetDocument();
+		
+			fbJson.StartObject();
+            fbJson.AddKey('Name');
+			fbJson.AddString(m_sName);
+			fbJson.AddKey('WPID');
+			fbJson.AddString(m_sWorkpieceID);			
+			fbJson.EndObject();
+			m_sJsonAction := fbJson.GetDocument();
+		
+			// Phad der Schnittstellen-Datei
+			m_sActionPath := CONCAT (m_sActionPathDir,'\');
+			m_sActionPath := CONCAT (m_sActionPath, m_sName);
+			m_sActionPath := CONCAT (m_sActionPath, '_');
+			m_sActionPath := CONCAT (m_sActionPath, m_sWorkpieceID);
+			m_sActionPath := CONCAT (m_sActionPath, '.json');
+			
+			// Name der Schnittstellen-Datei
+			m_sActionName := CONCAT (m_sName, '_');
+			m_sActionName := CONCAT (m_sActionName, m_sWorkpieceID);
+			m_sActionName := CONCAT (m_sActionName, '.json');
+			
+			// Nächster Schritt SubRoutine Starten um das Schreiben auszugühren
+			IF NOT (CELL_STATE.e_WORKING = m_csCellStateLast) THEN  
+				m_csSRWorkingState := CELL_WORKING_STATES.e_START;
+			END_IF
+
+			
+	CASE m_csSRWorkingState OF
+			
+			CELL_WORKING_STATES.e_START:
+				fbVirtualCellIntWriter.buffRead := m_sJsonAction; // Inhalt der Datei übergeben
+				fbVirtualCellIntWriter.sDestPathName := m_sActionPath; // Pfad der Datei
+				fbVirtualCellIntWriter.sDestNetId := m_sAMSNetID;// Net Id des HostPC
+				fbVirtualCellIntWriter.tTimeOut := DEFAULT_ADS_TIMEOUT;// Fehlerzeit
+				fbVirtualCellIntWriter.bExecute := TRUE;// Positive flanke zum Starten
+				IF fbVirtualCellIntWriter.bError THEN//
+					m_csCellState := CELL_STATE.e_ERROR;
+				END_IF
+
+				m_csSRWorkingState := CELL_WORKING_STATES.e_WORKING;
+
+				
+			CELL_WORKING_STATES.e_WORKING:	
+				fbVirtualCellIntWriter.bExecute := FALSE; // Nur positive Flanke
+				IF NOT(fbVirtualCellIntWriter.bBusy) THEN // Der Funktionsblock aufgehört hat zu arbeiten nächster Schritt ggf. das vorhanden sein der Datei prüfen 
+					m_csSRWorkingState := CELL_WORKING_STATES.e_FINISHED;
+				END_IF
+				
+			CELL_WORKING_STATES.e_FINISHED:
+				m_iWorkpiece := 0;
+				m_sWorkpieceID := 'Empty';
+				m_csCellState := CELL_STATE.e_IDEL;
+			
+		END_CASE
+		
+	CELL_STATE.e_ERROR:
+			;
+END_CASE
+
+m_csCellStateLast := m_csCellState;
+fbVirtualCellIntWriter();
+
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_VirtualCell">
+      <LineId Id="208" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VirtualCell.GetErrorString">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VirtualCell.GetName">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VirtualCell.GetState">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VirtualCell.GetWorkpiece">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VirtualCell.IsDisassemblyCell">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VirtualCell.IsError">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VirtualCell.IsIdle">
+      <LineId Id="14" Count="1" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VirtualCell.IsVirtualCell">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VirtualCell.RequestActionState">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VirtualCell.RequestWork">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VirtualCell.SetDisassemblyCell">
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VirtualCell.SetGetDataServiceEnable">
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VirtualCell.SetName">
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VirtualCell.SetPutDataServiceEnable">
+      <LineId Id="5" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_VirtualCell.SetVirtualCell">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VirtualCell.SetWorkpiece">
+      <LineId Id="5" Count="0" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VirtualCell.StateMachine">
+      <LineId Id="6" Count="0" />
+      <LineId Id="150" Count="0" />
+      <LineId Id="153" Count="0" />
+      <LineId Id="152" Count="0" />
+      <LineId Id="157" Count="0" />
+      <LineId Id="166" Count="1" />
+      <LineId Id="162" Count="0" />
+      <LineId Id="159" Count="0" />
+      <LineId Id="168" Count="0" />
+      <LineId Id="163" Count="0" />
+      <LineId Id="160" Count="0" />
+      <LineId Id="170" Count="0" />
+      <LineId Id="332" Count="0" />
+      <LineId Id="341" Count="0" />
+      <LineId Id="333" Count="3" />
+      <LineId Id="339" Count="1" />
+      <LineId Id="337" Count="0" />
+      <LineId Id="331" Count="0" />
+      <LineId Id="330" Count="0" />
+      <LineId Id="379" Count="0" />
+      <LineId Id="382" Count="8" />
+      <LineId Id="380" Count="1" />
+      <LineId Id="391" Count="0" />
+      <LineId Id="395" Count="0" />
+      <LineId Id="319" Count="0" />
+      <LineId Id="363" Count="0" />
+      <LineId Id="373" Count="0" />
+      <LineId Id="346" Count="0" />
+      <LineId Id="320" Count="0" />
+      <LineId Id="182" Count="0" />
+      <LineId Id="178" Count="0" />
+      <LineId Id="328" Count="0" />
+      <LineId Id="348" Count="4" />
+      <LineId Id="354" Count="1" />
+      <LineId Id="394" Count="0" />
+      <LineId Id="359" Count="0" />
+      <LineId Id="353" Count="0" />
+      <LineId Id="356" Count="0" />
+      <LineId Id="186" Count="0" />
+      <LineId Id="191" Count="0" />
+      <LineId Id="392" Count="1" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="362" Count="0" />
+      <LineId Id="181" Count="0" />
+      <LineId Id="377" Count="1" />
+      <LineId Id="321" Count="0" />
+      <LineId Id="185" Count="0" />
+      <LineId Id="179" Count="0" />
+      <LineId Id="174" Count="0" />
+      <LineId Id="161" Count="0" />
+      <LineId Id="323" Count="0" />
+      <LineId Id="322" Count="0" />
+      <LineId Id="397" Count="0" />
+      <LineId Id="396" Count="0" />
+      <LineId Id="325" Count="2" />
+      <LineId Id="324" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

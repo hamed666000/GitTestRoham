@@ -1,0 +1,12 @@
+﻿{
+  "Mode": "TwinNew",
+  "cutSFolder": "C:\\temp\\Debug",
+  "Source": "C:\\temp",
+  "Target": "C:\\Users\\felix_000\\Desktop\\B2_File",
+  "Node": "TestCodeCode\\Felix",
+  "File": "TestA2.txt",
+  "Debug": "true",
+  "bReturnValue": "false",
+  "ReturnValueVariable": "",
+  "GetMetaData": "true"
+}

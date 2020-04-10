@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <GVL Name="MHS_STATE" Id="{991182f8-cd13-4b91-a1cd-2ef639fe0831}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+TYPE
+	MHS_STATE: (e_IDLE, e_PGO_POS, e_PGET_WP, e_PWAIT_DOOR, e_PWAIT_CLAMP, e_PPUT_WP,e_PCLOSE_CLAMP , e_PLEAFE_MACHINE, 
+				e_GGO_POS, e_GGET_WP, e_GWAIT_DOOR, e_GWAIT_CLAMP ,e_GCLOSE_CLAMP , e_GLEAFE_MACHINE, e_AKTION_FINISHED, e_ERROR);
+END_TYPE	
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -1,0 +1,846 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="FB_Cell" Id="{e1ffe5ff-84cb-48dc-9b93-dc1c5d956c63}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Cell IMPLEMENTS I_CELL
+VAR_INPUT
+	
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	m_csStateRequest : CELL_ACTION_STATE;
+	m_csStateRequestOld : CELL_ACTION_STATE;
+	m_csState : CELL_ACTION_STATE;
+	m_csStateLastCycle : CELL_ACTION_STATE;
+	m_csStateLastAction : CELL_ACTION_STATE;
+	
+	
+	m_csSRWorkingState : CELL_WORKING_STATES := CELL_WORKING_STATES.e_FINISHED;
+	m_csSRWorkingStateLast : CELL_WORKING_STATES := CELL_WORKING_STATES.e_FINISHED;
+	// Eigenschaften
+	m_sName : STRING;
+	m_bIsDisassemblyCell : BOOL;
+	
+	
+	m_iWorkpiece : DINT;
+	m_sWorkpieceID : STRING;
+	
+
+	m_csCellState : CELL_STATE;
+	m_csCellStateLast : CELL_STATE;
+
+	fbInterface : FB_InterfaceIO;
+	//*Hami* Deklration von FB_InterfaceProfibus (Die Wurde in Method (StateMachine)) aufgerufen
+	fbInterfaceProfibus : FB_InterfaceProfibus;
+	fbClamp : FB_Clamp; 
+	
+	m_sErrorString : STRING;
+	
+	// DataServices
+	
+	fbDataServicePut : FB_DataService;
+	m_bDataServicePutEnable : BOOL;
+	fbDataServiceGet : FB_DataService;
+	m_bDataServiceGetEnable : BOOL;
+	m_sConfigString : STRING;
+	m_sConfigStringEndGet : STRING  := '_Get.exe';
+	m_sConfigStringEndPut : STRING  := '_Put.exe';
+
+	m_sDataServiceDir: STRING  := 'C:\Users\\Nübel\Desktop\Sysdem_Nü_Ulitmate\CUTS\';
+	m_sDataServiceIP: STRING  := '192.168.74.113.1.1';
+	
+
+	
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+]]></ST>
+    </Implementation>
+    <Method Name="GetErrorString" Id="{f62f3a67-f37b-4627-ab83-46ce78fb3028}">
+      <Declaration><![CDATA[METHOD GetErrorString : STRING
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetName" Id="{eb9f46c1-aeb7-499c-bc16-804ff446114a}">
+      <Declaration><![CDATA[METHOD GetName : STRING
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetName := m_sName;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetState" Id="{84d2408e-e887-420f-ba88-3a7c54e4a5cc}">
+      <Declaration><![CDATA[METHOD PUBLIC GetState : INT
+VAR_INPUT
+	
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetState := m_csState;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetWorkpiece" Id="{8607ea34-5b0f-434f-b42e-ace72e21e01e}">
+      <Declaration><![CDATA[METHOD GetWorkpiece : DINT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetWorkpiece := m_iWorkpiece;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsDisassemblyCell" Id="{b69f06b8-1b86-4a70-b60c-ab6ec75ca0ce}">
+      <Declaration><![CDATA[METHOD IsDisassemblyCell : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsDisassemblyCell := m_bIsDisassemblyCell;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsError" Id="{86526262-a5fb-463f-a256-f46832931f09}">
+      <Declaration><![CDATA[METHOD IsError : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF m_csCellState = CELL_STATE.e_ERROR THEN
+	IsError := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsIdle" Id="{5e417634-149a-4015-85b2-ae12f44005c6}">
+      <Declaration><![CDATA[METHOD IsIdle : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF m_csCellState = CELL_STATE.e_IDEL THEN
+	IsIdle := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsVirtualCell" Id="{90074920-709e-4237-b47d-c893e99b7080}">
+      <Declaration><![CDATA[METHOD IsVirtualCell : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsVirtualCell :=FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RequestActionState" Id="{f71a0926-b3e1-4a6e-9418-9753be2938d3}">
+      <Declaration><![CDATA[METHOD PUBLIC RequestActionState : BOOL
+VAR_INPUT
+	csStateRequest : CELL_ACTION_STATE;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_csStateRequest := csStateRequest;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RequestWork" Id="{1411e8b3-f6fe-4bbb-92fb-5cb4e2765965}">
+      <Declaration><![CDATA[METHOD RequestWork : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_csCellState := CELL_STATE.e_WORKING;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetDisassemblyCell" Id="{cb3f3713-3ea9-4eb6-a348-0412549c1acb}">
+      <Declaration><![CDATA[METHOD SetDisassemblyCell : BOOL
+VAR_INPUT
+	bIsDisassemblyCell : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_bIsDisassemblyCell := bIsDisassemblyCell;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetGetDataServiceEnable" Id="{be4b8e66-229d-4275-b369-c78104a773e3}">
+      <Declaration><![CDATA[METHOD SetGetDataServiceEnable : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_bDataServiceGetEnable := TRUE;
+SetGetDataServiceEnable := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetName" Id="{1dbb8c4f-aee8-45bf-8321-73e5264b4efb}">
+      <Declaration><![CDATA[METHOD SetName : BOOL
+VAR_INPUT
+	sName :string ;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_sName := sName;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetPutDataServiceEnable" Id="{4fe61df9-881b-4458-affb-f42bd95d88fa}">
+      <Declaration><![CDATA[METHOD SetPutDataServiceEnable : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_bDataServicePutEnable := TRUE;
+SetPutDataServiceEnable := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetVirtualCell" Id="{2bb05aa4-aeef-45ad-afe2-ccf1cfad946a}">
+      <Declaration><![CDATA[METHOD SetVirtualCell : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetWorkpiece" Id="{df19d0c1-e824-418f-9969-6df5076389f9}">
+      <Declaration><![CDATA[METHOD SetWorkpiece : BOOL
+VAR_INPUT
+	iWorkpiece : DINT;
+	sWorkpieceID : STRING;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_iWorkpiece := iWorkpiece;
+m_sWorkpieceID := sWorkpieceID;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StateMachine" Id="{3ce85d8d-41b4-4ff5-9d80-ba585007888a}">
+      <Declaration><![CDATA[METHOD PUBLIC StateMachine : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+
+
+
+fbInterface();
+fbClamp();
+
+
+
+// Error-Abfragen
+IF fbClamp.IsError() THEN
+	m_csCellState := CELL_STATE.e_ERROR; 
+	m_sErrorString := 'CLAMP-Error: Clamp is closed without Workpiece';
+END_IF
+
+
+//Zellen Zustandsmaschine
+
+CASE m_csCellState OF 
+	CELL_STATE.e_IDEL:
+		fbClamp.SetOpenClamp();	
+	
+		;
+ 	CELL_STATE.e_MHS_ACTION;
+		//SubRoutine für Aktion beim beladen aktuell leer da alles vom MHS gesteuert wird 
+	
+		;
+	CELL_STATE.e_WORKING:
+		//SubRoutine zum Durchführen einer Bearbeitung
+		
+		IF NOT (m_csCellStateLast = m_csCellState) THEN
+			m_csSRWorkingState := CELL_WORKING_STATES.e_START;
+			IF m_bDataServiceGetEnable THEN
+				fbDataServiceGet.SetNetIP('192.168.74.113.1.1');
+				fbDataServiceGet.SetWorkingDirectory('C:\Users\Nübel\Desktop\Sysdem_Nü_Ulitmate\CUTS');
+				m_sConfigString := 'C:\Users\Nübel\Desktop\Sysdem_Nü_Ulitmate\CUTS\';
+				m_sConfigString := CONCAT(m_sConfigString , m_sName); // erstellen des Pfades der Applikation 
+				m_sConfigString := CONCAT(m_sConfigString , m_sConfigStringEndGet);
+				fbDataServiceGet.SetCommandLine(m_sWorkpieceID);
+				fbDataServiceGet.SetPathOfApplication(m_sConfigString);
+				fbDataServiceGet.StartDataService();
+			END_IF
+		END_IF
+			
+		CASE m_csSRWorkingState OF
+			
+			CELL_WORKING_STATES.e_START:
+				
+				IF NOT (m_csSRWorkingStateLast = m_csSRWorkingState )THEN
+					m_csStateRequest := CELL_ACTION_STATE.e_Startabel;
+				END_IF
+				//m_csSRWorkingState:= CELL_WORKING_STATES.e_FINISHED;
+				
+				IF m_csState = CELL_ACTION_STATE.e_Startabel AND (fbDataServiceGet.IsFinished() OR NOT(m_bDataServiceGetEnable) )  THEN // Zelle bereit zum Starten und DataServiceGet fertig oder nicht konfiguriert
+					m_csSRWorkingState:= CELL_WORKING_STATES.e_WORKING;
+					fbDataServiceGet.SetIdle();
+					m_csStateRequest:= CELL_ACTION_STATE.e_Running;
+				END_IF
+				
+				
+			CELL_WORKING_STATES.e_WORKING:
+				IF NOT (m_csSRWorkingStateLast = m_csSRWorkingState) THEN
+					m_csStateRequest := CELL_ACTION_STATE.e_Running;
+				END_IF
+				
+				IF m_csState = CELL_ACTION_STATE.e_Finished THEN
+					m_csSRWorkingState := CELL_WORKING_STATES.e_FINISHED;
+					IF m_bDataServicePutEnable THEN
+						fbDataServicePut.SetNetIP('192.168.74.113.1.1');
+						fbDataServicePut.SetWorkingDirectory('C:\Users\Nübel\Desktop\Sysdem_Nü_Ulitmate\CUTS');
+						m_sConfigString := 'C:\Users\Nübel\Desktop\Sysdem_Nü_Ulitmate\CUTS\';						
+						m_sConfigString := CONCAT(m_sConfigString , m_sName); // erstellen des Pfades der Applikation 
+						m_sConfigString := CONCAT(m_sConfigString , m_sConfigStringEndPut);// erstellen des Pfades der Applikation
+						fbDataServicePut.SetCommandLine(m_sWorkpieceID);
+						fbDataServicePut.SetPathOfApplication(m_sConfigString);
+						fbDataServicePut.StartDataService();
+						m_csSRWorkingState := e_DATAPUT;
+					END_IF
+		
+				END_IF
+			CELL_WORKING_STATES.e_DATAPUT:
+				
+					IF fbDataServicePut.IsFinished() THEN
+						fbDataServicePut.SetIdle();
+						m_csSRWorkingState := CELL_WORKING_STATES.e_FINISHED;
+					END_IF
+					
+					IF fbDataServicePut.IsError() THEN
+						fbDataServicePut.SetIdle();
+						m_csSRWorkingState := CELL_STATE.e_ERROR;
+					END_IF
+					
+			CELL_WORKING_STATES.e_FINISHED:
+				m_csCellState := CELL_STATE.e_IDEL;
+			
+		END_CASE		
+		
+	CELL_STATE.e_ERROR:
+		m_csState :=CELL_ACTION_STATE.e_ToEmergencyStop;
+	
+		
+END_CASE
+m_csSRWorkingStateLast := m_csSRWorkingState;
+m_csCellStateLast := m_csCellState;
+
+IF NOT (m_csStateRequestOld = m_csStateRequest) THEN
+	m_csState := m_csStateRequest - 1;
+	m_csStateRequestOld := m_csStateRequest;
+END_IF
+
+
+// Aktions Zustandsmaschine
+CASE m_csState OF 
+	CELL_ACTION_STATE.e_ToStandby:
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			fbInterface.SetStandby(TRUE);
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		
+		IF fbInterface.GetStandby() THEN
+			m_csState := e_Standby; 
+		END_IF
+		
+	CELL_ACTION_STATE.e_Standby :
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		fbInterface.SetStandby(FALSE);
+		
+	CELL_ACTION_STATE.e_ToLoadPos:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+			fbInterface.SetMoveToLoad(TRUE);
+			fbClamp.SetOpenClamp();
+		END_IF
+		
+		IF fbInterface.GetLoadPos() AND fbClamp.IsOpen() THEN
+			m_csState := e_LoadPos; 
+		END_IF
+		
+		
+	CELL_ACTION_STATE.e_LoadPos:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		fbInterface.SetMoveToLoad(FALSE);
+				
+		
+	CELL_ACTION_STATE.e_ToStartabel:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+			fbClamp.SetCloseClampFull();
+		END_IF
+		
+		
+		IF  fbClamp.IsClosedFull() THEN
+			m_csState := e_Startabel; 
+		END_IF
+		
+	CELL_ACTION_STATE.e_Startabel:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+			
+		END_IF
+		
+	CELL_ACTION_STATE.e_ToRunning:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+			fbInterface.SetStart(TRUE);
+		END_IF
+		
+		IF fbInterface.GetIsRunning() THEN
+			m_csState := CELL_ACTION_STATE.e_Running; 
+		END_IF
+		
+	CELL_ACTION_STATE.e_Running:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		fbInterface.SetStart(FALSE);
+		IF fbInterface.GetFinished() THEN
+			m_csState := CELL_ACTION_STATE.e_Finished;		
+		END_IF
+	CELL_ACTION_STATE.e_Finished:
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		
+	CELL_ACTION_STATE.e_ToUnLoadPos:
+ 
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+			fbClamp.SetOpenClamp();
+			fbInterface.SetMoveToUnload(TRUE);
+			
+		END_IF
+		
+		
+		IF fbInterface.GetUnloadPos() AND fbClamp.IsOpen() THEN
+			m_csState := e_UnLoadPos; 
+			fbInterface.SetMoveToUnload(FALSE);
+		END_IF
+		
+	CELL_ACTION_STATE.e_UnLoadPos:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		
+	CELL_ACTION_STATE.e_ToEmergencyStop:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		
+		
+		IF fbInterface.GetEmergencyStop() THEN
+			m_csState := e_EmergencyStop; 
+		END_IF
+		
+	CELL_ACTION_STATE.e_EmergencyStop:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		
+	CELL_ACTION_STATE.e_ToEmergencyOff:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		
+		
+		IF fbInterface.GetEmergencyStop() THEN
+			m_csState := e_EmergencyOff; 
+		END_IF
+		
+	CELL_ACTION_STATE.e_EmergencyOff:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		
+	ELSE
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		
+END_CASE
+
+IF m_bDataServiceGetEnable THEN
+	fbDataServiceGet();
+END_IF
+IF m_bDataServicePutEnable THEN	
+	fbDataServicePut();
+END_IF
+
+m_csStateLastCycle := m_csState;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StateMachineProfibus" Id="{3217aa19-cab3-4bf4-98ac-02e84221bcf0}">
+      <Declaration><![CDATA[METHOD StateMachineProfibus : BOOL
+//*Hami* zum Anschluss an Profibus vorgesehen 
+//*Hami* Moentan nur bei LaseTec Aktiviert ist
+//*Hami* bei andere Zelle ist inaktiv 
+//*Hami* bei andere Zelle ist StateMachine Aktiv
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//////////////////////////////////////////////////////////////////////////////////////////////////////
+//*Hami* Aufruf von FB_InterfaceProfibus zur Ausführung
+//*Hami* In Method(StateMachine) wird FB_InterfaceIO aufgerufen (einziger Unterschied Zwischen StateMachineProfibus und StateMachine)
+fbInterfaceProfibus();
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+fbClamp();
+
+
+
+// Error-Abfragen
+IF fbClamp.IsError() THEN
+	m_csCellState := CELL_STATE.e_ERROR; 
+	m_sErrorString := 'CLAMP-Error: Clamp is closed without Workpiece';
+END_IF
+
+
+//Zellen Zustandsmaschine
+
+CASE m_csCellState OF 
+	CELL_STATE.e_IDEL:
+		fbClamp.SetOpenClamp();	
+	
+		;
+ 	CELL_STATE.e_MHS_ACTION;
+		//SubRoutine für Aktion beim beladen aktuell leer da alles vom MHS gesteuert wird 
+	
+		;
+	CELL_STATE.e_WORKING:
+		//SubRoutine zum Durchführen einer Bearbeitung
+		
+		IF NOT (m_csCellStateLast = m_csCellState) THEN
+			m_csSRWorkingState := CELL_WORKING_STATES.e_START;
+			IF m_bDataServiceGetEnable THEN
+				fbDataServiceGet.SetNetIP('192.168.74.113.1.1');
+				fbDataServiceGet.SetWorkingDirectory('C:\Users\Nübel\Desktop\Sysdem_Nü_Ulitmate\CUTS');
+				m_sConfigString := 'C:\Users\Nübel\Desktop\Sysdem_Nü_Ulitmate\CUTS\';
+				m_sConfigString := CONCAT(m_sConfigString , m_sName); // erstellen des Pfades der Applikation 
+				m_sConfigString := CONCAT(m_sConfigString , m_sConfigStringEndGet);
+				fbDataServiceGet.SetCommandLine(m_sWorkpieceID);
+				fbDataServiceGet.SetPathOfApplication(m_sConfigString);
+				fbDataServiceGet.StartDataService();
+			END_IF
+		END_IF
+			
+		CASE m_csSRWorkingState OF
+			
+			CELL_WORKING_STATES.e_START:
+				
+				IF NOT (m_csSRWorkingStateLast = m_csSRWorkingState )THEN
+					m_csStateRequest := CELL_ACTION_STATE.e_Startabel;
+				END_IF
+				//m_csSRWorkingState:= CELL_WORKING_STATES.e_FINISHED;
+				
+				IF m_csState = CELL_ACTION_STATE.e_Startabel AND (fbDataServiceGet.IsFinished() OR NOT(m_bDataServiceGetEnable) )  THEN // Zelle bereit zum Starten und DataServiceGet fertig oder nicht konfiguriert
+					m_csSRWorkingState:= CELL_WORKING_STATES.e_WORKING;
+					fbDataServiceGet.SetIdle();
+					m_csStateRequest:= CELL_ACTION_STATE.e_Running;
+				END_IF
+				
+				
+			CELL_WORKING_STATES.e_WORKING:
+				IF NOT (m_csSRWorkingStateLast = m_csSRWorkingState) THEN
+					m_csStateRequest := CELL_ACTION_STATE.e_Running;
+				END_IF
+				
+				IF m_csState = CELL_ACTION_STATE.e_Finished THEN
+					m_csSRWorkingState := CELL_WORKING_STATES.e_FINISHED;
+					IF m_bDataServicePutEnable THEN
+						fbDataServicePut.SetNetIP('192.168.74.113.1.1');
+						fbDataServicePut.SetWorkingDirectory('C:\Users\Nübel\Desktop\Sysdem_Nü_Ulitmate\CUTS');
+						m_sConfigString := 'C:\Users\Nübel\Desktop\Sysdem_Nü_Ulitmate\CUTS\';						
+						m_sConfigString := CONCAT(m_sConfigString , m_sName); // erstellen des Pfades der Applikation 
+						m_sConfigString := CONCAT(m_sConfigString , m_sConfigStringEndPut);// erstellen des Pfades der Applikation
+						fbDataServicePut.SetCommandLine(m_sWorkpieceID);
+						fbDataServicePut.SetPathOfApplication(m_sConfigString);
+						fbDataServicePut.StartDataService();
+						m_csSRWorkingState := e_DATAPUT;
+					END_IF
+		
+				END_IF
+			CELL_WORKING_STATES.e_DATAPUT:
+				
+					IF fbDataServicePut.IsFinished() THEN
+						fbDataServicePut.SetIdle();
+						m_csSRWorkingState := CELL_WORKING_STATES.e_FINISHED;
+					END_IF
+					
+					IF fbDataServicePut.IsError() THEN
+						fbDataServicePut.SetIdle();
+						m_csSRWorkingState := CELL_STATE.e_ERROR;
+					END_IF
+					
+			CELL_WORKING_STATES.e_FINISHED:
+				m_csCellState := CELL_STATE.e_IDEL;
+			
+		END_CASE		
+		
+	CELL_STATE.e_ERROR:
+		m_csState :=CELL_ACTION_STATE.e_ToEmergencyStop;
+	
+		
+END_CASE
+m_csSRWorkingStateLast := m_csSRWorkingState;
+m_csCellStateLast := m_csCellState;
+
+IF NOT (m_csStateRequestOld = m_csStateRequest) THEN
+	m_csState := m_csStateRequest - 1;
+	m_csStateRequestOld := m_csStateRequest;
+END_IF
+
+
+// Aktions Zustandsmaschine
+CASE m_csState OF 
+	CELL_ACTION_STATE.e_ToStandby:
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			fbInterface.SetStandby(TRUE);
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		
+		IF fbInterface.GetStandby() THEN
+			m_csState := e_Standby; 
+		END_IF
+		
+	CELL_ACTION_STATE.e_Standby :
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		fbInterface.SetStandby(FALSE);
+		
+	CELL_ACTION_STATE.e_ToLoadPos:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+			fbInterface.SetMoveToLoad(TRUE);
+			fbClamp.SetOpenClamp();
+		END_IF
+		
+		IF fbInterface.GetLoadPos() AND fbClamp.IsOpen() THEN
+			m_csState := e_LoadPos; 
+		END_IF
+		
+		
+	CELL_ACTION_STATE.e_LoadPos:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		fbInterface.SetMoveToLoad(FALSE);
+				
+		
+	CELL_ACTION_STATE.e_ToStartabel:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+			fbClamp.SetCloseClampFull();
+		END_IF
+		
+		
+		IF  fbClamp.IsClosedFull() THEN
+			m_csState := e_Startabel; 
+		END_IF
+		
+	CELL_ACTION_STATE.e_Startabel:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+			
+		END_IF
+		
+	CELL_ACTION_STATE.e_ToRunning:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+			fbInterface.SetStart(TRUE);
+		END_IF
+		
+		IF fbInterface.GetIsRunning() THEN
+			m_csState := CELL_ACTION_STATE.e_Running; 
+		END_IF
+		
+	CELL_ACTION_STATE.e_Running:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		fbInterface.SetStart(FALSE);
+		IF fbInterface.GetFinished() THEN
+			m_csState := CELL_ACTION_STATE.e_Finished;		
+		END_IF
+	CELL_ACTION_STATE.e_Finished:
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		
+	CELL_ACTION_STATE.e_ToUnLoadPos:
+ 
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+			fbClamp.SetOpenClamp();
+			fbInterface.SetMoveToUnload(TRUE);
+			
+		END_IF
+		
+		
+		IF fbInterface.GetUnloadPos() AND fbClamp.IsOpen() THEN
+			m_csState := e_UnLoadPos; 
+			fbInterface.SetMoveToUnload(FALSE);
+		END_IF
+		
+	CELL_ACTION_STATE.e_UnLoadPos:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		
+	CELL_ACTION_STATE.e_ToEmergencyStop:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		
+		
+		IF fbInterface.GetEmergencyStop() THEN
+			m_csState := e_EmergencyStop; 
+		END_IF
+		
+	CELL_ACTION_STATE.e_EmergencyStop:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		
+	CELL_ACTION_STATE.e_ToEmergencyOff:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		
+		
+		IF fbInterface.GetEmergencyStop() THEN
+			m_csState := e_EmergencyOff; 
+		END_IF
+		
+	CELL_ACTION_STATE.e_EmergencyOff:
+	
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		
+	ELSE
+		IF NOT (m_csStateLastCycle = m_csState) THEN
+			m_csStateLastAction := m_csStateLastCycle;
+		END_IF
+		
+END_CASE
+
+IF m_bDataServiceGetEnable THEN
+	fbDataServiceGet();
+END_IF
+IF m_bDataServicePutEnable THEN	
+	fbDataServicePut();
+END_IF
+
+m_csStateLastCycle := m_csState;
+		
+	]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Cell">
+      <LineId Id="208" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Cell.GetErrorString">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Cell.GetName">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Cell.GetState">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Cell.GetWorkpiece">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Cell.IsDisassemblyCell">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Cell.IsError">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Cell.IsIdle">
+      <LineId Id="5" Count="0" />
+      <LineId Id="9" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_Cell.IsVirtualCell">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Cell.RequestActionState">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Cell.RequestWork">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Cell.SetDisassemblyCell">
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Cell.SetGetDataServiceEnable">
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Cell.SetName">
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Cell.SetPutDataServiceEnable">
+      <LineId Id="5" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_Cell.SetVirtualCell">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Cell.SetWorkpiece">
+      <LineId Id="5" Count="0" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Cell.StateMachine">
+      <LineId Id="585" Count="0" />
+      <LineId Id="587" Count="0" />
+      <LineId Id="586" Count="0" />
+      <LineId Id="321" Count="260" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Cell.StateMachineProfibus">
+      <LineId Id="7" Count="0" />
+      <LineId Id="489" Count="0" />
+      <LineId Id="491" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="490" Count="0" />
+      <LineId Id="492" Count="0" />
+      <LineId Id="227" Count="258" />
+      <LineId Id="225" Count="1" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

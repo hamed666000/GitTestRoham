@@ -1,0 +1,306 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>VirtualTwin</name>
+    </assembly>
+    <members>
+        <member name="T:VirtualTwin.FileNodeSerializer">
+            <summary>
+            Ein <see cref="T:CutSKernel.Serialization.ASerializer"/> für <see cref="T:VirtualTwin.FileNode"/> Objekte.
+            </summary>
+        </member>
+        <member name="M:VirtualTwin.FileNodeSerializer.#ctor">
+            <summary>
+            Default-Konstruktor.
+            </summary>
+        </member>
+        <member name="P:VirtualTwin.FileNodeSerializer.CanRead">
+            <inheritdoc />
+        </member>
+        <member name="P:VirtualTwin.FileNodeSerializer.CanWrite">
+            <inheritdoc />
+        </member>
+        <member name="P:VirtualTwin.FileNodeSerializer.TypeAlias">
+            <inheritdoc />
+        </member>
+        <member name="P:VirtualTwin.FileNodeSerializer.TypeDescription">
+            <inheritdoc />
+        </member>
+        <member name="M:VirtualTwin.FileNodeSerializer.Serialize(CutSKernel.Kinematic.AKinBaseObject,System.IO.Stream)">
+            <summary>
+            Speichert die zugeordnete Datei des angegebenen FileNode in den angegebenen Stream.
+            </summary>
+            <param name="p_pObjToSerialize">Ein FileNode.</param>
+            <param name="p_stream">Der Stream, in dem die FileNode-Datei gespeichert wird.</param>
+        </member>
+        <member name="M:VirtualTwin.FileNodeSerializer.Deserialize(System.IO.Stream,System.Type)">
+            <summary>
+            Liest eine Datei aus dem angegebenen Stream und erzeugt damit ein FileNode-Objekt.
+            </summary>
+            <param name="p_stream">Der Stream, aus dem die FileNode-Datei gelesen wird.</param>
+            <param name="p_roType">
+            Der Typ des ggf. zu erzeugenden ARenderableObject.
+            Ist beim FileNodeSerializer ohne Bedeutung, da ein FileNode kein RenderableObject enthält.
+            </param>
+            <returns>
+            Ein FileNode-Objekt mit der aus <paramref name="p_stream"/> eingelesenen Datei.
+            </returns>
+        </member>
+        <member name="T:VirtualTwin.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:VirtualTwin.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:VirtualTwin.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:VirtualTwin.Properties.Resources.AddNodefromData_32">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:VirtualTwin.Properties.Resources.AddNodefromFile_32">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:VirtualTwin.Properties.Resources.Allgemein">
+            <summary>
+              Looks up a localized string similar to General.
+            </summary>
+        </member>
+        <member name="P:VirtualTwin.Properties.Resources.icons8_shutdown_32">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:VirtualTwin.Properties.Resources.Quelldatei">
+            <summary>
+              Looks up a localized string similar to Source File.
+            </summary>
+        </member>
+        <member name="P:VirtualTwin.Properties.Resources.QuelldateiBeschreibung">
+            <summary>
+              Looks up a localized string similar to The source file of the FileNode-Object..
+            </summary>
+        </member>
+        <member name="P:VirtualTwin.Properties.Resources.Zieldatei">
+            <summary>
+              Looks up a localized string similar to Target File.
+            </summary>
+        </member>
+        <member name="P:VirtualTwin.Properties.Resources.ZieldateiBeschreibung">
+            <summary>
+              Looks up a localized string similar to The target file of the FileNode-Object..
+            </summary>
+        </member>
+        <member name="T:VirtualTwin.DataNode">
+            <summary>
+            Ein Kinematik-Element, das VirtualTwin-Metadaten repräsentiert.
+            </summary>
+        </member>
+        <member name="P:VirtualTwin.DataNode.MetaData">
+            <summary>
+            Enthält die Metadaten.
+            </summary>
+        </member>
+        <member name="M:VirtualTwin.DataNode.#ctor">
+            <summary>
+            Default Konstruktor.
+            </summary>
+        </member>
+        <member name="M:VirtualTwin.DataNode.#ctor(VirtualTwin.DataNode)">
+            <summary>
+            Kopierkonstruktor.
+            </summary>
+            <param name="rhs">Die zu kopierende DataNode-Instanz.</param>
+        </member>
+        <member name="M:VirtualTwin.DataNode.GetImageKey">
+            <inheritdoc />
+        </member>
+        <member name="M:VirtualTwin.DataNode.Render(System.Double)">
+            <inheritdoc />
+        </member>
+        <member name="M:VirtualTwin.DataNode.GetCopy(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:VirtualTwin.DataNode.PopulateRestrictionsDictionaries">
+            <inheritdoc />
+        </member>
+        <member name="M:VirtualTwin.DataNode.IsFertile">
+            <inheritdoc />
+        </member>
+        <member name="T:VirtualTwin.VirtualTwinDC">
+            <summary>
+            Das VirtualTwin-Dockfenster.
+            </summary>
+        </member>
+        <member name="P:VirtualTwin.VirtualTwinDC.DataNode">
+            <summary>
+            Enthält den im PropertyDataGrid angezeigten DataNode/FileNode.
+            </summary>
+        </member>
+        <member name="E:VirtualTwin.VirtualTwinDC.CreateDataNodeClicked">
+            <summary>
+            Tritt ein, wenn der Benutzer den Button "Daten-Knoten erzeugen" betätigt.
+            </summary>
+        </member>
+        <member name="E:VirtualTwin.VirtualTwinDC.CreateFileNodeClicked">
+            <summary>
+            Tritt ein, wenn der Benutzer den Button "Datei-Knoten erzeugen" betätigt.
+            </summary>
+        </member>
+        <member name="E:VirtualTwin.VirtualTwinDC.DisplaySelectedKinematicsItemOnlyChanged">
+            <summary>
+            Tritt ein, wenn der Benutzer den Button "Nur das selektierte Kinematikelement anzeigen" betätigt.
+            </summary>
+        </member>
+        <member name="M:VirtualTwin.VirtualTwinDC.#ctor">
+            <summary>
+            Default-Konstruktor.
+            </summary>
+        </member>
+        <member name="F:VirtualTwin.VirtualTwinDC.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:VirtualTwin.VirtualTwinDC.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:VirtualTwin.VirtualTwinDC.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:VirtualTwin.FileNode">
+            <summary>
+            Ein Kinematik-Element, das VirtualTwin-Metadaten repräsentiert und dem eine Datei zugeordnet werden kann.
+            </summary>
+        </member>
+        <member name="P:VirtualTwin.FileNode.TypeAlias">
+            <inheritdoc />
+        </member>
+        <member name="P:VirtualTwin.FileNode.TypeDescription">
+            <inheritdoc />
+        </member>
+        <member name="P:VirtualTwin.FileNode.ImportFile">
+            <summary>
+            Die Quelldatei des FileNode-Objekts.
+            </summary>
+        </member>
+        <member name="P:VirtualTwin.FileNode.DestinationFile">
+            <summary>
+            Die Zieldatei des FileNode-Objekts.
+            </summary>
+        </member>
+        <member name="M:VirtualTwin.FileNode.#ctor">
+            <summary>
+            Default Konstruktor.
+            </summary>
+        </member>
+        <member name="M:VirtualTwin.FileNode.#ctor(System.String)">
+            <summary>
+            Erzeugt ein FileNode-Objekt mit der angegebenen Quelldatei.
+            </summary>
+            <param name="importFilePath">
+            Die Quelldatei des FileNode-Objekts.
+            Ein Leerstring oder null sind erlaubt (bedeutet, dass dem FileNode keine Datei zugeordnet ist).
+            </param>
+        </member>
+        <member name="M:VirtualTwin.FileNode.#ctor(VirtualTwin.FileNode)">
+            <summary>
+            Kopierkonstruktor.
+            </summary>
+            <param name="rhs">Die zu kopierende FileNode-Instanz.</param>
+        </member>
+        <member name="M:VirtualTwin.FileNode.Render(System.Double)">
+            <inheritdoc />
+        </member>
+        <member name="M:VirtualTwin.FileNode.GetCopy(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:VirtualTwin.FileNode.PopulateRestrictionsDictionaries" -->
+        <member name="M:VirtualTwin.FileNode.IsFertile">
+            <inheritdoc />
+        </member>
+        <member name="T:VirtualTwin.VirtualTwinPlugin">
+            <summary>
+            Die Implementierung der Plugin Klasse
+            </summary>
+            <remarks>
+            Hier befindet sich die Implementierung der Pluginklasse. 
+            Das schafft die Schnittstelle zwischen der CutS Anwendung und CutSKernel und die Funktionalität des Plugins.
+            Initialisierungen sind in der Load() Methode vorzunehmen. Alles was dort initialisiert wurde muss in Unload() rückgängig gemacht werden.
+            Für Fenster, Einstellungen und Calculatoren verwenden Sie Project->Add New Item und wählen Sie die passende Vorlage aus
+            </remarks>
+        </member>
+        <member name="M:VirtualTwin.VirtualTwinPlugin.#ctor(CutSKernel.PlugIn.IPluginHost)">
+            <summary>Der Konstruktor des Plugins</summary>
+            <param name="p_Host"> Der PluginHost, das die Anbindung an CutS representiert</param>
+            <remarks>
+             Der Konstruktor wird bereits beim Start von CutS ausgeführt unabhängig davon ob der Plugin geladen wird oder nicht.
+             Der beste Konstruktor ist somit der leere Konstruktor!
+             Allenfalls werden hier Plugin Settings und Kategorien initialisiert.
+             Alle andere Initialisierungen sind in der Load Methode vorzunehnem.
+            </remarks>
+        </member>
+        <member name="M:VirtualTwin.VirtualTwinPlugin.Load">
+            <summary>
+            Der zweite Schritt der Initialisierung
+            </summary>
+            <remarks>
+            Diese Methode wird vom Client aufgerufen, nachdem die initialisierung der grafischen Oberfläche der Anwendung beendet wurde
+            Plugin Settings sind hier vorhanden und bereits geladen.
+            </remarks>
+        </member>
+        <member name="M:VirtualTwin.VirtualTwinPlugin.Unload">
+            <summary> Ressourcen freigeben und Registrierungen in der Clientanwendung rückgängig machen </summary>
+            <remarks> Wird aufgerufen wenn ein Plugin entladen wird (weil der Benutzer es entladen hat oder weil die Clientanwendung beendet wird.)
+            </remarks>
+        </member>
+        <member name="P:VirtualTwin.VirtualTwinPlugin.PluginDescription">
+            <inheritdoc />
+        </member>
+        <member name="P:VirtualTwin.VirtualTwinPlugin.PluginName">
+            <inheritdoc />
+        </member>
+        <member name="P:VirtualTwin.VirtualTwinPlugin.PluginAuthor">
+            <inheritdoc />
+        </member>
+        <member name="P:VirtualTwin.VirtualTwinPlugin.SupportType">
+            <inheritdoc />
+        </member>
+        <member name="P:VirtualTwin.VirtualTwinPlugin.WikiPage">
+            <inheritdoc />
+        </member>
+        <member name="P:VirtualTwin.VirtualTwinPlugin.ApplicationMaxVersion">
+            <summary>Neueste Version der Host-Anwendung, mit der dieses Plugin mindestens lauffähig ist.</summary>
+        </member>
+        <member name="P:VirtualTwin.VirtualTwinPlugin.ApplicationMinVersion">
+            <summary>Älteste Version der Host-Anwendung, mit der dieses Plugin lauffähig ist.</summary>
+        </member>
+        <member name="M:VirtualTwin.VirtualTwinPlugin.GetSettings">
+            <inheritdoc />
+        </member>
+        <member name="M:VirtualTwin.VirtualTwinPlugin._cutSController_ElementDeleted(System.Object,CutSKernel.Controller.ElementDeletedEventArgs)">
+            <summary>
+            Wird bei löschen FileNode-Element in Kinematik-Baum auch zugehörige Datei aus Verzeichnis (CutS-Projekt-Pfad) gelöscht.
+            </summary>
+            <param name="sender"></param>
+            <param name="args"></param>
+        </member>
+    </members>
+</doc>

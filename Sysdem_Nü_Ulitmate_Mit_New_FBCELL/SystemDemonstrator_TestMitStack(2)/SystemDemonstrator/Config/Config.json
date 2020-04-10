@@ -1,0 +1,7 @@
+{
+  "m_sSysDemStatusFile": "Config\\SysDem.json",
+  "m_sStorageFile": "Config\\MHSStorage.json",
+  "m_sRegenarationPathFile": "Config\\RegenerationPath.json",
+  "m_sRegenarationPathApp": "Config\\RegenerationPathApp.json",
+  "m_sProtocolPath": "Config\\Protocol.json"
+}

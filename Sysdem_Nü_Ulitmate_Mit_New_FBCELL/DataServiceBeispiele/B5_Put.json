@@ -1,0 +1,13 @@
+﻿{
+  "Mode": "TwinPut",
+  "cutSFolder": "C:\\temp\\Debug",
+  "Source": "C:\\Users\\felix_000\\Desktop\\NcCode",
+  "Target": "C:\\temp",
+  "Node": "TestCodeCode\\NCFiles\\NCfile",
+  "File": "NC.txt",
+  "Debug": "false",
+  "bReturnValue": "true",
+  "ReturnValueVariable": "",
+  "GetMetaData": "true"
+
+}

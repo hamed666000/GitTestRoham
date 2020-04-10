@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="FB_Word_To_Bool" Id="{f9e8a07c-f579-40bf-9f18-3a0dc800dc5f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Word_To_Bool
+VAR_INPUT
+//*Hami* Eingang Von FB	als UINT
+	i_Word : UINT;
+END_VAR
+VAR_OUTPUT
+//*Hami* Ausgang Von FB	als Array
+	o_Bool : ARRAY [0..15] OF BOOL ;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//////////////////////////////////////////////////////////////////////////////////////////////
+//*Hami* Diese Funktionsbaustein kann ein UINT bekommen und in Array Of Bool dekodieren
+//*Hami* Aufruf von jeder Index von UINT mit UINT.X in Compiler  möglich ist
+o_Bool[0] := i_Word.0 ;
+o_Bool[1] := i_Word.1 ;
+o_Bool[2] := i_Word.2 ;
+o_Bool[3] := i_Word.3 ;
+o_Bool[4] := i_Word.4 ;
+o_Bool[5] := i_Word.5 ;	
+o_Bool[6] := i_Word.6 ;
+o_Bool[7] := i_Word.7 ;
+o_Bool[8] := i_Word.8 ;
+o_Bool[9] := i_Word.9 ;
+o_Bool[10] := i_Word.10 ;
+o_Bool[11] := i_Word.11 ;
+o_Bool[12] := i_Word.12 ;
+o_Bool[13] := i_Word.13 ;
+o_Bool[14] := i_Word.14 ;
+o_Bool[15] := i_Word.15 ;
+//////////////////////////////////////////////////////////////////////////////////////////////]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Word_To_Bool">
+      <LineId Id="40" Count="0" />
+      <LineId Id="36" Count="1" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="12" Count="13" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="41" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

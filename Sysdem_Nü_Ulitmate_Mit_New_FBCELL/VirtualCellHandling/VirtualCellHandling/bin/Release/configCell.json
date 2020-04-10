@@ -1,0 +1,12 @@
+[     
+  { 
+    "Name": "V1",
+    "AppType": "exe",
+    "AppPath": "C:\\Users\\hamed\\Desktop\\Sysdem_Nü_Ulitmate_Mit_New_FBCELL\\TestMirInterface(3undStarten)\\restClient_0\\bin\\Debug\\restClient_0.exe"
+  },
+  {
+    "Name": "V2",
+    "AppType": "Matlab",
+    "AppPath": "C:\\temp\\mFile.m"
+  }
+]

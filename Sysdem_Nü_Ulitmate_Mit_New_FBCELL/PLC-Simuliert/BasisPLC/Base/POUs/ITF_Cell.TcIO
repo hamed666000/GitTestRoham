@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <Itf Name="ITF_Cell" Id="{26b2a786-19bf-4b18-a47a-c2671c0ee775}">
+    <Declaration><![CDATA[INTERFACE ITF_Cell
+
+]]></Declaration>
+    <Method Name="GetEmergencyOff" Id="{43aaa448-fd89-479e-96d2-c8fdef521945}">
+      <Declaration><![CDATA[METHOD GetEmergencyOff : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetEmergencyStop" Id="{998f1cfa-1bb6-44da-beba-0310498112e3}">
+      <Declaration><![CDATA[METHOD GetEmergencyStop : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetFinished" Id="{33137999-5e16-46a9-8760-9d98062065c2}">
+      <Declaration><![CDATA[METHOD GetFinished : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetIsRunning" Id="{27010d55-e584-49eb-b39a-737ccf38e67d}">
+      <Declaration><![CDATA[METHOD GetIsRunning : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetLoadPos" Id="{4456d7c7-b1e4-4418-b783-1997f2886cfc}">
+      <Declaration><![CDATA[METHOD GetLoadPos : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetStandby" Id="{b77ffb79-5591-4c7e-aae7-9b37a011c2ea}">
+      <Declaration><![CDATA[METHOD GetStandby : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetStartable" Id="{f13cd248-9c46-40a5-bc9a-470a1581974c}">
+      <Declaration><![CDATA[METHOD GetStartable : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetUnloadPos" Id="{0a187401-a44d-471b-8112-663f8898c522}">
+      <Declaration><![CDATA[METHOD GetUnloadPos : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="SetEmergencyOff" Id="{27c8de1a-cba4-4b5c-b034-77cac3922498}">
+      <Declaration><![CDATA[METHOD SetEmergencyOff : BOOL
+VAR_INPUT
+	b :BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="SetEmergencyStop" Id="{e152b9f9-767c-4979-b56a-99e34fdbf887}">
+      <Declaration><![CDATA[METHOD SetEmergencyStop : BOOL
+VAR_INPUT
+	b :BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="SetMoveToLoad" Id="{167bf510-7f2d-4e27-98f4-1d0a22120b6d}">
+      <Declaration><![CDATA[METHOD SetMoveToLoad : BOOL
+VAR_INPUT
+	b :BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="SetMoveToUnload" Id="{b7b14d61-9b88-4447-a2c2-ae951d8b3582}">
+      <Declaration><![CDATA[METHOD SetMoveToUnload : BOOL
+VAR_INPUT
+	b :BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="SetStandby" Id="{d08c804a-6e63-4eb9-b70e-f83b87d3da75}">
+      <Declaration><![CDATA[METHOD SetStandby : BOOL
+VAR_INPUT
+	b :BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="SetStart" Id="{9d86f309-b0fb-4954-9c10-45e24e1371e1}">
+      <Declaration><![CDATA[METHOD SetStart : BOOL
+VAR_INPUT
+	b :BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

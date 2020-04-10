@@ -1,0 +1,966 @@
+ImageRuntimeVersion: v4.0.30319
+Assembly DexelMatRemPlugin, Version=2.2.*, Culture=Invariant Language (Invariant Country): 
+	hash=SHA1, flags=PublicKey
+Assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly CutSKernelCS, Version=2.4.*, Culture=Invariant Language (Invariant Country): 
+	hash=None, flags=None
+Assembly OpenTK, Version=3.0.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4: 
+	hash=None, flags=None
+Assembly PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35: 
+	hash=None, flags=None
+Assembly System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Assembly System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Class DexelMatRemPlugin.DexelCloudSerializer: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Serialization.ASerializer
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String TypeDescription 'get ' : 
+    System.String TypeAlias 'get ' : 
+    Boolean CanWrite 'get ' : 
+    Boolean CanRead 'get ' : 
+  Methods:
+    Serialize(AKinBaseObject, Stream): PrivateScope, Public, Virtual, HideBySig
+    Deserialize(Stream, Type): PrivateScope, Public, Virtual, HideBySig
+    get_CanRead(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_CanWrite(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeAlias(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeDescription(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+Class DexelMatRemPlugin.DexelCoreXYZSymbolRenderer: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Rendering.BoundingBox
+    Void .ctor(DexelMatRemPlugin.DexelCoreXYZSymbolRenderer): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    GetCopy(): PrivateScope, Public, Virtual, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class DexelMatRemPlugin.DexelWrapper: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(DexelMatRemPlugin.CDexel*): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    CutSKernel.Extender.IExtendable
+  Properties:
+    Single LengthReal 'get ' : 
+    Single LengthNormed 'get ' : 
+    Int32 Index 'get set' : 
+    Int32 NextDexelIndex 'get set' : 
+    Int32 PrevDexelIndex 'get set' : 
+    Int32 DexelDirectionID 'get set' : 
+    Boolean Valid 'get set' : 
+    System.Drawing.Color EndCol 'get set' : 
+    System.Drawing.Color StartCol 'get set' : 
+    System.Windows.Media.Media3D.Vector3D EndNormal 'get set' : 
+    System.Windows.Media.Media3D.Vector3D StartNormal 'get set' : 
+    System.Windows.Media.Media3D.Point3D EndPointReal 'get set' : 
+    System.Windows.Media.Media3D.Point3D EndPoint 'get set' : 
+    System.Windows.Media.Media3D.Point3D StartPointReal 'get set' : 
+    System.Windows.Media.Media3D.Point3D StartPoint 'get set' : 
+    DexelMatRemPlugin.ChangeEventType ActiveChangeEvents 'get set' : 
+    Boolean EndPointWasCut 'get set' : 
+    Boolean StartPointWasCut 'get set' : 
+    Boolean WasCut 'get ' : 
+    System.Collections.Generic.List`1[CutSKernel.Extender.IDataExtender] Extenders 'get ' : 
+  Events:
+    System.EventHandler`1[CutSKernel.Extender.ExtendableEventArgs] Modified: SpecialName
+  Methods:
+    add_Modified(EventHandler`1): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    remove_Modified(EventHandler`1): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_Extenders(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    RaiseDexelModifiedEvent(ExtendableEventArgs): PrivateScope, Public, HideBySig
+    GetNativeDexel(): PrivateScope, Public, HideBySig
+    GetNativeDexelGrid(): PrivateScope, Public, HideBySig
+    CopyExtenders(DexelWrapper): PrivateScope, Public, HideBySig
+    RegisterNativeDexel(CDexel*): PrivateScope, Public, HideBySig
+    get_WasCut(): PrivateScope, Public, HideBySig, SpecialName
+    get_StartPointWasCut(): PrivateScope, Public, HideBySig, SpecialName
+    set_StartPointWasCut(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_EndPointWasCut(): PrivateScope, Public, HideBySig, SpecialName
+    set_EndPointWasCut(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_ActiveChangeEvents(): PrivateScope, Public, Static, HideBySig, SpecialName
+    set_ActiveChangeEvents(ChangeEventType): PrivateScope, Public, Static, HideBySig, SpecialName
+    get_StartPoint(): PrivateScope, Public, HideBySig, SpecialName
+    set_StartPoint(Point3D): PrivateScope, Public, HideBySig, SpecialName
+    get_StartPointReal(): PrivateScope, Public, HideBySig, SpecialName
+    set_StartPointReal(Point3D): PrivateScope, Public, HideBySig, SpecialName
+    get_EndPoint(): PrivateScope, Public, HideBySig, SpecialName
+    set_EndPoint(Point3D): PrivateScope, Public, HideBySig, SpecialName
+    get_EndPointReal(): PrivateScope, Public, HideBySig, SpecialName
+    set_EndPointReal(Point3D): PrivateScope, Public, HideBySig, SpecialName
+    get_StartNormal(): PrivateScope, Public, HideBySig, SpecialName
+    set_StartNormal(Vector3D): PrivateScope, Public, HideBySig, SpecialName
+    get_EndNormal(): PrivateScope, Public, HideBySig, SpecialName
+    set_EndNormal(Vector3D): PrivateScope, Public, HideBySig, SpecialName
+    get_StartCol(): PrivateScope, Public, HideBySig, SpecialName
+    set_StartCol(Color): PrivateScope, Public, HideBySig, SpecialName
+    get_EndCol(): PrivateScope, Public, HideBySig, SpecialName
+    set_EndCol(Color): PrivateScope, Public, HideBySig, SpecialName
+    get_Valid(): PrivateScope, Public, HideBySig, SpecialName
+    set_Valid(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_DexelDirectionID(): PrivateScope, Public, HideBySig, SpecialName
+    set_DexelDirectionID(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_PrevDexelIndex(): PrivateScope, Public, HideBySig, SpecialName
+    set_PrevDexelIndex(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_NextDexelIndex(): PrivateScope, Public, HideBySig, SpecialName
+    set_NextDexelIndex(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_Index(): PrivateScope, Public, HideBySig, SpecialName
+    set_Index(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_LengthNormed(): PrivateScope, Public, HideBySig, SpecialName
+    get_LengthReal(): PrivateScope, Public, HideBySig, SpecialName
+Class DexelMatRemPlugin.DexelWrapper+DexelModifiedCallBackDelegate: AutoLayout, AnsiClass, Class, NestedPublic, Sealed, BeforeFieldInit
+  :System.MulticastDelegate
+    Void .ctor(System.Object, IntPtr): PrivateScope, Public, SpecialName, RTSpecialName
+  Methods:
+    Invoke(ExtendableEventArgs): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+    BeginInvoke(ExtendableEventArgs, AsyncCallback, Object): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+    EndInvoke(IAsyncResult): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+Class DexelMatRemPlugin.DexelReferenceExtender: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Extender.ADataExtender`1[DexelMatRemPlugin.DexelWrapper]
+    Void .ctor(DexelMatRemPlugin.DexelWrapper, Boolean): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(DexelMatRemPlugin.DexelWrapper): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    Boolean _Valid : Public
+  Methods:
+    CopyData(IDataExtender): PrivateScope, Public, Virtual, HideBySig
+    Clear(): PrivateScope, Public, Virtual, HideBySig
+    Render(Double): PrivateScope, Public, Virtual, HideBySig
+    Evaluate(Object): PrivateScope, Public, Virtual, HideBySig
+    GetRenderVertices(): PrivateScope, Public, Virtual, HideBySig
+    Update(): PrivateScope, Public, Virtual, HideBySig
+Class DexelMatRemPlugin.DexelGridDataRequestException: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Exception
+    Void .ctor(System.String, ErrorType): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    ErrorType _errorType : Public
+Struct DexelMatRemPlugin.DexelGridDataRequestException+ErrorType: AutoLayout, AnsiClass, Class, NestedPublic, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    ErrorType NO_CUTVOLUME_CALCULATED = 0 : Public, Static, Literal, HasDefault
+    ErrorType GRID_NOT_INITIALIZED = 1 : Public, Static, Literal, HasDefault
+Class DexelMatRemPlugin.DexelGridWrapper: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(DexelMatRemPlugin.CDexelGrid*): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    CutSKernel.Extender.IExtendableContainer
+    CutSKernel.Extender.IExtendable
+    System.IDisposable
+  Properties:
+    Int32 CutVolumeMaxRenderIndex 'get set' : 
+    System.Collections.Generic.List`1[CutSKernel.Extender.IExtendable] Elements 'get ' : 
+    System.Collections.Generic.List`1[CutSKernel.Extender.IDataExtender] Extenders 'get ' : 
+  Events:
+    System.EventHandler`1[CutSKernel.Extender.ExtendableEventArgs] ElementAdded: SpecialName
+    System.EventHandler`1[CutSKernel.Extender.ExtendableEventArgs] Modified: SpecialName
+  Methods:
+    add_Modified(EventHandler`1): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    remove_Modified(EventHandler`1): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    add_ElementAdded(EventHandler`1): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    remove_ElementAdded(EventHandler`1): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_Extenders(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_Elements(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_CutVolumeMaxRenderIndex(): PrivateScope, Public, HideBySig, SpecialName
+    set_CutVolumeMaxRenderIndex(Int32): PrivateScope, Public, HideBySig, SpecialName
+    GetAABB(): PrivateScope, Public, HideBySig
+    GetCutPointsStart(ARenderableObject): PrivateScope, Public, HideBySig
+    GetCutPointsStart(): PrivateScope, Public, HideBySig
+    GetCutPointsEnd(ARenderableObject): PrivateScope, Public, HideBySig
+    GetCutPointsEnd(): PrivateScope, Public, HideBySig
+    GetCutPointsHistory(): PrivateScope, Public, HideBySig
+    GetCutPointsHistoryColors(): PrivateScope, Public, HideBySig
+    GetCutDexelCount(ARenderableObject): PrivateScope, Public, HideBySig
+    GetCutDexelCount(): PrivateScope, Public, HideBySig
+    GetCutDexelLengthSum(ARenderableObject): PrivateScope, Public, HideBySig
+    GetCutDexelLengthSum(): PrivateScope, Public, HideBySig
+    GetDexelArray(): PrivateScope, Public, HideBySig
+    GetDexelWrapper(UInt32): PrivateScope, Public, HideBySig
+    GetDexelDirection(): PrivateScope, Public, HideBySig
+    GetDexelCountX(): PrivateScope, Public, HideBySig
+    GetDexelCountY(): PrivateScope, Public, HideBySig
+    GetGridDistanceX(): PrivateScope, Public, HideBySig
+    GetGridDistanceY(): PrivateScope, Public, HideBySig
+    RaiseDexelAddedEvent(CDexel*): PrivateScope, Public, HideBySig
+    UpdateDexelPointer(): PrivateScope, Public, HideBySig
+    GetCutPointsCount(ARenderableObject): PrivateScope, Public, HideBySig
+    AddCutPoints(Point3D, Point3D, ARenderableObject): PrivateScope, Public, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class DexelMatRemPlugin.DexelGridWrapper+DexelAddedCallBackDelegate: AutoLayout, AnsiClass, Class, NestedPublic, Sealed, BeforeFieldInit
+  :System.MulticastDelegate
+    Void .ctor(System.Object, IntPtr): PrivateScope, Public, SpecialName, RTSpecialName
+  Methods:
+    Invoke(CDexel*): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+    BeginInvoke(CDexel*, AsyncCallback, Object): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+    EndInvoke(IAsyncResult): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+Class DexelMatRemPlugin.CDexelTransformationHelperWrapper: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(DexelMatRemPlugin.DexelCoreXYZTransformationHelper*): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Methods:
+    CalcNormedPositionToWorldPosition(Point3D): PrivateScope, Public, HideBySig
+    CalcNormedPositionToDexelIndex(Int32 IsConst, Point3D, Int32&, Int32&): PrivateScope, Public, HideBySig
+    CalcWorldPositionToNormedPosition(Point3D): PrivateScope, Public, HideBySig
+    CalcWorldPositionToIndex(Int32 IsConst, Point3D, Int32&, Int32&): PrivateScope, Public, HideBySig
+    GetNormed2WorldTransfromation(): PrivateScope, Public, HideBySig
+    Native(): PrivateScope, Public, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class DexelMatRemPlugin.DexelCoreXYZWrapper: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(DexelMatRemPlugin.DexelCoreXYZWrapper): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(DexelMatRemPlugin.DexelCoreXYZ ByRef): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(DexelMatRemPlugin.DexelCoreXYZ*): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    CutSKernel.Extender.IExtendableContainer
+    CutSKernel.Extender.IExtendable
+    System.IDisposable
+  Fields:
+    DexelMatRemPlugin.DexelCoreXYZ* m_dexelcore : Public
+  Properties:
+    DexelMatRemPlugin.CDexelTransformationHelperWrapper TransformationHelper 'get ' : 
+    System.Collections.Generic.List`1[DexelMatRemPlugin.DexelGridWrapper] DexelGrids 'get ' : 
+    System.Windows.Media.Media3D.Rect3D BoundingboxWP 'get ' : 
+    Boolean WasCut 'get ' : 
+    Boolean HasChanged 'get set' : 
+    Boolean IsInitialized 'get set' : 
+    Boolean DoModifyDexelField 'get set' : 
+    System.Collections.Generic.List`1[CutSKernel.Extender.IExtendable] Elements 'get ' : 
+    System.Collections.Generic.List`1[CutSKernel.Extender.IDataExtender] Extenders 'get ' : 
+  Events:
+    System.EventHandler`1[CutSKernel.Extender.ExtendableEventArgs] ElementAdded: SpecialName
+    System.EventHandler`1[CutSKernel.Extender.ExtendableEventArgs] Modified: SpecialName
+  Methods:
+    add_Modified(EventHandler`1): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    remove_Modified(EventHandler`1): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    add_ElementAdded(EventHandler`1): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    remove_ElementAdded(EventHandler`1): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_Extenders(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_Elements(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    RaiseModifiedEvent(ExtendableEventArgs): PrivateScope, Public, HideBySig
+    RaiseElementAddedEvent(DexelWrapper): PrivateScope, Public, HideBySig
+    get_DoModifyDexelField(): PrivateScope, Public, HideBySig, SpecialName
+    set_DoModifyDexelField(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_IsInitialized(): PrivateScope, Public, HideBySig, SpecialName
+    set_IsInitialized(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_HasChanged(): PrivateScope, Public, HideBySig, SpecialName
+    set_HasChanged(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_WasCut(): PrivateScope, Public, HideBySig, SpecialName
+    get_BoundingboxWP(): PrivateScope, Public, HideBySig, SpecialName
+    get_DexelGrids(): PrivateScope, Public, HideBySig, SpecialName
+    get_TransformationHelper(): PrivateScope, Public, HideBySig, SpecialName
+    GetDexelGrid(Int32): PrivateScope, Public, HideBySig
+    GetGridSize(Int32 IsConst): PrivateScope, Public, HideBySig
+    GetGridDistance(Int32 IsConst): PrivateScope, Public, HideBySig
+    ExportDexelsToFile(String): PrivateScope, Public, HideBySig
+    GetBoundingBoxWP(): PrivateScope, Public, HideBySig
+    CalcAreaSecondMomentZ(Double&, Double&, Double&, Double&, Int32, Int32, Single, Single, Single): PrivateScope, Public, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class DexelMatRemPlugin.DexelPluginSettings: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.PlugIn.ACutSPluginSettings
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Int32 Farbmodus 'get set' : 
+    Double EventThreshold 'get set' : 
+    Double DexelEndpointScale 'get set' : 
+    Int32 DexelRenderThreshold 'get set' : 
+    Int32 ResZ 'get set' : 
+    Int32 ResY 'get set' : 
+    Int32 ResX 'get set' : 
+  Methods:
+    get_ResX(): PrivateScope, Public, HideBySig, SpecialName
+    set_ResX(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_ResY(): PrivateScope, Public, HideBySig, SpecialName
+    set_ResY(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_ResZ(): PrivateScope, Public, HideBySig, SpecialName
+    set_ResZ(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_DexelRenderThreshold(): PrivateScope, Public, HideBySig, SpecialName
+    set_DexelRenderThreshold(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_DexelEndpointScale(): PrivateScope, Public, HideBySig, SpecialName
+    set_DexelEndpointScale(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_EventThreshold(): PrivateScope, Public, HideBySig, SpecialName
+    set_EventThreshold(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_Farbmodus(): PrivateScope, Public, HideBySig, SpecialName
+    set_Farbmodus(Int32): PrivateScope, Public, HideBySig, SpecialName
+Class DexelMatRemPlugin.DexelMatRemPlugin: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.PlugIn.ACutSPlugin
+    Void .ctor(CutSKernel.PlugIn.IPluginHost): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Properties:
+    System.Version ApplicationMaxVersion 'get ' : 
+    System.Version ApplicationMinVersion 'get ' : 
+    System.String WikiPage 'get ' : 
+    CutSKernel.PlugIn.PluginSupportTypes SupportType 'get ' : 
+    System.String PluginAuthor 'get ' : 
+    System.String PluginDescription 'get ' : 
+    System.String PluginName 'get ' : 
+  Methods:
+    Load(): PrivateScope, Public, Virtual, HideBySig
+    Unload(): PrivateScope, Public, Virtual, HideBySig
+    get_PluginName(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_PluginDescription(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_PluginAuthor(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_SupportType(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_WikiPage(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_ApplicationMinVersion(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_ApplicationMaxVersion(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class DexelMatRemPlugin.DexelCoreXYZWrapperRO: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Rendering.ARenderableObject
+    Void .ctor(Int32, Int32, Int32, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(DexelMatRemPlugin.DexelCoreXYZWrapperRO): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    CutSKernel.IMeshable
+  Properties:
+    Int32 GridExtender 'get set' IsLong : 
+    Int32 Normals 'get set' IsLong : 
+    Int32 Lines 'get set' IsLong : 
+    Int32 AllPoints 'get set' IsLong : 
+    Int32 FrontPoints 'get set' IsLong : 
+    System.String TypeDescription 'get ' : 
+    System.String TypeAlias 'get ' : 
+  Methods:
+    get_TypeAlias(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeDescription(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_FrontPoints(): PrivateScope, Public, HideBySig, SpecialName
+    set_FrontPoints(Int32 IsLong): PrivateScope, Public, HideBySig, SpecialName
+    get_AllPoints(): PrivateScope, Public, HideBySig, SpecialName
+    set_AllPoints(Int32 IsLong): PrivateScope, Public, HideBySig, SpecialName
+    get_Lines(): PrivateScope, Public, HideBySig, SpecialName
+    set_Lines(Int32 IsLong): PrivateScope, Public, HideBySig, SpecialName
+    get_Normals(): PrivateScope, Public, HideBySig, SpecialName
+    set_Normals(Int32 IsLong): PrivateScope, Public, HideBySig, SpecialName
+    get_GridExtender(): PrivateScope, Public, HideBySig, SpecialName
+    set_GridExtender(Int32 IsLong): PrivateScope, Public, HideBySig, SpecialName
+    UpdateAABB(): PrivateScope, Public, Virtual, HideBySig
+    GetAABB(Matrix3D): PrivateScope, Public, Virtual, HideBySig
+    ApplyTransform(Matrix3D): PrivateScope, Public, Virtual, HideBySig
+    UpdateTriangulation(Boolean(HasFieldMarshal)): PrivateScope, Public, Virtual, HideBySig
+    Merge(ARenderableObject): PrivateScope, Public, Virtual, HideBySig
+    GetCopy(): PrivateScope, Public, Virtual, HideBySig
+    OnPropertyChanged(Object, PropertyChangedEventArgs): PrivateScope, Public, HideBySig
+    ReadXml(XmlReader): PrivateScope, Public, Virtual, HideBySig
+    WriteXml(XmlWriter): PrivateScope, Public, Virtual, HideBySig
+    SetDexelCore(DexelCoreXYZ*): PrivateScope, Public, HideBySig
+    SetDexelCoreWrapper(DexelCoreXYZWrapper): PrivateScope, Public, HideBySig
+    GetDexelCore(): PrivateScope, Public, HideBySig
+    GetDexelCoreWrapper(): PrivateScope, Public, HideBySig
+    RenderBoolean(ARenderableObject): PrivateScope, Public, HideBySig
+    RenderBoolean(ARenderableObject, Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig
+    InitStock(ARenderableObject): PrivateScope, Public, HideBySig
+    MeshingQuery(Double, Double, Double, MeshQueryResult&): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    GetMeshBoundingBox(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    GetMeshStepSize(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    GetMeshSampleOffset(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class DexelMatRemPlugin.DexelDataProvider: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(CutSKernel.Controller.MatRemWorker, DexelMatRemPlugin.DexelGridWrapper): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    CutSKernel.Controller.MatRemWorker m_MatRemWorker : Public
+    DexelMatRemPlugin.DexelGridWrapper m_DexelGrid : Public
+Class DexelMatRemPlugin.DexelGridCalculator: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Calculator.ACalculator`1[DexelMatRemPlugin.DexelDataProvider]
+    Void .ctor(DexelMatRemPlugin.DexelGridCalculator): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String WikiPage 'get ' : 
+    System.String Description 'get ' : 
+    System.String Alias 'get ' : 
+    DexelMatRemPlugin.DexelDataProvider DataProvider 'get set' : 
+  Methods:
+    op_Assign(DexelGridCalculator IsImplicitlyDereferenced IsConst): PrivateScope, Public, HideBySig, SpecialName
+    Clone(DexelGridCalculator IsImplicitlyDereferenced IsConst): PrivateScope, Public, HideBySig
+    Reset(): PrivateScope, Public, Virtual, HideBySig
+    get_DataProvider(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    set_DataProvider(DexelDataProvider): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_Alias(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_Description(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_WikiPage(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+Class DexelMatRemPlugin.DexelCoreXYZDataProvider: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    CutSKernel.Controller.MatRemWorker _Worker : Public
+    DexelMatRemPlugin.DexelGridWrapper _DexelGridX : Public
+    DexelMatRemPlugin.DexelGridWrapper _DexelGridY : Public
+    DexelMatRemPlugin.DexelGridWrapper _DexelGridZ : Public
+Class DexelMatRemPlugin.DexelCoreXYZCalculator: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Calculator.ACalculator`1[DexelMatRemPlugin.DexelCoreXYZDataProvider]
+    Void .ctor(DexelMatRemPlugin.DexelCoreXYZCalculator): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String WikiPage 'get ' : 
+    System.String Description 'get ' : 
+    System.String Alias 'get ' : 
+    System.Object GridCalculatorZ 'get set' : 
+    System.Object GridCalculatorY 'get set' : 
+    System.Object GridCalculatorX 'get set' : 
+    DexelMatRemPlugin.DexelCoreXYZDataProvider DataProvider 'get set' : 
+  Methods:
+    op_Assign(DexelCoreXYZCalculator IsImplicitlyDereferenced IsConst): PrivateScope, Public, HideBySig, SpecialName
+    Clone(DexelCoreXYZCalculator IsImplicitlyDereferenced IsConst): PrivateScope, Public, HideBySig
+    Reset(): PrivateScope, Public, Virtual, HideBySig
+    get_DataProvider(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    set_DataProvider(DexelCoreXYZDataProvider): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_GridCalculatorX(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    set_GridCalculatorX(Object): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_GridCalculatorY(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    set_GridCalculatorY(Object): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_GridCalculatorZ(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    set_GridCalculatorZ(Object): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_Alias(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_Description(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_WikiPage(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+Class DexelMatRemPlugin.XYZ_ReferenceGeometry_DataGridExtender: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Extender.DataGridExtender`1[DexelMatRemPlugin.DexelReferenceExtender]
+    Void .ctor(CutSKernel.Extender.IExtendableContainer): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    CopyData(IDataExtender): PrivateScope, Public, Virtual, HideBySig
+Class DexelMatRemPlugin.DexelCoreXYZDiscretisationObject: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Kinematic.DiscretisationKinBaseObject
+    Void .ctor(DexelMatRemPlugin.DexelCoreXYZDiscretisationObject): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(CutSKernel.Kinematic.Geometry): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    CutSKernel.Rendering.ARenderableObject Workpiecedata 'get set' : 
+    DexelMatRemPlugin.DexelGridCalculator VolumeCalculatorZ 'get ' : 
+    DexelMatRemPlugin.DexelGridCalculator VolumeCalculatorY 'get ' : 
+    DexelMatRemPlugin.DexelGridCalculator VolumeCalculatorX 'get ' : 
+    Int32 DirectionBits 'get set' : 
+    Int32 DirectionCount 'get set' : 
+    Int32 RES_Z 'get set' : 
+    Int32 RES_Y 'get set' : 
+    Int32 RES_X 'get set' : 
+    Int32 ShowPoints 'get set' : 
+    System.String Name 'get set' : 
+    Boolean DoModify 'get set' : 
+    System.String TypeDescription 'get ' : 
+    System.String TypeAlias 'get ' : 
+  Methods:
+    GetReferenceGridExtender(): PrivateScope, Public, Virtual, HideBySig
+    ApplyReferenceGridExtender(IDataGridExtender): PrivateScope, Public, Virtual, HideBySig
+    EvaluateWholeWorkpiece(): PrivateScope, Public, Virtual, HideBySig
+    get_TypeAlias(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeDescription(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_DoModify(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    set_DoModify(Boolean(HasFieldMarshal)): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    SetDoModify(Boolean(HasFieldMarshal)): PrivateScope, Public, Virtual, HideBySig
+    get_Name(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    set_Name(String): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_ShowPoints(): PrivateScope, Public, HideBySig, SpecialName
+    set_ShowPoints(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_RES_X(): PrivateScope, Public, HideBySig, SpecialName
+    set_RES_X(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_RES_Y(): PrivateScope, Public, HideBySig, SpecialName
+    set_RES_Y(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_RES_Z(): PrivateScope, Public, HideBySig, SpecialName
+    set_RES_Z(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_DirectionCount(): PrivateScope, Public, HideBySig, SpecialName
+    set_DirectionCount(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_DirectionBits(): PrivateScope, Public, HideBySig, SpecialName
+    set_DirectionBits(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_VolumeCalculatorX(): PrivateScope, Public, HideBySig, SpecialName
+    get_VolumeCalculatorY(): PrivateScope, Public, HideBySig, SpecialName
+    get_VolumeCalculatorZ(): PrivateScope, Public, HideBySig, SpecialName
+    get_Workpiecedata(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    set_Workpiecedata(ARenderableObject): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    Render(Double): PrivateScope, Public, Virtual, HideBySig
+    GetCopy(Boolean(HasFieldMarshal)): PrivateScope, Public, Virtual, HideBySig
+    RenderCutVolume(Double): PrivateScope, Public, Virtual, HideBySig
+    GetFragments(): PrivateScope, Public, Virtual, HideBySig
+    IsCompatibleWith(DiscretisationKinBaseObject): PrivateScope, Public, Virtual, HideBySig
+    GetDexelCount(Int32): PrivateScope, Public, HideBySig
+    SetDexelCount(Int32, Int32): PrivateScope, Public, HideBySig
+    ResetWorkpiece(): PrivateScope, Public, Virtual, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Struct DexelMatRemPlugin.ChangeEventType: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    DexelMatRemPlugin.ChangeEventType NOTHING = 0 : Public, Static, Literal, HasDefault
+    DexelMatRemPlugin.ChangeEventType START_POINT = 1 : Public, Static, Literal, HasDefault
+    DexelMatRemPlugin.ChangeEventType START_NORMAL = 2 : Public, Static, Literal, HasDefault
+    DexelMatRemPlugin.ChangeEventType START_COLOR = 4 : Public, Static, Literal, HasDefault
+    DexelMatRemPlugin.ChangeEventType END_POINT = 8 : Public, Static, Literal, HasDefault
+    DexelMatRemPlugin.ChangeEventType END_NORMAL = 16 : Public, Static, Literal, HasDefault
+    DexelMatRemPlugin.ChangeEventType END_COLOR = 32 : Public, Static, Literal, HasDefault
+    DexelMatRemPlugin.ChangeEventType VALIDITY = 64 : Public, Static, Literal, HasDefault
+    DexelMatRemPlugin.ChangeEventType PRED_CHANGED = 128 : Public, Static, Literal, HasDefault
+    DexelMatRemPlugin.ChangeEventType SUCC_CHANGED = 256 : Public, Static, Literal, HasDefault
+    DexelMatRemPlugin.ChangeEventType PROBED_START_POINT = 512 : Public, Static, Literal, HasDefault
+    DexelMatRemPlugin.ChangeEventType PROBED_END_POINT = 1024 : Public, Static, Literal, HasDefault
+    DexelMatRemPlugin.ChangeEventType SELECTED_START_POINT = 2048 : Public, Static, Literal, HasDefault
+    DexelMatRemPlugin.ChangeEventType SELECTED_END_POINT = 4096 : Public, Static, Literal, HasDefault
+    DexelMatRemPlugin.ChangeEventType POINTS = 9 : Public, Static, Literal, HasDefault
+    DexelMatRemPlugin.ChangeEventType NORMALS = 18 : Public, Static, Literal, HasDefault
+    DexelMatRemPlugin.ChangeEventType COLORS = 36 : Public, Static, Literal, HasDefault
+    DexelMatRemPlugin.ChangeEventType NEIGHBOUR_IDS = 384 : Public, Static, Literal, HasDefault
+    DexelMatRemPlugin.ChangeEventType ALL_CHANGES = 511 : Public, Static, Literal, HasDefault
+Class DexelMatRemPlugin.GeneralDexelExtender: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Extender.ADataExtender`1[DexelMatRemPlugin.DexelWrapper]
+    Void .ctor(DexelMatRemPlugin.DexelWrapper): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    Single _RecentLength : Public
+    Single _Cutlength : Public
+  Methods:
+    Update(): PrivateScope, Public, Virtual, HideBySig
+    Clear(): PrivateScope, Public, Virtual, HideBySig
+    CopyData(IDataExtender): PrivateScope, Public, Virtual, HideBySig
+    Render(Double): PrivateScope, Public, Virtual, HideBySig
+    Evaluate(Object): PrivateScope, Public, Virtual, HideBySig
+    GetRenderVertices(): PrivateScope, Public, Virtual, HideBySig
+Class DexelMatRemPlugin.SimulationSettings: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.PlugIn.ACutSPluginSettings
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Double turning_delta_s_1 'get set' : 
+    Double turning_strnr_AB 'get set' : 
+    Double turning_strn_AB 'get set' : 
+    Double turning_phi 'get set' : 
+    Double turning_F_t 'get set' : 
+    Double turning_F_c 'get set' : 
+    Double turning_t_2 'get set' : 
+    Double turning_t_1 'get set' : 
+    Double turning_w 'get set' : 
+    Double turning_U 'get set' : 
+    Double turning_alpha 'get set' : 
+    Double cp_d 'get set' : 
+    Double cp_c 'get set' : 
+    Double cp_b 'get set' : 
+    Double cp_a 'get set' : 
+    Double lambda_d 'get set' : 
+    Double lambda_c 'get set' : 
+    Double lambda_b 'get set' : 
+    Double lambda_a 'get set' : 
+    Double ro_d 'get set' : 
+    Double ro_c 'get set' : 
+    Double ro_b 'get set' : 
+    Double ro_a 'get set' : 
+    Double T_int 'get set' : 
+    Double T_AB 'get set' : 
+    Double T_melt 'get set' : 
+    Double T_room 'get set' : 
+    Double h   'get set' : 
+    Double n   'get set' : 
+    Double m   'get set' : 
+    Double C   'get set' : 
+    Double B   'get set' : 
+    Double A   'get set' : 
+    DexelMatRemPlugin.ToolType WZTyp 'get set' : 
+    Double ToolDrall 'get set' : 
+    Int32 AngleStep 'get set' : 
+    Int32 NumOfTeeth 'get set' : 
+    System.String PathMeasuredForceData 'get set' : 
+    Boolean UseAsCuttingVector 'get set' : 
+    System.Windows.Media.Media3D.Vector3D ToolAxis 'get set' : 
+    System.Windows.Media.Media3D.Point3D Ke 'get set' : 
+    System.Windows.Media.Media3D.Point3D Kc 'get set' : 
+    DexelMatRemPlugin.HeatPartitionModel HeatPartition 'get set' : 
+    DexelMatRemPlugin.HeatConductionModel HeatConduction 'get set' : 
+    DexelMatRemPlugin.CuttingForceModel CalcCuttingCoefficients 'get set' : 
+    DexelMatRemPlugin.CalculateValue Value2Calc 'get set' : 
+    DexelMatRemPlugin.ForceCoordinates ForceCoordinateSystem 'get set' : 
+    Double SP  'get set' : 
+    Double KS  'get set' : 
+    Double SK_Min 'get set' : 
+    Double SK  'get set' : 
+    Boolean ShowIntersectionLines 'get set' : 
+    Boolean ShowCircles 'get set' : 
+    Int32 TemperatureSupPoints 'get set' : 
+    Double WConductionEnvironment 'get set' : 
+    Double WConduction 'get set' : 
+    Double WCapacity 'get set' : 
+    Double Werkstoffdichte 'get set' : 
+    Double EnvironmentTemp 'get set' : 
+    Double WorkpieceTemp 'get set' : 
+    System.String PathTargetWP 'get set' : 
+    Boolean DoImportTarget 'get set' : 
+    System.String PathWPVTUData 'get set' : 
+    System.String PathWPData 'get set' : 
+    Single SynchCycle 'get set' : 
+    Boolean ExportShapeError 'get set' : 
+    Boolean ExportWorkpiece 'get set' : 
+    Boolean ImportResults 'get set' : 
+    Boolean ExportResults 'get set' : 
+    Boolean LogMatrix 'get set' : 
+    Single WPDeformationScale 'get set' : 
+    Double False_Colour_Max 'get set' : 
+    Boolean GrayScale 'get set' : 
+    Boolean ShowSweepGPU 'get set' : 
+    Boolean ShowCuttingPointDexelNeighbourhood_Z 'get set' : 
+    Boolean ShowCuttingPointDexelNeighbourhood_Y 'get set' : 
+    Boolean ShowCuttingPointDexelNeighbourhood_X 'get set' : 
+    Boolean ShowConvexHull 'get set' : 
+    Boolean PolygonHullEntire 'get set' : 
+    Boolean PolygonHullZ 'get set' : 
+    Boolean PolygonHullY 'get set' : 
+    Boolean PolygonHullX 'get set' : 
+    Boolean ShowForceCoordinates 'get set' : 
+    DexelMatRemPlugin.DexelCutPointsColorCode CutPointsColorCode 'get set' : 
+    System.String ColorbarUnit 'get set' : 
+    System.String ColorbarTitle 'get set' : 
+    Double WorkpieceFalseColorMax 'get set' : 
+    Double WorkpieceFalseColorMin 'get set' : 
+    DexelMatRemPlugin.WorkpieceColorCode Datenuebertrag_Werkstueck 'get set' : 
+    Boolean ExtendedAnalysis 'get set' : 
+    Boolean Optimization 'get set' : 
+    Double OptimizationTolerance 'get set' : 
+    Single Toleranz_Polygon_Union 'get set' : 
+    Boolean Gesamtpolygon 'get set' : 
+    Boolean DexelNeighbour 'get set' : 
+    Boolean PolygonHull 'get set' : 
+    Boolean Global 'get set' : 
+    Boolean ConvexHull 'get set' : 
+    Boolean Schnittpunkte 'get set' : 
+  Methods:
+    set_cp_a(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_cp_b(): PrivateScope, Public, HideBySig, SpecialName
+    set_cp_b(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_cp_c(): PrivateScope, Public, HideBySig, SpecialName
+    set_cp_c(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_cp_d(): PrivateScope, Public, HideBySig, SpecialName
+    set_cp_d(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_turning_alpha(): PrivateScope, Public, HideBySig, SpecialName
+    set_turning_alpha(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_turning_U(): PrivateScope, Public, HideBySig, SpecialName
+    set_turning_U(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_turning_w(): PrivateScope, Public, HideBySig, SpecialName
+    set_turning_w(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_turning_t_1(): PrivateScope, Public, HideBySig, SpecialName
+    set_turning_t_1(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_turning_t_2(): PrivateScope, Public, HideBySig, SpecialName
+    set_turning_t_2(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_turning_F_c(): PrivateScope, Public, HideBySig, SpecialName
+    set_turning_F_c(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_turning_F_t(): PrivateScope, Public, HideBySig, SpecialName
+    set_turning_F_t(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_turning_phi(): PrivateScope, Public, HideBySig, SpecialName
+    set_turning_phi(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_turning_strn_AB(): PrivateScope, Public, HideBySig, SpecialName
+    set_turning_strn_AB(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_turning_strnr_AB(): PrivateScope, Public, HideBySig, SpecialName
+    set_turning_strnr_AB(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_turning_delta_s_1(): PrivateScope, Public, HideBySig, SpecialName
+    set_turning_delta_s_1(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_WCapacity(): PrivateScope, Public, HideBySig, SpecialName
+    set_WCapacity(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_WConduction(): PrivateScope, Public, HideBySig, SpecialName
+    set_WConduction(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_WConductionEnvironment(): PrivateScope, Public, HideBySig, SpecialName
+    set_WConductionEnvironment(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_TemperatureSupPoints(): PrivateScope, Public, HideBySig, SpecialName
+    set_TemperatureSupPoints(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_ShowCircles(): PrivateScope, Public, HideBySig, SpecialName
+    set_ShowCircles(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_ShowIntersectionLines(): PrivateScope, Public, HideBySig, SpecialName
+    set_ShowIntersectionLines(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_SK(): PrivateScope, Public, HideBySig, SpecialName
+    set_SK(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_SK_Min(): PrivateScope, Public, HideBySig, SpecialName
+    set_SK_Min(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_KS(): PrivateScope, Public, HideBySig, SpecialName
+    set_KS(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_SP(): PrivateScope, Public, HideBySig, SpecialName
+    set_SP(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_ForceCoordinateSystem(): PrivateScope, Public, HideBySig, SpecialName
+    set_ForceCoordinateSystem(ForceCoordinates): PrivateScope, Public, HideBySig, SpecialName
+    get_Value2Calc(): PrivateScope, Public, HideBySig, SpecialName
+    set_Value2Calc(CalculateValue): PrivateScope, Public, HideBySig, SpecialName
+    get_CalcCuttingCoefficients(): PrivateScope, Public, HideBySig, SpecialName
+    set_CalcCuttingCoefficients(CuttingForceModel): PrivateScope, Public, HideBySig, SpecialName
+    get_HeatConduction(): PrivateScope, Public, HideBySig, SpecialName
+    set_HeatConduction(HeatConductionModel): PrivateScope, Public, HideBySig, SpecialName
+    get_HeatPartition(): PrivateScope, Public, HideBySig, SpecialName
+    set_HeatPartition(HeatPartitionModel): PrivateScope, Public, HideBySig, SpecialName
+    get_Kc(): PrivateScope, Public, HideBySig, SpecialName
+    set_Kc(Point3D): PrivateScope, Public, HideBySig, SpecialName
+    get_Ke(): PrivateScope, Public, HideBySig, SpecialName
+    set_Ke(Point3D): PrivateScope, Public, HideBySig, SpecialName
+    get_ToolAxis(): PrivateScope, Public, HideBySig, SpecialName
+    set_ToolAxis(Vector3D): PrivateScope, Public, HideBySig, SpecialName
+    get_UseAsCuttingVector(): PrivateScope, Public, HideBySig, SpecialName
+    set_UseAsCuttingVector(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_PathMeasuredForceData(): PrivateScope, Public, HideBySig, SpecialName
+    set_PathMeasuredForceData(String): PrivateScope, Public, HideBySig, SpecialName
+    get_NumOfTeeth(): PrivateScope, Public, HideBySig, SpecialName
+    set_NumOfTeeth(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_AngleStep(): PrivateScope, Public, HideBySig, SpecialName
+    set_AngleStep(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_ToolDrall(): PrivateScope, Public, HideBySig, SpecialName
+    set_ToolDrall(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_WZTyp(): PrivateScope, Public, HideBySig, SpecialName
+    set_WZTyp(ToolType): PrivateScope, Public, HideBySig, SpecialName
+    get_A(): PrivateScope, Public, HideBySig, SpecialName
+    set_A(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_B(): PrivateScope, Public, HideBySig, SpecialName
+    set_B(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_C(): PrivateScope, Public, HideBySig, SpecialName
+    set_C(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_m(): PrivateScope, Public, HideBySig, SpecialName
+    set_m(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_n(): PrivateScope, Public, HideBySig, SpecialName
+    set_n(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_h(): PrivateScope, Public, HideBySig, SpecialName
+    set_h(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_T_room(): PrivateScope, Public, HideBySig, SpecialName
+    set_T_room(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_T_melt(): PrivateScope, Public, HideBySig, SpecialName
+    set_T_melt(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_T_AB(): PrivateScope, Public, HideBySig, SpecialName
+    set_T_AB(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_T_int(): PrivateScope, Public, HideBySig, SpecialName
+    set_T_int(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_ro_a(): PrivateScope, Public, HideBySig, SpecialName
+    set_ro_a(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_ro_b(): PrivateScope, Public, HideBySig, SpecialName
+    set_ro_b(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_ro_c(): PrivateScope, Public, HideBySig, SpecialName
+    set_ro_c(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_ro_d(): PrivateScope, Public, HideBySig, SpecialName
+    set_ro_d(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_lambda_a(): PrivateScope, Public, HideBySig, SpecialName
+    set_lambda_a(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_lambda_b(): PrivateScope, Public, HideBySig, SpecialName
+    set_lambda_b(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_lambda_c(): PrivateScope, Public, HideBySig, SpecialName
+    set_lambda_c(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_lambda_d(): PrivateScope, Public, HideBySig, SpecialName
+    set_lambda_d(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_cp_a(): PrivateScope, Public, HideBySig, SpecialName
+    get_Schnittpunkte(): PrivateScope, Public, HideBySig, SpecialName
+    set_Schnittpunkte(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_ConvexHull(): PrivateScope, Public, HideBySig, SpecialName
+    set_ConvexHull(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_Global(): PrivateScope, Public, HideBySig, SpecialName
+    set_Global(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_PolygonHull(): PrivateScope, Public, HideBySig, SpecialName
+    set_PolygonHull(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_DexelNeighbour(): PrivateScope, Public, HideBySig, SpecialName
+    set_DexelNeighbour(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_Gesamtpolygon(): PrivateScope, Public, HideBySig, SpecialName
+    set_Gesamtpolygon(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_Toleranz_Polygon_Union(): PrivateScope, Public, HideBySig, SpecialName
+    set_Toleranz_Polygon_Union(Single): PrivateScope, Public, HideBySig, SpecialName
+    get_OptimizationTolerance(): PrivateScope, Public, HideBySig, SpecialName
+    set_OptimizationTolerance(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_Optimization(): PrivateScope, Public, HideBySig, SpecialName
+    set_Optimization(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_ExtendedAnalysis(): PrivateScope, Public, HideBySig, SpecialName
+    set_ExtendedAnalysis(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_Datenuebertrag_Werkstueck(): PrivateScope, Public, HideBySig, SpecialName
+    set_Datenuebertrag_Werkstueck(WorkpieceColorCode): PrivateScope, Public, HideBySig, SpecialName
+    get_WorkpieceFalseColorMin(): PrivateScope, Public, HideBySig, SpecialName
+    set_WorkpieceFalseColorMin(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_WorkpieceFalseColorMax(): PrivateScope, Public, HideBySig, SpecialName
+    set_WorkpieceFalseColorMax(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_ColorbarTitle(): PrivateScope, Public, HideBySig, SpecialName
+    set_ColorbarTitle(String): PrivateScope, Public, HideBySig, SpecialName
+    get_ColorbarUnit(): PrivateScope, Public, HideBySig, SpecialName
+    set_ColorbarUnit(String): PrivateScope, Public, HideBySig, SpecialName
+    get_CutPointsColorCode(): PrivateScope, Public, HideBySig, SpecialName
+    set_CutPointsColorCode(DexelCutPointsColorCode): PrivateScope, Public, HideBySig, SpecialName
+    get_ShowForceCoordinates(): PrivateScope, Public, HideBySig, SpecialName
+    set_ShowForceCoordinates(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_PolygonHullX(): PrivateScope, Public, HideBySig, SpecialName
+    set_PolygonHullX(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_PolygonHullY(): PrivateScope, Public, HideBySig, SpecialName
+    set_PolygonHullY(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_PolygonHullZ(): PrivateScope, Public, HideBySig, SpecialName
+    set_PolygonHullZ(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_PolygonHullEntire(): PrivateScope, Public, HideBySig, SpecialName
+    set_PolygonHullEntire(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_ShowConvexHull(): PrivateScope, Public, HideBySig, SpecialName
+    set_ShowConvexHull(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_ShowCuttingPointDexelNeighbourhood_X(): PrivateScope, Public, HideBySig, SpecialName
+    set_ShowCuttingPointDexelNeighbourhood_X(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_ShowCuttingPointDexelNeighbourhood_Y(): PrivateScope, Public, HideBySig, SpecialName
+    set_ShowCuttingPointDexelNeighbourhood_Y(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_ShowCuttingPointDexelNeighbourhood_Z(): PrivateScope, Public, HideBySig, SpecialName
+    set_ShowCuttingPointDexelNeighbourhood_Z(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_ShowSweepGPU(): PrivateScope, Public, HideBySig, SpecialName
+    set_ShowSweepGPU(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_GrayScale(): PrivateScope, Public, HideBySig, SpecialName
+    set_GrayScale(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_False_Colour_Max(): PrivateScope, Public, HideBySig, SpecialName
+    set_False_Colour_Max(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_WPDeformationScale(): PrivateScope, Public, HideBySig, SpecialName
+    set_WPDeformationScale(Single): PrivateScope, Public, HideBySig, SpecialName
+    get_LogMatrix(): PrivateScope, Public, HideBySig, SpecialName
+    set_LogMatrix(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_ExportResults(): PrivateScope, Public, HideBySig, SpecialName
+    set_ExportResults(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_ImportResults(): PrivateScope, Public, HideBySig, SpecialName
+    set_ImportResults(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_ExportWorkpiece(): PrivateScope, Public, HideBySig, SpecialName
+    set_ExportWorkpiece(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_ExportShapeError(): PrivateScope, Public, HideBySig, SpecialName
+    set_ExportShapeError(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_SynchCycle(): PrivateScope, Public, HideBySig, SpecialName
+    set_SynchCycle(Single): PrivateScope, Public, HideBySig, SpecialName
+    get_PathWPData(): PrivateScope, Public, HideBySig, SpecialName
+    set_PathWPData(String): PrivateScope, Public, HideBySig, SpecialName
+    get_PathWPVTUData(): PrivateScope, Public, HideBySig, SpecialName
+    set_PathWPVTUData(String): PrivateScope, Public, HideBySig, SpecialName
+    get_DoImportTarget(): PrivateScope, Public, HideBySig, SpecialName
+    set_DoImportTarget(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_PathTargetWP(): PrivateScope, Public, HideBySig, SpecialName
+    set_PathTargetWP(String): PrivateScope, Public, HideBySig, SpecialName
+    get_WorkpieceTemp(): PrivateScope, Public, HideBySig, SpecialName
+    set_WorkpieceTemp(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_EnvironmentTemp(): PrivateScope, Public, HideBySig, SpecialName
+    set_EnvironmentTemp(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_Werkstoffdichte(): PrivateScope, Public, HideBySig, SpecialName
+    set_Werkstoffdichte(Double): PrivateScope, Public, HideBySig, SpecialName
+Class DexelMatRemPlugin.DexelCoreXYZConverter: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Rendering.AROConverter
+    Void .ctor(DexelMatRemPlugin.DexelCoreXYZConverter): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Properties:
+    System.String TypeDescription 'get ' : 
+    System.String TypeAlias 'get ' : 
+  Methods:
+    get_TypeAlias(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeDescription(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    Convert(ARenderableObject, Object): PrivateScope, Public, Virtual, HideBySig
+    GetTargetType(): PrivateScope, Public, Virtual, HideBySig
+    GetTargetTypeDescription(): PrivateScope, Public, Virtual, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Struct DexelMatRemPlugin.ShaderStrings: AutoLayout, AnsiClass, Class, Public, SequentialLayout, Sealed, BeforeFieldInit
+  :System.ValueType
+Class DexelMatRemPlugin.DexelCoreXYZWorkpieceModel: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Kinematic.AWorkpieceModel
+    Void .ctor(DexelMatRemPlugin.DexelCoreXYZWorkpieceModel): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Properties:
+    System.String TypeDescription 'get ' : 
+    System.String TypeAlias 'get ' : 
+  Methods:
+    get_TypeAlias(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeDescription(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    GetDescription(): PrivateScope, Public, Virtual, HideBySig
+    GetWorkpieceType(): PrivateScope, Public, Virtual, HideBySig
+    SetCurrentTransformTool(Matrix3D): PrivateScope, Public, Virtual, HideBySig
+    SetDoCalcCutVolume(Boolean(HasFieldMarshal)): PrivateScope, Public, Virtual, HideBySig
+    WriteWorkpieceData(StreamWriter, Matrix3D, Dictionary`2): PrivateScope, Public, Virtual, HideBySig
+    WriteCutData(StreamWriter, Matrix3D, Dictionary`2): PrivateScope, Public, Virtual, HideBySig
+    ClearCutData(Boolean(HasFieldMarshal)): PrivateScope, Public, Virtual, HideBySig
+    CreateDiscretisationObject(Geometry): PrivateScope, Public, Virtual, HideBySig
+    GetCopy(Boolean(HasFieldMarshal)): PrivateScope, Public, Virtual, HideBySig
+    GetLastCutGeometry(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    GetDexelCore(): PrivateScope, Public, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class DexelMatRemPlugin.DexelCoreXYZSerializer: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Serialization.ASerializer
+    Void .ctor(DexelMatRemPlugin.DexelCoreXYZSerializer): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Fields:
+    System.String DEXEL_POINTCLOUD : Public, Static
+    System.String DEXEL_AABB_MIN : Public, Static
+    System.String DEXEL_GRID2D : Public, Static
+    System.String DEXEL_POSITION : Public, Static
+    System.String DEXEL_DEXEL : Public, Static
+    System.String DEXEL_POINT : Public, Static
+    System.String DEXEL_NORMAL : Public, Static
+    System.String DEXEL_INDEX_X : Public, Static
+    System.String DEXEL_INDEX_Y : Public, Static
+    System.String DEXEL_DIM_X : Public, Static
+    System.String DEXEL_DIM_Y : Public, Static
+    System.String DEXEL_DIR_X : Public, Static
+    System.String DEXEL_DIR_Y : Public, Static
+    System.String DEXEL_DIR_Z : Public, Static
+    System.String DEXEL_CONTENT_INFO : Public, Static
+    System.String DEXEL_FILE_TYPE : Public, Static
+  Properties:
+    Boolean CanWrite 'get ' : 
+    Boolean CanRead 'get ' : 
+    System.String TypeDescription 'get ' : 
+    System.String TypeAlias 'get ' : 
+  Methods:
+    get_TypeAlias(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeDescription(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    Serialize(AKinBaseObject, Stream): PrivateScope, Public, Virtual, HideBySig
+    Deserialize(Stream, Type): PrivateScope, Public, Virtual, HideBySig
+    get_CanRead(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_CanWrite(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class DexelMatRemPlugin.GridInfo: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(Int32, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    Int32 DexelCountX : Public
+    Int32 DexelCountY : Public
+Class DexelMatRemPlugin.DexelCoreXYZPluginFassade: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Fields:
+    System.Collections.Generic.List`1[DexelMatRemPlugin.DexelCoreXYZWrapperRO] m_pVecDexelCore : Public
+  Methods:
+    GetDexelCoreCount(): PrivateScope, Public, HideBySig
+    GetCutDexelData(Int32): PrivateScope, Public, HideBySig
+    GetCutDexelData(): PrivateScope, Public, HideBySig
+    GetDexelData(): PrivateScope, Public, HideBySig
+    GetDexelData(Int32): PrivateScope, Public, HideBySig
+    GetBoundingBox(Matrix3D): PrivateScope, Public, HideBySig
+    GetBoundingBox(Int32, Matrix3D): PrivateScope, Public, HideBySig
+    SetDoCalcCutVolume(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig
+    SetDoCalcCutVolume(Int32, Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig
+    SetDoModifyDexelField(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig
+    SetDoModifyDexelField(Int32, Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class DexelMatRemPlugin.PointCloudSerializer: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Serialization.ASerializer
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String TypeDescription 'get ' : 
+    System.String TypeAlias 'get ' : 
+    Boolean CanWrite 'get ' : 
+    Boolean CanRead 'get ' : 
+  Methods:
+    Serialize(AKinBaseObject, Stream): PrivateScope, Public, Virtual, HideBySig
+    Deserialize(Stream, Type): PrivateScope, Public, Virtual, HideBySig
+    get_CanRead(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_CanWrite(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeAlias(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeDescription(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+Class DexelMatRemPlugin.ProjectionCalculator: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Calculator.ACalculator`1[DexelMatRemPlugin.DexelGridWrapper]
+    Void .ctor(DexelMatRemPlugin.ProjectionCalculator): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.Windows.Media.Media3D.Vector3D ProjectionDir 'get set' : 
+    System.String Description 'get ' : 
+    System.String Alias 'get ' : 
+    DexelMatRemPlugin.DexelGridWrapper DataProvider 'get set' : 
+  Methods:
+    op_Assign(ProjectionCalculator IsImplicitlyDereferenced IsConst): PrivateScope, Public, HideBySig, SpecialName
+    Clone(ProjectionCalculator IsImplicitlyDereferenced IsConst): PrivateScope, Public, HideBySig
+    Reset(): PrivateScope, Public, Virtual, HideBySig
+    get_DataProvider(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    set_DataProvider(DexelGridWrapper): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_Alias(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_Description(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_ProjectionDir(): PrivateScope, Public, HideBySig, SpecialName
+    set_ProjectionDir(Vector3D): PrivateScope, Public, HideBySig, SpecialName
+    CalcMainAxis(Vector3D): PrivateScope, Public, Static, HideBySig
+    CalcRotationMatrix(Vector3D): PrivateScope, Public, Static, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+Class myDexel2D: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IComparable
+  Fields:
+    System.ValueType m_value Point3D IsBoxed : Public
+  Methods:
+    CompareTo(ValueType Point3D IsBoxed): PrivateScope, Public, HideBySig
+    CompareTo(Object): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask

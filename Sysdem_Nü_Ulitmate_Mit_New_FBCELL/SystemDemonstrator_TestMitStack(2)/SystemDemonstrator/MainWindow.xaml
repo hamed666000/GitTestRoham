@@ -1,0 +1,72 @@
+﻿<Window x:Class="SystemDemonstrator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SystemDemonstrator"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="SystemDemonstrator" Height="642" Width="1193.707">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="EnumActiontype" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:eAction"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <Grid Margin="0,0,-105,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TreeView x:Name="treeView" HorizontalAlignment="Left" Height="447" Margin="27,33,0,0" VerticalAlignment="Top" Width="134" ItemsSource="{Binding ProjectList}">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="IsExpanded" Value="True"/>
+                </Style>
+            </TreeView.ItemContainerStyle>
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type  local:c_TreeObj}" ItemsSource="{Binding Path=Children}"  >
+                    <TreeViewItem Header="{Binding Path=m_sName}" Foreground="{Binding Path=m_sColour}"/>
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+        </TreeView>
+        <ListView x:Name="listViewCells" HorizontalAlignment="Left" Height="229" Margin="869,251,0,0" VerticalAlignment="Top" Width="261" ItemsSource="{Binding m_GUIListCells,  UpdateSourceTrigger=PropertyChanged }">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" Width="70" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="State" Width="90" DisplayMemberBinding="{Binding State}" />
+                    <GridViewColumn Header="WP" Width="80" DisplayMemberBinding="{Binding Workpiece}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <GroupBox x:Name="groupBox" Header="Manual Action" HorizontalAlignment="Left" Height="71" Margin="148,527,0,0" VerticalAlignment="Top" Width="434">
+            <Grid HorizontalAlignment="Left" Height="31" Margin="10,10,0,0" VerticalAlignment="Top" Width="341">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="181*"/>
+                    <ColumnDefinition Width="160*"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="tbWPID" HorizontalAlignment="Left" Height="23" Margin="142,10,0,-2" TextWrapping="Wrap" Text="{Binding m_cGuiAction.m_sWPID,  UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="68" Grid.ColumnSpan="2"/>
+                <TextBox x:Name="tbCell" HorizontalAlignment="Left" Height="23" Margin="65,10,0,-2" TextWrapping="Wrap" Text="{Binding m_cGuiAction.m_iCell,  UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="58" RenderTransformOrigin="1.686,-0.087" Grid.Column="1"/>
+                <Button x:Name="button" Content="Start" Command="{Binding CreateActionCommand}"  HorizontalAlignment="Left" Margin="144,10,-59,0" VerticalAlignment="Top" Width="75" Grid.Column="1" Height="20" IsEnabled="{Binding m_bManualModeActive}" />
+                <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="8,10,0,0" VerticalAlignment="Top" Width="102" Height="21"  SelectedItem="{Binding m_cGuiAction.m_eActionType,  UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={StaticResource EnumActiontype}}"/>
+                <Label x:Name="label3" Content="WPID" HorizontalAlignment="Left" Margin="142,-16,0,21" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Width="69"/>
+            </Grid>
+        </GroupBox>
+        <ListView x:Name="listView" HorizontalAlignment="Left" Height="182" Margin="869,33,0,0" VerticalAlignment="Top" Width="261" ItemsSource="{Binding m_GUIStorage,  UpdateSourceTrigger=PropertyChanged}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" Width="100" DisplayMemberBinding="{Binding m_iNumber}" />
+                    <GridViewColumn Header="Empty" Width="50" DisplayMemberBinding="{Binding m_bEmpty}" />
+                    <GridViewColumn Header="WP" Width="80" DisplayMemberBinding="{Binding m_iWorkpieceID}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button x:Name="btnAutoMode"  Content="{Binding m_sAutoModeBtnText}" Command="{Binding AutoModeCommand}" HorizontalAlignment="Left" Margin="27,563,0,0" VerticalAlignment="Top" Width="75" Height="20"  ScrollViewer.VerticalScrollBarVisibility="Auto" />
+        <Label x:Name="label" Content="CellArea" HorizontalAlignment="Left" Margin="869,225,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label1" Content="MHS - Storage" HorizontalAlignment="Left" Margin="869,7,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label2" Content="Action - List" HorizontalAlignment="Left" Margin="27,7,0,0" VerticalAlignment="Top" Width="75"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="447" Margin="188,33,0,0" TextWrapping="Wrap" Text="{Binding m_sMessageText,  UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="660" ScrollViewer.VerticalScrollBarVisibility="Auto" IsReadOnlyCaretVisible="True"/>
+        <Label x:Name="label4" Content="{Binding m_sAutoModeText,  UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="27,527,0,0" VerticalAlignment="Top" Width="109"  />
+    </Grid>
+</Window>

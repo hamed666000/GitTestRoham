@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <GVL Name="CELL_WORKING_STATES" Id="{a9b1c760-4c86-4427-8207-5c6e8fe75e08}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+TYPE
+	CELL_WORKING_STATES: (e_START, e_WORKING, e_DATAPUT,e_FINISHED);
+END_TYPE		
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

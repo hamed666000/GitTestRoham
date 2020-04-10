@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.16">
+  <POU Name="FB_Clamp" Id="{e1c73d33-f6c1-43d7-bcc1-6a1542cba2b5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Clamp
+VAR_INPUT
+	
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+m_csState : CLAMP_STATE;	
+m_csStateRequested : CLAMP_STATE;
+
+//Eingänge
+m_bIsOpen AT %I* : BOOL;
+m_bIsClosed AT %I* : BOOL;
+m_bIsFull AT %I* : BOOL;
+
+//Ausgänge
+m_bOpen AT %Q* :BOOL;
+
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+StateMachine();]]></ST>
+    </Implementation>
+    <Method Name="IsClosed" Id="{f36a093d-e703-4c67-adeb-fb50bcb9d8de}">
+      <Declaration><![CDATA[METHOD IsClosed : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF m_csState = CLAMP_STATE.e_CLOSED THEN
+	IsClosed := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsClosedFull" Id="{eef664de-fb65-43aa-ac40-3e880256493d}">
+      <Declaration><![CDATA[METHOD IsClosedFull : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF m_csState = CLAMP_STATE.e_CLOSED_FULL THEN
+	IsClosedFull := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsError" Id="{dab5c067-89e8-4bf9-906a-f6428ee3c84a}">
+      <Declaration><![CDATA[METHOD IsError : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF m_csState = CLAMP_STATE.e_ERROR THEN
+	IsError := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsOpen" Id="{62f697c4-79e4-48a6-96ed-3a9cb1e39daa}">
+      <Declaration><![CDATA[METHOD IsOpen : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF m_csState = CLAMP_STATE.e_OPEN THEN
+	IsOpen := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetCloseClampEmpty" Id="{e1f9b516-b57e-40fd-9545-e308aeecc481}">
+      <Declaration><![CDATA[METHOD SetCloseClampEmpty : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_csStateRequested := CLAMP_STATE.e_CLOSED;
+m_bOpen := FALSE;
+SetCloseClampEmpty:=TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetCloseClampFull" Id="{a0a19ff9-7e84-4af4-852a-1cae099210e9}">
+      <Declaration><![CDATA[METHOD SetCloseClampFull : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_csStateRequested := CLAMP_STATE.e_CLOSED_FULL;
+m_bOpen := FALSE;
+SetCloseClampFull := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetOpenClamp" Id="{2369cdec-8f4b-40ad-a3b8-c6a7d2e46a99}">
+      <Declaration><![CDATA[METHOD SetOpenClamp : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_bOpen := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StateMachine" Id="{9cb897b5-ae35-4796-b6a8-f33e6391352e}">
+      <Declaration><![CDATA[METHOD StateMachine : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+//m_bIsOpen : BOOL;
+//m_bIsClosed : BOOL;
+//m_bIsClosedFull : BOOL;
+
+CASE m_csState  OF
+	
+	CLAMP_STATE.e_OPEN:	
+
+		IF m_bIsClosed THEN
+			IF 	m_bIsFull THEN
+				m_csState := CLAMP_STATE.e_CLOSED_FULL;		
+			ELSE
+				m_csState := CLAMP_STATE.e_CLOSED;		
+			END_IF 
+		
+		END_IF
+		
+		
+ 	CLAMP_STATE.e_CLOSED_FULL:
+	// Fehler wenn falscher Zustand
+ 		IF m_csStateRequested = CLAMP_STATE.e_CLOSED THEN
+  			m_csState := CLAMP_STATE.e_ERROR;
+		END_IF
+		
+		
+		IF m_bIsOpen THEN
+			m_csState := CLAMP_STATE.e_OPEN;		
+		END_IF
+	
+	CLAMP_STATE.e_CLOSED:
+			// Fehler wenn falscher Zustand in diesem Fall: Werkstück erwartet aber nicht im Halter
+ 		IF m_csStateRequested = CLAMP_STATE.e_CLOSED_FULL THEN
+  			m_csState := CLAMP_STATE.e_ERROR;
+		END_IF
+	
+		IF m_bIsOpen THEN
+			m_csState := CLAMP_STATE.e_OPEN;		
+		END_IF
+		
+CLAMP_STATE.e_ERROR:
+		
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Clamp">
+      <LineId Id="24" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Clamp.IsClosed">
+      <LineId Id="5" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_Clamp.IsClosedFull">
+      <LineId Id="7" Count="1" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Clamp.IsError">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Clamp.IsOpen">
+      <LineId Id="7" Count="1" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Clamp.SetCloseClampEmpty">
+      <LineId Id="12" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Clamp.SetCloseClampFull">
+      <LineId Id="11" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Clamp.SetOpenClamp">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Clamp.StateMachine">
+      <LineId Id="60" Count="41" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

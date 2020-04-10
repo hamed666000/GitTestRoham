@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SystemDemonstrator.c_Action" Collapsed="true">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQABAAAAAABAAAAAAAAAAAAQIAAQASEA=</HashCode>
+      <FileName>Action\Action.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemDemonstrator.c_ActionHandler" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwAAAAAAAAAAIAACgAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Action\ActionHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemDemonstrator.App" Collapsed="true">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemDemonstrator.c_BaseObserver" Collapsed="true">
+    <Position X="12.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>BaseObserver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemDemonstrator.ADSWriteInterface" Collapsed="true">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cells\ADSWriteInterface.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemDemonstrator.c_Cell" Collapsed="true">
+    <Position X="3.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAQAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Cells\Cell.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemDemonstrator.c_CellArea" Collapsed="true">
+    <Position X="2.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAACAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cells\CellArea.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemDemonstrator.CommonFunctions" Collapsed="true">
+    <Position X="8.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>CommonFunctions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemDemonstrator.c_MainViewModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="6.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAEAACAAAAGAAAAgAAAgAAABAAAAAAAAAAAACI=</HashCode>
+      <FileName>MainViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SystemDemonstrator.MainWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SystemDemonstrator.c_MHS" Collapsed="true">
+    <Position X="8.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAABAEgAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>MHS\MHS.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemDemonstrator.c_Storage" Collapsed="true">
+    <Position X="10.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MHS\Storage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemDemonstrator.c_StoragePlace" Collapsed="true">
+    <Position X="12.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAEAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>MHS\StoragePlace.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemDemonstrator.c_Workpiece" Collapsed="true">
+    <Position X="6" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Workpieces\Workpiece.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemDemonstrator.ADSInterface.ADSReadInterface" Collapsed="true">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAACAKAQAAAAAAAAAQAAAAAAAAAEAAAQAAwAIAI=</HashCode>
+      <FileName>ADSInterface\ADSReadInterface.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemDemonstrator.ADSInterface.c_Base_ADSReadInterface" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ADSInterface\Base_ADSReadInterface.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemDemonstrator.Commands.ICCreateAction" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAACAAQAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\CreateAction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SystemDemonstrator.Commands.ICUpdateListsCommand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAACAAQAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\UpdateListsCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SystemDemonstrator.Properties.Resources" Collapsed="true">
+    <Position X="5.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemDemonstrator.Properties.Settings" Collapsed="true">
+    <Position X="8.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

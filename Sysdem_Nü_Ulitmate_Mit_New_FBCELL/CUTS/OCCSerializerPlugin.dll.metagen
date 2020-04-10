@@ -1,0 +1,292 @@
+ImageRuntimeVersion: v4.0.30319
+Assembly OCCSerializerPlugin, Version=2.2.*, Culture=Invariant Language (Invariant Country): 
+	hash=SHA1, flags=PublicKey
+Assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly CutSKernelCS, Version=2.4.*, Culture=Invariant Language (Invariant Country): 
+	hash=None, flags=None
+Assembly PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35: 
+	hash=None, flags=None
+Assembly System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Assembly System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Class OCCSerializerPlugin.CNurbs: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Rendering.ARenderableObject
+    Void .ctor(OCCSerializerPlugin.CNurbs): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String TypeDescription 'get ' : 
+    System.String TypeAlias 'get ' : 
+  Methods:
+    UpdateAABB(): PrivateScope, Public, Virtual, HideBySig
+    GetAABB(Matrix3D): PrivateScope, Public, Virtual, HideBySig
+    ApplyTransform(Matrix3D): PrivateScope, Public, Virtual, HideBySig
+    UpdateTriangulation(Boolean(HasFieldMarshal)): PrivateScope, Public, Virtual, HideBySig
+    Merge(ARenderableObject): PrivateScope, Public, Virtual, HideBySig
+    GetCopy(): PrivateScope, Public, Virtual, HideBySig
+    AddNurbs(FACE_SURF): PrivateScope, Public, HideBySig
+    cleanupNurbs(): PrivateScope, Public, HideBySig
+    ReadXml(XmlReader): PrivateScope, Public, Virtual, HideBySig
+    WriteXml(XmlWriter): PrivateScope, Public, Virtual, HideBySig
+    get_TypeAlias(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeDescription(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Struct OCCSerializerPlugin.CNurbs+SurfaceTypeModel: AutoLayout, AnsiClass, Class, NestedPublic, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    SurfaceTypeModel CylindricalSurface = 0 : Public, Static, Literal, HasDefault
+    SurfaceTypeModel PlanarSurface = 1 : Public, Static, Literal, HasDefault
+    SurfaceTypeModel SphericalSurface = 2 : Public, Static, Literal, HasDefault
+    SurfaceTypeModel ConicalSurface = 3 : Public, Static, Literal, HasDefault
+    SurfaceTypeModel ToroidalSurface = 4 : Public, Static, Literal, HasDefault
+    SurfaceTypeModel BSplineSurface = 5 : Public, Static, Literal, HasDefault
+    SurfaceTypeModel BezierSurface = 6 : Public, Static, Literal, HasDefault
+    SurfaceTypeModel SurfaceOfLinearExtrusion = 7 : Public, Static, Literal, HasDefault
+    SurfaceTypeModel SurfaceOfRevolution = 8 : Public, Static, Literal, HasDefault
+    SurfaceTypeModel SurfaceOffset = 9 : Public, Static, Literal, HasDefault
+Class OCCSerializerPlugin.CNurbs+SPOLE: AutoLayout, AnsiClass, Class, NestedPublic, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    Double x : Public
+    Double y : Public
+    Double z : Public
+Class OCCSerializerPlugin.CNurbs+SUKNOTES: AutoLayout, AnsiClass, Class, NestedPublic, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    Double u : Public
+Class OCCSerializerPlugin.CNurbs+SVKNOTES: AutoLayout, AnsiClass, Class, NestedPublic, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    Double v : Public
+Class OCCSerializerPlugin.CNurbs+SWEIGHT: AutoLayout, AnsiClass, Class, NestedPublic, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    Double w : Public
+Class OCCSerializerPlugin.CNurbs+FACE_SURF: AutoLayout, AnsiClass, Class, NestedPublic, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    Int32 iSizePolesU : Public
+    Int32 iSizePolesV : Public
+    System.Collections.Generic.List`1[System.Windows.Media.Media3D.Point4D] poles IsByValue : Public, InitOnly
+    Int32 uOrder : Public
+    Int32 vOrder : Public
+    Int32 iSizeKnotesU : Public
+    Int32 iSizeKnotesV : Public
+    System.Collections.Generic.List`1[System.Single] uknots IsByValue : Public, InitOnly
+    System.Collections.Generic.List`1[System.Single] vknots IsByValue : Public, InitOnly
+Class OCCSerializerPlugin.AOCCNurbsSerializer: AutoLayout, AnsiClass, Class, Public, Abstract, BeforeFieldInit
+  :CutSKernel.Serialization.ASerializer
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Methods:
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Struct OCCSerializerPlugin.MeshifierVertex: AutoLayout, AnsiClass, Class, Public, SequentialLayout, Sealed, BeforeFieldInit
+  :System.ValueType
+  Fields:
+    Int32 v_index : Public
+    System.Windows.Media.Media3D.Point3D v : Public
+    System.Windows.Media.Media3D.Vector3D n : Public
+    Int32 c_index : Public
+    System.ValueType c Color IsBoxed : Public
+    Int32 t_index : Public
+    System.Windows.Media.Media3D.Point3D t : Public
+    Int32 conncnt : Public
+    Int32[] conn0 : Public
+    Int32[] conn1 : Public
+Struct OCCSerializerPlugin.MeshifierEdge: AutoLayout, AnsiClass, Class, Public, SequentialLayout, Sealed, BeforeFieldInit
+  :System.ValueType
+  Fields:
+    Int32[] t : Public
+Struct OCCSerializerPlugin.MeshifierTriangle: AutoLayout, AnsiClass, Class, Public, SequentialLayout, Sealed, BeforeFieldInit
+  :System.ValueType
+  Fields:
+    Int32[] v : Public
+    Int32 tcnt : Public
+    Int32[] t : Public
+    Int32 done : Public
+    Int32 next : Public
+Class OCCSerializerPlugin.AOCCSerializer: AutoLayout, AnsiClass, Class, Public, Abstract, BeforeFieldInit
+  :CutSKernel.Serialization.ASerializer
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Methods:
+    Compute(Mesh, TopoDS_Shape*, Double): PrivateScope, Public, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class OCCSerializerPlugin.TopoBase: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Methods:
+    ComputeShape(Mesh, TopoDS_Shape*, Double): PrivateScope, Public, HideBySig
+    ComputeMesh(Mesh, handle<StlMesh_Mesh>* IsImplicitlyDereferenced): PrivateScope, Public, HideBySig
+    ComputeSimpleMesh(SimpleMesh, handle<StlMesh_Mesh>* IsImplicitlyDereferenced): PrivateScope, Public, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class OCCSerializerPlugin.Iges_Serializer: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Serialization.ASerializer
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Properties:
+    System.String TypeDescription 'get ' : 
+    System.String TypeAlias 'get ' : 
+    Boolean CanWrite 'get ' : 
+    Boolean CanRead 'get ' : 
+  Methods:
+    Serialize(AKinBaseObject, Stream): PrivateScope, Public, Virtual, HideBySig
+    Serialize(AKinBaseObject, String): PrivateScope, Public, Virtual, HideBySig
+    Deserialize(String, Type): PrivateScope, Public, Virtual, HideBySig
+    Deserialize(Stream, Type): PrivateScope, Public, Virtual, HideBySig
+    get_CanRead(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_CanWrite(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeAlias(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeDescription(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class OCCSerializerPlugin.OCCRObject: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Rendering.SimpleMesh
+    Void .ctor(OCCSerializerPlugin.OCCRObject): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String TypeDescription 'get ' : 
+    System.String TypeAlias 'get ' : 
+    OCCSerializerPlugin.EntityType OCCRObjectType 'get set' : 
+    Int32 ShapeCount 'get ' : 
+  Methods:
+    RenderImpl(RenderFlags, Double): PrivateScope, Public, Virtual, HideBySig
+    UpdateAABB(): PrivateScope, Public, Virtual, HideBySig
+    GetAABB(Matrix3D): PrivateScope, Public, Virtual, HideBySig
+    UpdateTriangulation(Boolean(HasFieldMarshal)): PrivateScope, Public, Virtual, HideBySig
+    Merge(ARenderableObject): PrivateScope, Public, Virtual, HideBySig
+    GetCopy(): PrivateScope, Public, Virtual, HideBySig
+    Add_TopoDS_Shape(TopoDS_Shape*): PrivateScope, Public, HideBySig
+    Add_TopoDS_ShapePointer(Object): PrivateScope, Public, HideBySig
+    Add_TopoDS_ShapeIPointer(IntPtr): PrivateScope, Public, HideBySig
+    GetShape(Int32, TopoDS_Shape* IsImplicitlyDereferenced): PrivateScope, Public, HideBySig
+    GetShapeVectorPointer(): PrivateScope, Public, HideBySig
+    get_ShapeCount(): PrivateScope, Public, HideBySig, SpecialName
+    get_OCCRObjectType(): PrivateScope, Public, HideBySig, SpecialName
+    set_OCCRObjectType(EntityType): PrivateScope, Public, HideBySig, SpecialName
+    get_TypeAlias(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeDescription(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    GetTopoDS_Shapes(): PrivateScope, Public, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Struct OCCSerializerPlugin.EntityType: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    OCCSerializerPlugin.EntityType Topological = 0 : Public, Static, Literal, HasDefault
+    OCCSerializerPlugin.EntityType Mesh = 1 : Public, Static, Literal, HasDefault
+    OCCSerializerPlugin.EntityType Unknown = 2 : Public, Static, Literal, HasDefault
+Class OCCSerializerPlugin.OCCAssemblyROSerializer: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Serialization.ASerializer
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Properties:
+    System.String TypeDescription 'get ' : 
+    System.String TypeAlias 'get ' : 
+    Boolean CanWrite 'get ' : 
+    Boolean CanRead 'get ' : 
+  Methods:
+    Serialize(AKinBaseObject, Stream): PrivateScope, Public, Virtual, HideBySig
+    Serialize(AKinBaseObject, String): PrivateScope, Public, Virtual, HideBySig
+    Deserialize(Stream, Type): PrivateScope, Public, Virtual, HideBySig
+    Deserialize(String, Type): PrivateScope, Public, Virtual, HideBySig
+    get_CanRead(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_CanWrite(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeAlias(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeDescription(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class OCCSerializerPlugin.OCCSerializerPlugin: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.PlugIn.ACutSPlugin
+    Void .ctor(CutSKernel.PlugIn.IPluginHost): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Properties:
+    System.Version ApplicationMaxVersion 'get ' : 
+    System.Version ApplicationMinVersion 'get ' : 
+    System.String WikiPage 'get ' : 
+    CutSKernel.PlugIn.PluginSupportTypes SupportType 'get ' : 
+    System.String PluginAuthor 'get ' : 
+    System.String PluginDescription 'get ' : 
+    System.String PluginName 'get ' : 
+  Methods:
+    Load(): PrivateScope, Public, Virtual, HideBySig
+    Unload(): PrivateScope, Public, Virtual, HideBySig
+    get_PluginName(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_PluginDescription(): PrivateScope, Public, Static, HideBySig, SpecialName
+    get_PluginAuthor(): PrivateScope, Public, Static, HideBySig, SpecialName
+    get_SupportType(): PrivateScope, Public, Static, HideBySig, SpecialName
+    get_WikiPage(): PrivateScope, Public, Static, HideBySig, SpecialName
+    get_ApplicationMinVersion(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_ApplicationMaxVersion(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class OCCSerializerPlugin.Step_Serializer: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Serialization.ASerializer
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Properties:
+    System.String TypeDescription 'get ' : 
+    System.String TypeAlias 'get ' : 
+    Boolean CanWrite 'get ' : 
+    Boolean CanRead 'get ' : 
+  Methods:
+    Serialize(AKinBaseObject, Stream): PrivateScope, Public, Virtual, HideBySig
+    Serialize(AKinBaseObject, String): PrivateScope, Public, Virtual, HideBySig
+    Deserialize(String, Type): PrivateScope, Public, Virtual, HideBySig
+    Deserialize(Stream, Type): PrivateScope, Public, Virtual, HideBySig
+    get_CanRead(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_CanWrite(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeAlias(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeDescription(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class OCCSerializerPlugin.STL_SerializerA: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Serialization.ASerializer
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Properties:
+    System.String TypeDescription 'get ' : 
+    System.String TypeAlias 'get ' : 
+    Boolean CanWrite 'get ' : 
+    Boolean CanRead 'get ' : 
+  Methods:
+    Serialize(AKinBaseObject, Stream): PrivateScope, Public, Virtual, HideBySig
+    Serialize(AKinBaseObject, String): PrivateScope, Public, Virtual, HideBySig
+    Deserialize(String, Type): PrivateScope, Public, Virtual, HideBySig
+    Deserialize(Stream, Type): PrivateScope, Public, Virtual, HideBySig
+    get_CanRead(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_CanWrite(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeAlias(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeDescription(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class OCCSerializerPlugin.OCCROSerializer: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :CutSKernel.Serialization.ASerializer
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Properties:
+    System.String TypeDescription 'get ' : 
+    System.String TypeAlias 'get ' : 
+    Boolean CanWrite 'get ' : 
+    Boolean CanRead 'get ' : 
+  Methods:
+    Serialize(AKinBaseObject, Stream): PrivateScope, Public, Virtual, HideBySig
+    Serialize(AKinBaseObject, String): PrivateScope, Public, Virtual, HideBySig
+    Deserialize(Stream, Type): PrivateScope, Public, Virtual, HideBySig
+    Deserialize(String, Type): PrivateScope, Public, Virtual, HideBySig
+    get_CanRead(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_CanWrite(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeAlias(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_TypeDescription(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig

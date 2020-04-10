@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="FB_ClampSimulated" Id="{c069c4d4-a266-429b-b0eb-1149e80b5f6d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ClampSimulated
+VAR_INPUT
+	
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+m_csState : CLAMP_STATE;	
+m_csStateRequested : CLAMP_STATE;
+
+//Eingänge
+m_bIsOpen : BOOL;
+m_bIsClosed : BOOL;
+m_bIsClosedFull : BOOL;
+
+//Ausgänge
+m_bOpen :BOOL;
+m_bClose :BOOL;
+
+iWaitingTime : INT := 500;
+iTimer: INT := 0;
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+StateMachine();]]></ST>
+    </Implementation>
+    <Method Name="IsClosed" Id="{118c5ee9-937f-4215-9d0e-097c74a007e1}">
+      <Declaration><![CDATA[METHOD IsClosed : BOOL
+VAR_INPUT
+END_VAR
+
+VAR
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[iTimer := iTimer +1;
+
+IF iTimer > iWaitingTime THEN
+	m_bIsClosed := TRUE;
+	iTimer := 0;	
+END_IF
+
+IF m_csState = CLAMP_STATE.e_CLOSED THEN
+	IsClosed := TRUE;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsClosedFull" Id="{f65ce7cb-9130-48d2-bf35-af4fc1162e6a}">
+      <Declaration><![CDATA[METHOD IsClosedFull : BOOL
+VAR_INPUT
+END_VAR
+
+VAR
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+iTimer := iTimer +1;
+
+IF iTimer > iWaitingTime THEN
+	m_bIsClosedFull := TRUE;
+	iTimer := 0;	
+END_IF
+
+IF m_csState = CLAMP_STATE.e_CLOSED_FULL THEN
+	IsClosedFull := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsError" Id="{51d77b77-8199-4dc2-813b-d8c4997239e3}">
+      <Declaration><![CDATA[METHOD IsError : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF m_csState = CLAMP_STATE.e_ERROR THEN
+	IsError := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsOpen" Id="{49c32a2f-6a54-4b35-9a2a-5c49ca470baf}">
+      <Declaration><![CDATA[METHOD IsOpen : BOOL
+VAR_INPUT
+END_VAR
+
+VAR
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[iTimer := iTimer +1;
+
+IF iTimer > iWaitingTime THEN
+	m_bIsOpen := TRUE;
+	iTimer := 0;	
+END_IF
+
+IF m_csState = CLAMP_STATE.e_OPEN THEN
+	IsOpen := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetCloseClampEmpty" Id="{bfdd8289-4452-4488-b6ed-2ebfdaef12b1}">
+      <Declaration><![CDATA[METHOD SetCloseClampEmpty : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_csStateRequested := CLAMP_STATE.e_CLOSED;
+m_bClose := TRUE;
+SetCloseClampEmpty:=TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetCloseClampFull" Id="{082f351c-b7ea-4125-b5c5-15893bc06490}">
+      <Declaration><![CDATA[METHOD SetCloseClampFull : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_csStateRequested := CLAMP_STATE.e_CLOSED_FULL;
+m_bClose := TRUE;
+SetCloseClampFull := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetOpenClamp" Id="{37be77fd-6a2e-46f4-8fd3-00e4562e41a5}">
+      <Declaration><![CDATA[METHOD SetOpenClamp : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_bOpen := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StateMachine" Id="{84584eb1-8243-4da9-9d15-4bf3edc14468}">
+      <Declaration><![CDATA[METHOD StateMachine : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+//m_bIsOpen : BOOL;
+//m_bIsClosed : BOOL;
+//m_bIsClosedFull : BOOL;
+
+CASE m_csState  OF
+	
+	CLAMP_STATE.e_OPEN:	
+		
+
+		IF m_bIsClosed THEN
+			m_csState := CLAMP_STATE.e_CLOSED;		
+		END_IF
+		
+		IF m_bIsClosedFull THEN
+			m_csState := CLAMP_STATE.e_CLOSED_FULL;		
+		END_IF
+		
+ 	CLAMP_STATE.e_CLOSED_FULL:
+	// Fehler wenn falscher Zustand
+ 		IF m_csStateRequested = CLAMP_STATE.e_CLOSED THEN
+  			m_csState := CLAMP_STATE.e_ERROR;
+		END_IF
+		
+		
+		IF m_bIsOpen THEN
+			m_csState := CLAMP_STATE.e_OPEN;		
+		END_IF
+	
+	CLAMP_STATE.e_CLOSED:
+			// Fehler wenn falscher Zustand in diesem Fall: Werkstück erwartet aber nicht im Halter
+ 		IF m_csStateRequested = CLAMP_STATE.e_CLOSED_FULL THEN
+  			m_csState := CLAMP_STATE.e_ERROR;
+		END_IF
+	
+	
+		IF m_bIsOpen THEN
+			m_csState := CLAMP_STATE.e_OPEN;		
+		END_IF
+		
+CLAMP_STATE.e_ERROR:
+		
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_ClampSimulated">
+      <LineId Id="24" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ClampSimulated.IsClosed">
+      <LineId Id="10" Count="4" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="22" Count="1" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="18" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ClampSimulated.IsClosedFull">
+      <LineId Id="9" Count="0" />
+      <LineId Id="12" Count="4" />
+      <LineId Id="10" Count="1" />
+      <LineId Id="7" Count="1" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ClampSimulated.IsError">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ClampSimulated.IsOpen">
+      <LineId Id="11" Count="4" />
+      <LineId Id="9" Count="1" />
+      <LineId Id="7" Count="1" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ClampSimulated.SetCloseClampEmpty">
+      <LineId Id="6" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ClampSimulated.SetCloseClampFull">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ClampSimulated.SetOpenClamp">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ClampSimulated.StateMachine">
+      <LineId Id="6" Count="0" />
+      <LineId Id="40" Count="1" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="19" Count="1" />
+      <LineId Id="26" Count="2" />
+      <LineId Id="21" Count="1" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="49" Count="1" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="54" Count="2" />
+      <LineId Id="51" Count="2" />
+      <LineId Id="35" Count="1" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="38" Count="1" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

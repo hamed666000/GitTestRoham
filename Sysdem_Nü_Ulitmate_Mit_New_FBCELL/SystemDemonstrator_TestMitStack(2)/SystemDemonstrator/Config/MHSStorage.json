@@ -1,0 +1,37 @@
+[
+  {
+    "m_iNumber": "1",
+    "m_bEmpty": 0,
+    "m_iWorkpieceID": "Muster1"
+  },
+  {
+    "m_iNumber": "2",
+    "m_bEmpty": 0,
+    "m_iWorkpieceID": "20200316_Zwilling1"
+  },
+  {
+    "m_iNumber": "3",
+    "m_bEmpty": 0,
+    "m_iWorkpieceID": "Muster3"
+  },
+  {
+    "m_iNumber": "4",
+    "m_bEmpty": 0,
+    "m_iWorkpieceID": "Empty"
+  },
+  {
+    "m_iNumber": "5",
+    "m_bEmpty": 0,
+    "m_iWorkpieceID": "Empty"
+  },
+  {
+    "m_iNumber": "6",
+    "m_bEmpty": 0,
+    "m_iWorkpieceID": "Empty"
+  },
+  {
+    "m_iNumber": "7",
+    "m_bEmpty": 0,
+    "m_iWorkpieceID": "Empty"
+  }
+]
