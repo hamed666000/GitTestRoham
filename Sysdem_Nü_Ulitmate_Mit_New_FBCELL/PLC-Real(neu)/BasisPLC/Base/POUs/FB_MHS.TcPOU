@@ -1,0 +1,495 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FB_MHS" Id="{8dbd2b76-3574-4caf-b0f9-7c13bd743840}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_MHS
+
+
+VAR
+	m_csStateRequest : MHS_STATE;
+	m_csStateRequestOld : MHS_STATE;
+	m_csState : MHS_STATE;
+	m_csStateLastCycle : MHS_STATE;
+	m_csStateLastAction : MHS_STATE;
+	m_Name : STRING;	
+	// Von SystemDemonstratorApp kommend
+	m_iWorkpiece : DINT; 
+	m_iCell : DINT;
+	m_iRequest: DINT;
+	// Von SystemDemonstratorApp kommend angenommen
+	m_iWorkpieceAccepted : DINT; 
+	m_iCellAccepted : DINT;
+	m_iRequestAccepted: DINT;
+	
+	// Von PLC kommend 
+	m_iMachineFree : DINT;	
+	
+	
+	//Von MiR kommend
+	m_iRequestMachineFree : DINT;
+	m_iActionTerminated : DINT;	
+	
+	
+	
+	// Zustand der Zelle die Beladen oder Entladen werden soll
+	m_eCurrentCellState : CELL_ACTION_STATE;
+	m_eNeededCellState : CELL_ACTION_STATE;
+	m_bNeededCellStatePending : BOOL;
+	
+	aMHS : ARRAY [1..20] OF DINT; // Interface API-Array
+	
+	
+	m_iSimulationsTimer : DINT;
+
+
+			////////////////////////////////////////////*Hami*////////////////////////////////////////////////////////////
+
+//*Hami* RisingEdge zum Ausführung von REST_API FBs	
+	bGet, bPut   			: BOOL;
+	
+
+//*Hami* FB Client initialisieren (Das wir in FB_GET und FB_PUT augerufen) 
+//*Hami* http://mir.com/api/v2.0.0/registers/x für die Ardresse x=[1 bis 200] gibts ein Register , die mit JSON_String geschrieben werden können
+//*Hami* JSON_Strings für jedes Register sieht so aus :	{"value": x,"label": "string"}
+
+	fbClient				:  FB_IotHttpClient :=(sHostName:='mir.com',
+								  	bKeepAlive:=TRUE, tConnectionTimeout:=T#5S);
+									
+//*Hami* Array von REST_API FBs (PUT zum Schreiben , GET zum Lesen)								
+	fbGet					:ARRAY [11..20] OF FB_Get; 
+	fbPut					:ARRAY [1..10] OF FB_PUT; 
+
+			////////////////////////////////////////////*Hami*////////////////////////////////////////////////////////////
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[StateMachine();
+
+			/////////////////////////////////////////////////*Hami*//////////////////////////////////////////////////////////////////
+///////////////////////////////*Hami*  lesen und schreiben Dateien an REST API///////////////////////////////////////////
+//*Hami* HostPort einstellen , wenn es nötig ist
+	
+	//IF NOT fbClient.bConfigured THEN 
+	//fbClient.nHostPort:= 80;
+	//END_IF 
+
+//*Hami* Interface API-Array(aMHS[1..10] zum schreiben in Registers von MHS , aMHS[11..20] zum lesen von Registers )
+
+fbPut[1].value := aMHS[1];
+fbPut[2].value := aMHS[2];
+fbPut[3].value := aMHS[3];
+fbPut[4].value := aMHS[4];
+fbPut[5].value := aMHS[5];
+
+//*Hami* init client parameters at startup (für jedes Register gibt es ein Funktion_Block)		
+////////////////////////////////////////1/////////////////////////////////////////////////		
+
+IF fbClient.bConfigured THEN 
+		fbGet[11](bSend:=bGet,sURi := '/api/v2.0.0/registers/11', fbClient:=fbClient);
+		fbPut[1](bSend:=bPut,sURi := '/api/v2.0.0/registers/1',DefaultMessage := '{"value": x}', fbClient:=fbClient);
+END_IF
+fbClient.Execute();
+///////////////////////////////////////2//////////////////////////////////////////////////		
+
+IF fbClient.bConfigured THEN 
+		fbGet[12](bSend:=bGet,sURi := '/api/v2.0.0/registers/12', fbClient:=fbClient);
+		fbPut[2](bSend:=bPut,sURi := '/api/v2.0.0/registers/2',DefaultMessage := '{"value": x}', fbClient:=fbClient);
+END_IF
+fbClient.Execute();
+///////////////////////////////////////3//////////////////////////////////////////////////		
+
+IF fbClient.bConfigured THEN 
+		fbGet[13](bSend:=bGet,sURi := '/api/v2.0.0/registers/13', fbClient:=fbClient);
+		fbPut[3](bSend:=bPut,sURi := '/api/v2.0.0/registers/3',DefaultMessage := '{"value": x}', fbClient:=fbClient);
+END_IF
+fbClient.Execute();
+///////////////////////////////////////4//////////////////////////////////////////////////		
+
+IF fbClient.bConfigured THEN 
+		fbGet[14](bSend:=bGet,sURi := '/api/v2.0.0/registers/14', fbClient:=fbClient);
+		fbPut[4](bSend:=bPut,sURi := '/api/v2.0.0/registers/4',DefaultMessage := '{"value": x}', fbClient:=fbClient);
+END_IF
+fbClient.Execute();
+///////////////////////////////////////5//////////////////////////////////////////////////		
+
+IF fbClient.bConfigured THEN 
+		fbGet[15](bSend:=bGet,sURi := '/api/v2.0.0/registers/15', fbClient:=fbClient);
+		fbPut[5](bSend:=bPut,sURi := '/api/v2.0.0/registers/5',DefaultMessage := '{"value": x , "label":"kann hier geschrieben werden"}', fbClient:=fbClient);
+END_IF
+fbClient.Execute();
+
+//*Hami* SET Registers Connection with MHS
+
+
+aMHS[11] := fbGet[11].value;
+aMHS[12] := fbGet[12].value;
+aMHS[13] := fbGet[13].value;
+aMHS[14] := fbGet[14].value;
+aMHS[15] := fbGet[15].value;
+
+			/////////////////////////////////////////////////*Hami*//////////////////////////////////////////////////////////////////
+]]></ST>
+    </Implementation>
+    <Method Name="GetActionFinished" Id="{f9be7ecf-0863-4e63-90a9-70e274cc014b}">
+      <Declaration><![CDATA[METHOD GetActionFinished : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF m_csState = MHS_STATE.e_AKTION_FINISHED THEN
+	GetActionFinished := TRUE;
+ELSE
+	GetActionFinished := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetCurrentCellForAction" Id="{4e44ab37-8541-4c04-a2d4-da5c7ddc1aee}">
+      <Declaration><![CDATA[METHOD GetCurrentCellForAction : DINT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetCurrentCellForAction := m_iCellAccepted;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetState" Id="{0c787692-2a89-4490-bcc3-c552ee46f945}">
+      <Declaration><![CDATA[METHOD GetState : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="NeededCellStatePending" Id="{75fc0899-153c-4f2a-98d5-fef47531f760}">
+      <Declaration><![CDATA[METHOD NeededCellStatePending : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[NeededCellStatePending := m_bNeededCellStatePending;
+m_bNeededCellStatePending := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RequestAction" Id="{4fb005f0-d02e-46b3-af04-20c920bee9f0}">
+      <Declaration><![CDATA[METHOD RequestAction : BOOL
+VAR_INPUT
+	
+	iWorkpiece : DINT; 
+	iCell : DINT;
+	bRequest : DINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+m_iWorkpiece :=  iWorkpiece;
+m_iCell := iCell;
+m_iRequest := bRequest;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RequestState" Id="{6f0cadee-0cfd-4f8f-841b-9ebfd10fafc3}">
+      <Declaration><![CDATA[METHOD RequestState : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SendNeededToCell" Id="{453ef2a4-4d82-4c50-9123-dfd20ebadc81}">
+      <Declaration><![CDATA[METHOD SendNeededToCell : CELL_ACTION_STATE
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[SendNeededToCell := m_eNeededCellState;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetClampIsOpen" Id="{0684070b-5c3a-4819-b58e-41f8879c40d8}">
+      <Declaration><![CDATA[METHOD SetClampIsOpen : BOOL
+VAR_INPUT
+iClampIsOpen : DINT;	
+
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//IF iClampIsOpen > 0 THEN
+//	m_iClampIsOpen := 1;
+//	m_iClampIsClose := 0;
+//ELSE
+//	m_iClampIsOpen := 0;
+//	m_iClampIsClose := 1;	
+//END_IF
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetDoorIsOpen" Id="{a39b49ff-e836-4e6f-98f4-4d420e6f19ca}">
+      <Declaration><![CDATA[METHOD SetDoorIsOpen : BOOL
+VAR_INPUT
+	iDoorIsOpen :DINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//IF iDoorIsOpen > 0 THEN
+//	m_iDoorIsOpen := 1;
+//	m_iDoorIsClose := 0;
+//ELSE
+//	m_iDoorIsOpen := 0;
+//	m_iDoorIsClose := 1;	
+//END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetMachineFree" Id="{968ec4a9-1952-43f2-be10-74ca8c23f480}">
+      <Declaration><![CDATA[METHOD SetMachineFree : BOOL
+VAR_INPUT
+	iMachineFree:DINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_iMachineFree := iMachineFree; ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetStateCurrentMachineForAction" Id="{91803e75-0a84-4e47-93b9-db4e209a463d}">
+      <Declaration><![CDATA[METHOD SetStateCurrentMachineForAction : BOOL
+VAR_INPUT
+	eCurrentCellState :CELL_ACTION_STATE;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_eCurrentCellState := eCurrentCellState;
+
+SetStateCurrentMachineForAction := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StateMachine" Id="{3635840f-1684-426a-8ea2-8add2027ff6e}">
+      <Declaration><![CDATA[
+METHOD StateMachine : BOOL
+VAR_INPUT
+END_VAR
+
+VAR
+
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+	// VOM MHS
+
+	//{define Simulated}
+	{define MHSConnected}
+	
+	{IF defined (MHSConnected)}
+ 	m_iRequestMachineFree   := aMHS[11];
+	m_iActionTerminated :=  aMHS[12];
+	{END_IF}
+	// PLC interne Variablen
+	//m_iDoorIsOpen : DINT;	
+	//m_iClampIsOpen : DINT;
+	//m_iClampIsClose : DINT;	
+	//m_iDoorIsClose : DINT;
+
+
+	
+	
+CASE m_csState OF
+
+MHS_STATE.e_IDLE: 
+
+	IF m_iWorkpiece > 0 AND m_iCell > 0 AND m_iRequest > 0 THEN
+		m_iWorkpieceAccepted := m_iWorkpiece;  
+		m_iCellAccepted := m_iCell;
+		m_iRequestAccepted:= m_iRequest; 	
+	END_IF
+
+	IF m_iWorkpieceAccepted > 0 AND m_iCellAccepted > 0 AND m_iRequestAccepted = 2 THEN
+		aMHS[1] := m_iWorkpieceAccepted;
+		aMHS[2] := m_iCellAccepted;
+		aMHS[3] := m_iRequestAccepted;
+		m_iWorkpiece := 0;
+ 		m_iCell := 0;
+		m_iRequest := 0;
+		m_csState := MHS_STATE.e_PGO_POS;	
+	END_IF
+	IF m_iWorkpieceAccepted > 0 AND m_iCellAccepted > 0 AND m_iRequestAccepted = 1 THEN
+		aMHS[1] := m_iWorkpieceAccepted;
+		aMHS[2] := m_iCellAccepted;
+		aMHS[3] := m_iRequestAccepted;
+		m_iWorkpiece := 0;
+ 		m_iCell := 0;
+		m_iRequest := 0;
+		m_csState := MHS_STATE.e_GGO_POS;	
+	END_IF
+	// Löschen dieser Anforderung
+	m_iRequestAccepted := 0;
+
+
+// SUBROUTINE WP in Maschine bringen	  
+MHS_STATE.e_PGO_POS:
+	
+ 	IF m_iRequestMachineFree > 0 THEN
+		m_eNeededCellState := CELL_ACTION_STATE.e_LoadPos;
+		m_bNeededCellStatePending := TRUE;
+		m_csState := MHS_STATE.e_PWAIT_DOOR;
+	END_IF
+	
+
+MHS_STATE.e_PWAIT_DOOR:	
+  	IF  m_eCurrentCellState = CELL_ACTION_STATE.e_LoadPos THEN
+		//aMHS[3] := 0;//m_iRequest;
+		m_iMachineFree := 1;
+		m_csState := MHS_STATE.e_PWAIT_CLAMP;
+	END_IF
+
+MHS_STATE.e_PWAIT_CLAMP:
+		m_csState := MHS_STATE.e_PPUT_WP;
+	
+
+MHS_STATE.e_PPUT_WP:
+		m_csState := MHS_STATE.e_PCLOSE_CLAMP;
+		
+ MHS_STATE.e_PCLOSE_CLAMP:
+			m_csState := MHS_STATE.e_PLEAFE_MACHINE;
+	 
+MHS_STATE.e_PLEAFE_MACHINE:
+ 	IF m_iActionTerminated > 0 THEN
+		m_csState := MHS_STATE.e_AKTION_FINISHED;
+	END_IF	
+
+// SUBROUTINE WP aus Maschine holen	  
+MHS_STATE.e_GGO_POS:
+ 	IF m_iRequestMachineFree > 0 THEN
+		m_eNeededCellState := CELL_ACTION_STATE.e_UnLoadPos;
+		m_bNeededCellStatePending := TRUE;
+		m_csState := MHS_STATE.e_GWAIT_DOOR;
+	END_IF
+
+	
+MHS_STATE.e_GWAIT_DOOR:
+  	IF  m_eCurrentCellState = CELL_ACTION_STATE.e_UnLoadPos THEN
+		m_iMachineFree := 1;
+		//aMHS[3] := 0;//m_iRequest;
+		m_csState := MHS_STATE.e_GWAIT_CLAMP;
+	END_IF
+
+MHS_STATE.e_GWAIT_CLAMP:
+	//IF m_iClampIsOpen > 0 THEN
+		m_csState := MHS_STATE.e_GGET_WP;
+	//END_IF
+MHS_STATE.e_GGET_WP:
+	//IF 	m_iClampCloseRequest > 0 THEN
+		m_csState := MHS_STATE.e_GCLOSE_CLAMP;
+	//END_IF
+ MHS_STATE.e_GCLOSE_CLAMP:
+ 	//IF m_iClampIsClose > 0 THEN
+			m_csState := MHS_STATE.e_GLEAFE_MACHINE;	 
+ 	//END_IF
+MHS_STATE.e_GLEAFE_MACHINE:
+	
+ 	IF m_iActionTerminated > 0 THEN
+		aMHS[3] := 0;//m_iRequest;
+		m_csState := MHS_STATE.e_AKTION_FINISHED;
+	END_IF		
+
+MHS_STATE.e_AKTION_FINISHED:
+	m_csState := MHS_STATE.e_IDLE;
+	m_iMachineFree := 0;
+	
+MHS_STATE.e_ERROR:
+	
+ELSE
+	m_csState := MHS_STATE.e_ERROR;
+ 
+END_CASE
+{IF defined (MHSConnected)}
+aMHS[4] :=  m_iMachineFree; 
+{END_IF}]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_MHS">
+      <LineId Id="9" Count="0" />
+      <LineId Id="728" Count="0" />
+      <LineId Id="717" Count="0" />
+      <LineId Id="311" Count="0" />
+      <LineId Id="718" Count="1" />
+      <LineId Id="722" Count="0" />
+      <LineId Id="720" Count="0" />
+      <LineId Id="716" Count="0" />
+      <LineId Id="715" Count="0" />
+      <LineId Id="314" Count="0" />
+      <LineId Id="706" Count="1" />
+      <LineId Id="424" Count="0" />
+      <LineId Id="708" Count="1" />
+      <LineId Id="711" Count="0" />
+      <LineId Id="647" Count="0" />
+      <LineId Id="642" Count="0" />
+      <LineId Id="315" Count="5" />
+      <LineId Id="326" Count="19" />
+      <LineId Id="347" Count="0" />
+      <LineId Id="648" Count="0" />
+      <LineId Id="348" Count="5" />
+      <LineId Id="321" Count="0" />
+      <LineId Id="491" Count="0" />
+      <LineId Id="198" Count="0" />
+      <LineId Id="570" Count="0" />
+      <LineId Id="552" Count="0" />
+      <LineId Id="571" Count="0" />
+      <LineId Id="712" Count="0" />
+      <LineId Id="551" Count="0" />
+      <LineId Id="415" Count="0" />
+      <LineId Id="417" Count="0" />
+      <LineId Id="714" Count="0" />
+      <LineId Id="713" Count="0" />
+      <LineId Id="574" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MHS.GetActionFinished">
+      <LineId Id="5" Count="1" />
+      <LineId Id="8" Count="1" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MHS.GetCurrentCellForAction">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MHS.GetState">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MHS.NeededCellStatePending">
+      <LineId Id="5" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_MHS.RequestAction">
+      <LineId Id="9" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="18" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MHS.RequestState">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MHS.SendNeededToCell">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MHS.SetClampIsOpen">
+      <LineId Id="6" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="2" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MHS.SetDoorIsOpen">
+      <LineId Id="6" Count="5" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MHS.SetMachineFree">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MHS.SetStateCurrentMachineForAction">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_MHS.StateMachine">
+      <LineId Id="382" Count="129" />
+      <LineId Id="228" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
