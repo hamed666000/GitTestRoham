@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FB_PUT" Id="{1cbfb896-645b-40f8-aed7-4bdc4494a0ed}" SpecialFunc="None">
+    <Declaration><![CDATA[//*Hami* 
+//*Hami* Das Funktion Block Schreibt INPUT value in Adresse sURi als JSON_String
+FUNCTION_BLOCK FB_PUT
+VAR_INPUT
+	bSend				: BOOL;
+	value		 		: DINT ;
+	sURi 		 		: STRING;
+	DefaultMessage 		: STRING(255);
+END_VAR
+VAR_IN_OUT
+	fbClient			: FB_IotHttpClient;
+END_VAR
+VAR_OUTPUT
+	bBusy				: BOOL;
+	bError				: BOOL;
+END_VAR
+VAR
+	fbRequest			: FB_IotHttpRequest;
+	fbHeader			: FB_IotHttpHeaderFieldMap;
+	fbJson				: FB_JsonDomParser;
+	nState				: UDINT;
+	RisingEdge			: R_TRIG;
+
+	bGetContentResult	: BOOL;
+	sContent			: STRING(511);
+	
+	bGetJsonResult		: BOOL;
+	jsonDoc				: SJsonValue;
+	jsonTitle			: SJsonValue;
+	jsonVal				: SJsonValue;
+	bResultValue		: BOOL;
+	
+	nReqCount			: UDINT;	
+	nResCount			: UDINT;
+	nValidResCount		: UDINT;
+	nErrCount			: UDINT;
+	bOnce				: BOOL:= TRUE;
+	sMessage			: STRING(255);
+	JsonStringValue		: SJsonValue;
+	s_iRegister 		: STRING ;
+	ss_iRegister		: STRING ;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//*Hami* value in Jsonvalue (Das ist Externe Datentype im ersten Ordner) schreiben (sMassage ist ein Json_String )
+s_iRegister := DINT_TO_STRING(value);
+sMessage := REPLACE(DefaultMessage,s_iRegister,1,11);
+JsonStringValue := fbJson.ParseDocument(sMessage);
+
+/////////////////////////////////////////////////////////////////////////////
+	// RisingEdge(CLK:= bSend);
+
+//*Hami* Authorization einstellen	
+	
+	//IF RisingEdge.Q  THEN
+	fbHeader.AddField('Authorization', 'Basic RmVsaXg6OGM2OTc2ZTViNTQxMDQxNWJkZTkwOGJkNGRlZTE1ZGZiMTY3YTljODczZmM0YmI4YTgxZjZmMmFiNDQ4YTkxOA==', FALSE);
+	fbHeader.AddField('Accept-Language', 'de_DE' , FALSE);
+	// END_IF
+CASE nState OF
+0:	
+	//IF RisingEdge.Q THEN 
+	
+	//*Hami* hier werden die Dateien als JSON in sRUi geschrieben 
+		IF fbRequest.SendJsonDomRequest(sUri:= sURi , fbClient:=fbClient, eRequestType:=ETcIotHttpRequestType.HTTP_PUT, fbJson := fbJson, fbHeader:=fbHeader) THEN				
+			nState:= 1;
+			nReqCount:= nReqCount+1;
+			bBusy:= TRUE;
+			bError:= FALSE;
+		END_IF					
+	//END_IF
+	
+	//*Hami* hier werden wieder geschriebene Dataeien von sURi gelesen
+1:
+	IF NOT fbRequest.bBusy THEN
+		bError:= TRUE;
+		IF NOT fbRequest.bError THEN	 
+			bGetContentResult:= fbRequest.GetContent(pContent:= ADR(sContent), nContentSize:= SIZEOF(sContent), bSetNullTermination:= TRUE);
+			IF fbRequest.nStatusCode >= 200 AND fbRequest.nStatusCode < 300 THEN
+				bGetJsonResult:= FALSE;
+				jsonDoc:= fbRequest.GetJsonDomContent(fbJson);
+				IF jsonDoc <> 0 THEN
+					bGetJsonResult:= TRUE;
+					
+					IF fbJson.HasMember(jsonDoc, 'value') THEN
+					//IF fbJson.HasMember(jsonDoc, 'authenticated') THEN
+					jsonVal:= fbJson.FindMember(jsonDoc, 'value');
+						//jsonVal:= fbJson.FindMember(jsonDoc, 'authenticated');
+						IF fbJson.IsInt(jsonVal) THEN
+						//IF fbJson.IsBool(jsonVal) THEN
+						//value:= fbJson.GetInt(jsonVal);
+							//bResultValue:= fbJson.GetBool(jsonVal);
+							nValidResCount:= nValidResCount+1;
+							bError:= FALSE;						
+						END_IF	
+					END_IF
+				END_IF							
+				nResCount:= nResCount+1;			
+			END_IF
+		END_IF
+		nState:= 0;
+		bBusy:= FALSE;
+		IF bError THEN
+			nErrCount:= nErrCount+1;
+		END_IF
+	END_IF  	
+END_CASE
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_PUT">
+      <LineId Id="157" Count="0" />
+      <LineId Id="280" Count="0" />
+      <LineId Id="268" Count="0" />
+      <LineId Id="266" Count="0" />
+      <LineId Id="263" Count="0" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="379" Count="0" />
+      <LineId Id="329" Count="0" />
+      <LineId Id="380" Count="0" />
+      <LineId Id="328" Count="0" />
+      <LineId Id="330" Count="0" />
+      <LineId Id="332" Count="0" />
+      <LineId Id="331" Count="0" />
+      <LineId Id="11" Count="2" />
+      <LineId Id="374" Count="1" />
+      <LineId Id="14" Count="6" />
+      <LineId Id="377" Count="1" />
+      <LineId Id="21" Count="9" />
+      <LineId Id="276" Count="0" />
+      <LineId Id="226" Count="0" />
+      <LineId Id="87" Count="0" />
+      <LineId Id="227" Count="0" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="228" Count="0" />
+      <LineId Id="89" Count="0" />
+      <LineId Id="229" Count="0" />
+      <LineId Id="93" Count="0" />
+      <LineId Id="86" Count="0" />
+      <LineId Id="125" Count="0" />
+      <LineId Id="90" Count="0" />
+      <LineId Id="41" Count="11" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
